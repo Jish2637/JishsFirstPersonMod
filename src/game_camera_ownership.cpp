@@ -21,15 +21,23 @@ std::atomic<SpectatorActive> spectator_query{};
 std::mutex ownership_mutex;
 GameCameraOwnershipPolicy policy;
 std::atomic<bool> suspended{},managing{};
+std::atomic<bool> stock_foreign{};
 bool query_spectator(bool& result) noexcept {
     __try { result=spectator_query.load()();return true; }
     __except(EXCEPTION_EXECUTE_HANDLER) { return false; }
 }
 }
 bool game_camera_suspended() { return suspended.load(); }
+void observe_stock_camera_owner(bool foreign) {
+    stock_foreign=foreign;
+    if(!foreign) return; // Only a verified local gameplay snapshot may restore.
+    std::lock_guard lock(ownership_mutex);
+    policy.reason=GameCameraReason::other_camera;policy.managing=true;
+    suspended=true;managing=true;
+}
 bool game_camera_managing() { return managing.load(); }
 const char* game_camera_status() {
-    return suspended.load() ? "First person is paused while spectating.":
+    return suspended.load() ? "First person is paused while another camera owns the view.":
         !spectator_query.load() ? "Spectator camera detection is unavailable. See the mod log.":"";
 }
 void acknowledge_game_camera(bool master,bool active) {
@@ -49,7 +57,7 @@ void install_game_camera_observer(std::uintptr_t base) {
     }
     // Call the entry, not a trampoline: the stock hook supplies party state.
     spectator_query=reinterpret_cast<SpectatorActive>(base+spectator_active);
-    log("Game camera observer installed: verified native/stock spectator query. Replay pre-entry and scripted/game-mode camera contracts are unavailable.");
+    log("Game camera observer installed: verified spectator query, stock freecam/drone flags, gameplay world and local view ownership. Replay transitions require live confirmation.");
 }
 void update_game_camera_ownership(std::uintptr_t client,std::uintptr_t base) {
     if(!spectator_query.load()) return;
@@ -61,14 +69,20 @@ void update_game_camera_ownership(std::uintptr_t client,std::uintptr_t base) {
         evidence.context=reader.pointer(client,8);
         const auto world=reader.value<std::uint32_t>(client,0xc4);
         reader.verify();
-        if(world!=13 && world!=21) return;
         evidence.valid=query_spectator(evidence.spectator);
-        if(evidence.valid && !evidence.spectator && suspended.load()) {
+        evidence.other_camera=stock_foreign.load() || (world!=13 && world!=21);
+        if(evidence.valid && !evidence.spectator && !evidence.other_camera) {
             SourceTrial trial;trial.base=base;
             const auto camera=source_camera_snapshot(trial,client);
             std::uintptr_t type{};
             evidence.local_camera=camera.identity.context==evidence.context && camera.mode==0 && camera.view_enabled &&
                 !camera.input_active && dingosdk::memory::read(camera.active,type) && type==base+dingosdk::addr::engine::camera_vtable;
+            // Mode 1 is shared by native First Person/freecam/drone. Do not
+            // classify that shared lease using a delayed activation snapshot:
+            // the verified native debug flags above distinguish its owner.
+            // This also preserves startup, activation and bail handovers.
+            const bool shared_lease=camera.mode==1 && camera.active==camera.identity.camera;
+            evidence.other_camera=!evidence.local_camera && !shared_lease;
         }
     } catch(...) { /* Missing evidence neither suspends nor restores. */ }
     bool changed{},active{};
@@ -81,8 +95,8 @@ void update_game_camera_ownership(std::uintptr_t client,std::uintptr_t base) {
     if(changed) {
         suspend_custom_camera();
         clear_stock_camera_blends();
-        log(active ? "Game camera ownership: spectator takeover; releasing First Person.":
-            "Game camera ownership: spectator ended and local gameplay camera verified; existing restrictions still apply.");
+        log(active ? "Game camera ownership: another camera took over; releasing First Person.":
+            "Game camera ownership: local gameplay camera verified; existing restrictions still apply.");
     }
 }
 }

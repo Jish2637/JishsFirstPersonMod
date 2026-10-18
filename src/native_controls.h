@@ -34,7 +34,7 @@ struct NativeControls {
     bool active{},board_only{},stabilize{},follow_flips{};
     bool camera_cycle_available{},camera_cycle{};
     float smoothing=60,head_pitch=86,head_roll=0,bob=25;
-    std::array<std::uint32_t,17> bindings{};
+    std::array<std::uint32_t,18> bindings{};
     bool operator==(const NativeControls&) const = default;
 };
 inline bool native_binding_overlap(std::uint32_t combo,const NativeControls& native) {

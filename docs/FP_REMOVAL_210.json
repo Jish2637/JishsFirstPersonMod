@@ -1,0 +1,11 @@
+{
+  "build": "1.34.0-compat-test2",
+  "mod_dll_sha256": "4b6dc7fb5c087d3b0d9fa2f8073b111bfbe33d6ce918ecb4e33e7fb28057f890",
+  "presence_source_removed": true,
+  "presence_sender_markers_absent_from_dll": [
+    "/jish-fp",
+    "jfp1",
+    "MSC presence ready:"
+  ],
+  "live_chat_check": "pending"
+}

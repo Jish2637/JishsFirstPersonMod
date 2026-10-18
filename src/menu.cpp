@@ -115,7 +115,7 @@ void publish_menu_error(const std::string& error) { graphics_error=error; log(er
 void cancel_panel_recording() { recorder.cancel(); recorder_feedback.clear();cancel_menu_key_recording();panel_binding_recording(false); }
 void load_panel_fonts() {
     auto& io=ImGui::GetIO(); io.IniFilename=nullptr; io.LogFilename=nullptr;
-    io.ConfigFlags|=ImGuiConfigFlags_NavEnableKeyboard|ImGuiConfigFlags_NavEnableGamepad;
+    io.ConfigFlags|=ImGuiConfigFlags_NavEnableKeyboard;
     io.BackendPlatformName="JishsFirstPersonMod Win32 messages";
     body=embedded(L"FONT_BODY",17); heading=embedded(L"FONT_HEADING",22); title=embedded(L"FONT_BRUSH",24);
     if(!body) body=io.Fonts->AddFontDefault(); if(!heading) heading=body; if(!title) title=heading;

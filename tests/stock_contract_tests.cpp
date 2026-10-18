@@ -30,6 +30,12 @@ int main() {
     }
     for(const auto& profile:contracts) {
         selected=&profile;
+        if(uses_v210_layout(&profile)) {
+            require(native_sampler_rva()==0xbe2f90 && console_queue_rva()==0x979980,"2.1.0 function mapping");
+            require(callbacks_offset()==0x5b0 && model_offset()==0x5e0 && bindings_model_offset()==0x5fe0,"2.1.0 model mapping");
+            require(to_native({first_person,true,0}).action==13 && to_native({reset,false,0}).action==34,"2.1.0 action mapping");
+            continue;
+        }
         const bool v2=std::string_view(profile.version)=="2.0.0" || std::string_view(profile.version)=="2.0.1" || std::string_view(profile.version)=="2.0.2" || std::string_view(profile.version)=="2.0.3" || std::string_view(profile.version)=="2.0.4" || std::string_view(profile.version)=="2.0.5" || std::string_view(profile.version)=="2.0.6" || std::string_view(profile.version)=="2.0.7" || std::string_view(profile.version)=="2.0.8";
         if(v2) {
             const bool latest=std::string_view(profile.version)=="2.0.2" || std::string_view(profile.version)=="2.0.3" || std::string_view(profile.version)=="2.0.4" || std::string_view(profile.version)=="2.0.5" || std::string_view(profile.version)=="2.0.6" || std::string_view(profile.version)=="2.0.7" || std::string_view(profile.version)=="2.0.8";

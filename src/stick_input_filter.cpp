@@ -128,6 +128,9 @@ std::mutex packet_mutex;
 std::array<std::array<FilteredPacket,4>,10> filtered_packets;
 template<unsigned Index> DWORD WINAPI filtered_state(DWORD slot,XINPUT_STATE* output) {
     const auto result=originals[Index](slot,output);const auto error=GetLastError();
+    HMODULE caller{};
+    if(GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        reinterpret_cast<LPCWSTR>(_ReturnAddress()),&caller) && caller==GetModuleHandleW(L"reskate.dll")) {SetLastError(error);return result;}
     if(result==ERROR_SUCCESS && output && !raw_controller_read) {
         std::uint32_t buttons=output->Gamepad.wButtons;
         if(output->Gamepad.bLeftTrigger>30) buttons|=0x10000;
@@ -278,7 +281,7 @@ bool install_stick_input_filter() {
        !add("GetRawInputBuffer",reinterpret_cast<void*>(&filtered_buffer),&buffer)) return false;
     original_data=reinterpret_cast<RawData>(data);original_buffer=reinterpret_cast<RawBuffer>(buffer);
     const auto stock=GetModuleHandleW(L"reskate.dll");const auto base=reinterpret_cast<std::uintptr_t>(stock);
-    const bool hid_verified=stock && stock_contract::selected && std::string_view(stock_contract::selected->version)=="2.0.7" &&
+    const bool hid_verified=stock && stock_contract::selected && std::string_view(stock_contract::selected->version)=="2.1.0" &&
         verified_stock_hid([](std::uintptr_t address,void* data,std::size_t size) { return memory::read_bytes(address,data,size); },base);
     if(hid_verified) {
         void* original{};auto* target=reinterpret_cast<void*>(base+stock_hid_rva);
