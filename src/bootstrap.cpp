@@ -1,5 +1,4 @@
 #include "mod.h"
-#include "msc_presence_bridge.h"
 #include "Engine/Game/Build/image_identity.h"
 #include "Extension/UI/Overlay/overlay.h"
 #include "settings.h"
@@ -138,7 +137,6 @@ DWORD WINAPI worker(void*) noexcept {
         }
         if(!jishsfirstpersonmod::start_menu()) { status=3;return 0; }
         jishsfirstpersonmod::compatibility::enable();rollback.committed=true;
-        jishsfirstpersonmod::start_msc_presence(reskate);
         status = 2;
         jishsfirstpersonmod::log("initialised once; controller requests feed the existing native ReSkate camera");
     } catch (const std::exception& e) { jishsfirstpersonmod::log(std::string("ERROR: initialisation failed: ") + e.what()); status = 3; }

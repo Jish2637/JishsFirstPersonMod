@@ -157,7 +157,7 @@ DWORD direct_classify(void* device,DirectDevice& state,DWORD buttons,ULONGLONG t
         // Do not let it alter the current held press or create an extra emote.
         GlanceEmotePolicy first;ToggleEmoteBlock toggle;
         std::lock_guard lock(glance_mutex);
-        const auto consumed=toggle.update(toggle_eligible ? toggle_binding:0,buttons);
+        const auto consumed=toggle.update(toggle_eligible ? toggle_binding:0,buttons,toggle_eligible ? native_toggle_binding:0);
         return consumed ? consumed:first.update(glance_bindings,buttons,time).consume;
     }
     std::lock_guard lock(glance_mutex);

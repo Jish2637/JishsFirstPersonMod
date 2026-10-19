@@ -43,5 +43,14 @@ int main() {
     ownership.observe({20,true,false,true});
     ownership.acknowledge(true,true);
     check(!ownership.managing,"successful restoration not acknowledged");
+    ownership.observe({20,true,false,false,true});
+    check(ownership.suspended() && ownership.reason==GameCameraReason::other_camera,"freecam/drone/replay takeover ignored");
+    ownership.observe({21,false,false,true,false});
+    ownership.observe({21,true,false,false,false});
+    check(ownership.suspended(),"uncertain evidence restored after a foreign camera");
+    ownership.observe({21,true,false,true,true});
+    check(ownership.suspended(),"foreign camera flag lost precedence over local snapshot");
+    ownership.observe({21,true,false,true,false});
+    check(!ownership.suspended() && ownership.managing,"verified foreign-camera return not managed");
     std::cout<<"Ownership and existing restriction checks passed.\n";
 }

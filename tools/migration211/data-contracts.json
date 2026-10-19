@@ -1,0 +1,14 @@
+{
+  "state": 25575832,
+  "source_initialized": 24539840,
+  "source_base": 24543736,
+  "source_transform": 24543752,
+  "party": 24782328,
+  "remote": 24781920,
+  "party_transform_return": 12434223,
+  "party_fov_return": 12434255,
+  "hid_callers": [
+    14628270,
+    14630555
+  ]
+}

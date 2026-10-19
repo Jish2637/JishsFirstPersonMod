@@ -1,0 +1,14 @@
+{
+  "dll_sha256": "d79ff144768ce8b0a8e992c9f134c670a3ff85bb3b437a0eb915876973014301",
+  "native_entry_prefixes": 17,
+  "relationships": "PASS",
+  "source_hashes": {
+    "Engine/Game/Skater/first_person_spring.h": "842b859568983d68b4e3c158b55e18b4b5072d35cde66e3cfb8018a464ec23a5",
+    "Extension/Skater/client_first_person.cpp": "481d3c0edc762230ae32cbb58dee32bc79df01149da5c55d7f66d4eff46838a7",
+    "Engine/Game/Build/image_identity.cpp": "dbc8d69ca8b392a711073cbfec17de9ee12bfffec66aeeeed54dcc2ddcdfff1e",
+    "Engine/Game/Build/20260929/engine.h": "da8a55b58e83d48fbcff2d98c604f85bc3f3f0812cb3252f470b1f908f9aefb3"
+  },
+  "protocol": [
+    "Extension\\Multiplayer\\Net\\protocol.h: constexpr std::uint16_t protocol_version = 52;"
+  ]
+}

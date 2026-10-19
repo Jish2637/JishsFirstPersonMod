@@ -172,6 +172,41 @@ int main(){
  publish_toggle_filter(0x108,true,1,101);qa_now+=10;
  check(classify(1,0,0x101).emote,"Early toggle publication erased glance double-tap state");
  clear_glance_filter();
+ // Stock owns LB+RB+D-pad down, so companion activation is deliberately
+ // blocked. Its game-facing emote suppression must remain active in both views.
+ Config native_config;native_config.toggle=0x302;native_config.native.active=true;native_config.native.bindings[10]=0x302;
+ const auto native_route=toggle_emote_bindings(native_config,false);
+ check(native_route.companion==0 && native_route.native==0x302,"native toggle routing regression fixture invalid");
+ auto publish_native=[&] {publish_glance_filter(bindings,qa_active,{1,2,3,4},1,native_route.companion,native_route.enabled(),555,native_route.native);};
+ auto native_poll=[&](unsigned buttons) {qa_now+=10;publish_native();sample.Gamepad.wButtons=buttons;XINPUT_STATE out{};filtered_state<0>(0,&out);return out.Gamepad.wButtons;};
+ for(bool entering:{true,false}) {
+  clear_glance_filter();qa_active=!entering;
+  check(native_poll(0x300)==0x300,"native toggle modifiers were consumed");
+  check(native_poll(0x1302)==0x1300,"native LB+RB+D-pad toggle leaked an emote or consumed other buttons");
+  qa_active=entering;
+  check(native_poll(0x1302)==0x1300,"camera handover lost native toggle suppression");
+  check(native_poll(0x1002)==0x1000,"native toggle shoulder-first release leaked a held D-pad");
+  native_poll(0x300);
+  check(native_poll(0x302)==0x300 && !glance_emote_active(),"native toggle second tap became a double-tap emote");
+  native_poll(0);
+ }
+ raw_controller_read=true;check(native_poll(0x302)==0x302,"native toggle's physical sampler was blocked");raw_controller_read=false;
+ // Both Sony report formats use the same native-owned chord and hold latch.
+ for(auto kind:{dingosdk::PlayStationPad::dualshock4,dingosdk::PlayStationPad::dualsense})for(bool bluetooth:{false,true}) {
+  clear_glance_filter();qa_active=false;publish_native();
+  std::vector<std::uint8_t> report(bluetooth?78:64,0);
+  const unsigned start=bluetooth?(kind==dingosdk::PlayStationPad::dualsense?2:3):1;
+  const unsigned button=start+(kind==dingosdk::PlayStationPad::dualsense?7:4);
+  report[0]=bluetooth?(kind==dingosdk::PlayStationPad::dualsense?0x31:0x11):1;
+  for(unsigned i=0;i<4;++i)report[start+i]=128;
+  StockHidRead read{reinterpret_cast<void*>(70),report.data(),static_cast<unsigned>(report.size()),kind};
+  auto send=[&](unsigned hat,unsigned shoulders){report[button]=0x20|hat;report[button+1]=shoulders;sony_report_crc(report);qa_now+=10;publish_native();filtered_stock_hid(read,static_cast<DWORD>(report.size()));};
+  send(4,3);check((report[button]&15)==8 && report[button+1]==3,"native Sony toggle leaked or altered shoulders");
+  qa_active=true;send(4,0);check((report[button]&15)==8,"native Sony shoulder-first release leaked");
+  send(8,3);qa_active=false;send(4,3);check((report[button]&15)==8 && !glance_emote_active(),"native Sony exit/double tap leaked");
+  if(bluetooth){const auto saved=report;sony_report_crc(report);check(saved==report,"native Sony toggle CRC changed");}
+ }
+ clear_glance_filter();
  test_board_input_adapters();test_direct_input_adapters();
  test_native_hid_adapters();
  std::cout<<"Actual XInput/shared HID adapters, private reads, interruptions and duplicated reports passed\n";

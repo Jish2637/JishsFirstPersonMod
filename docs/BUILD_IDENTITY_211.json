@@ -1,0 +1,13 @@
+{
+  "label": "1.34.0-compat-test2-reskate-2.1.1",
+  "upstream_tag": "v2.1.1",
+  "upstream_commit": "db99ed4d724dd77edd2abf62f3de0dbc5bb6717e",
+  "official_dll_sha256": "d79ff144768ce8b0a8e992c9f134c670a3ff85bb3b437a0eb915876973014301",
+  "mod_dll_sha256": "39337692506166d9f93677b620b95b86b0f6ec424164f2b18604c285b6c09c6f",
+  "tests_passed": 38,
+  "layout_probes_passed": 3,
+  "native_entries_verified": 17,
+  "fp_reporting": "removed",
+  "live_validation": "2.1.1 compat-test1 confirmed; toggle emote fix pending",
+  "change": "block emotes for native-owned and companion first-person toggle chords"
+}

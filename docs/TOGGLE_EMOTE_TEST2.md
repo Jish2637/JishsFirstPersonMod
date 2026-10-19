@@ -1,0 +1,9 @@
+# ReSkate 2.1.1 compat-test2 — first-person toggle emote fix
+
+The user's saved first-person binding is 770 (0x302): LB+RB+D-pad down. ReSkate's native first-person action uses the same binding. The companion's conflict routing correctly stops its own activation when stock owns that chord, but previously also stopped publishing its emote suppression. In third person this left the native toggle unprotected; in first person it could fall into the glance double-tap emote bypass.
+
+Activation and emote suppression are now routed separately. The native first-person binding is read from the verified 2.1.x binding model (first_person action, byte 44). Both the stock-owned and a distinct unconflicted companion chord are protected without allowing duplicate activation. Only the D-pad used by a matched LB/D-pad chord is removed from game-facing input; other buttons and raw binding readers are preserved. The held direction stays consumed until released, even across view changes or shoulder-first release. Menu/focus/context safety gates are unchanged. Deliberate ordinary glance double-tap emotes remain available.
+
+Regression coverage includes the stock-binding conflict case, unrelated reserved actions, keyboard bindings, two distinct toggle chords, both activation directions, repeat/double taps, release order, and preservation of physical/raw reads. Actual mocked adapters cover XInput, Sony DS4/DualSense USB/Bluetooth reports and CRCs, native HID completion adapters, DirectInput immediate and buffered/peek delivery. Existing glance double-tap tests remain in the full 38-test suite.
+
+Camera rendering, offsets, head attachment, smoothing, native address contracts, menu path, saved settings and presets are unchanged. MSC reporting remains removed. No game files were replaced and no release was published. In-game confirmation of this fix is pending.

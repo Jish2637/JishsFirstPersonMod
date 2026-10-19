@@ -1,5 +1,6 @@
 #include "bridge_resolver.h"
 #include "bridge_patterns.h"
+#include "native_211.h"
 #include "Engine/Game/Build/image_identity.h"
 #include "Engine/Core/Platform/memory.h"
 #include "detours.h"
@@ -124,6 +125,21 @@ Resolution resolve(const Image& image,const std::array<unsigned char,32>& hash,b
     try {
         for(const auto& s:image.sections) if(s.start>image.bytes.size() || s.size>image.bytes.size()-s.start) throw std::runtime_error("invalid section bounds");
         const auto* reviewed=stock_contract::find_contract(hash,image.status);
+
+        if(stock_contract::uses_v211_layout(reviewed)) {
+            for(const auto& entry:native211::entries) {
+                const auto count=entry.prefix.size()/2;
+                if(!image.contains(entry.rva,count,executable)) throw std::runtime_error("2.1.1 entry outside code");
+                const auto nibble=[](char c){return c<='9' ? c-'0':c-'a'+10;};
+                for(std::size_t i=0;i<count;++i) if(image.bytes[entry.rva+i]!=(nibble(entry.prefix[2*i])*16+nibble(entry.prefix[2*i+1])))
+                    throw std::runtime_error(std::string("2.1.1 native signature differs: ")+entry.role);
+            }
+            const std::uintptr_t slots[]{reviewed->state_pointer_rva,reviewed->source_initialized_rva,reviewed->source_base_rva,reviewed->source_transform_rva};
+            for(auto slot:slots) if(!image.contains(slot,8,writable)) throw std::runtime_error("2.1.1 data slot outside writable section");
+            if(relative(image,0xde4b27,3,7)!=reviewed->state_pointer_rva) throw std::runtime_error("2.1.1 state accessor reference differs");
+            result.contract=*reviewed;result.known=true;result.read_callback=native211::read.rva;result.queue_callback=native211::queue.rva;
+            return result;
+        }
         const bool v2=stock_contract::uses_v2_layout(reviewed);
         auto& c=result.contract;
         c.version="automatically detected ABI 1";c.sha256="";c.status_rva=image.status;
@@ -189,6 +205,7 @@ bool initialize(HMODULE module) {
             offset+=count;
         }
         std::string error;if(!image.parse(error)) throw std::runtime_error(error);
+        if(!stock_contract::uses_v211_layout(stock_contract::find_contract(hash,image.status))) throw std::runtime_error("This compatibility build requires the exact official ReSkate 2.1.1 DLL; private hooks remain inactive.");
         wchar_t force[2]{};
         const bool forced=GetEnvironmentVariableW(L"JISHS_FP_FORCE_DETECTION",force,2)==1 && force[0]==L'1';
         selected=resolve(image,hash,forced);if(!selected) throw std::runtime_error(selected.error);
@@ -201,6 +218,15 @@ bool initialize(HMODULE module) {
 bool validate_callbacks(HMODULE module,std::uintptr_t read_address,std::uintptr_t queue_address) {
     const auto base=reinterpret_cast<std::uintptr_t>(module);
     if(module!=selected_module || !selected || read_address!=base+selected.read_callback || queue_address!=base+selected.queue_callback) return false;
+    if(stock_contract::uses_v211_layout(&selected.contract)) {
+        for(const auto& entry:{native211::read,native211::queue}) {
+            std::array<unsigned char,32> actual{};
+            if(!dingosdk::memory::read_bytes(base+entry.rva,actual.data(),actual.size())) return false;
+            const auto nibble=[](char c){return c<='9' ? c-'0':c-'a'+10;};
+            for(unsigned i=0;i<32;++i) if(actual[i]!=(nibble(entry.prefix[2*i])*16+nibble(entry.prefix[2*i+1]))) return false;
+        }
+        return true;
+    }
     Image live;live.bytes.resize(512);live.sections.push_back({0,512,executable});live.local_prefix=true;
     const auto validate=[&](std::uintptr_t address,const char* role) {
         if(!dingosdk::memory::read_bytes(address,live.bytes.data(),512)) return false;

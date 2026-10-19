@@ -24,6 +24,15 @@ int main() {
     const auto chord_route=route_controller_input(chords.snapshot().config,false);
     check(chord_route.toggle_blocked && chord_route.glance[1].combo==0x102 && !chords.snapshot().conflicts.glance[1],
         "recommended glance down paused by native three-button toggle");
+    check(!toggle_emote_bindings(recommended,false).enabled(),"unrelated stock action was treated as first-person toggle");
+    recommended.native.bindings[10]=0x302;
+    const auto stock_toggle=toggle_emote_bindings(recommended,false);
+    check(stock_toggle.companion==0 && stock_toggle.native==0x302 && stock_toggle.enabled(),"stock-owned toggle lost emote protection while companion activation was paused");
+    check(!toggle_emote_bindings(recommended,true).enabled(),"blocked/menu input kept emote protection active");
+    recommended.toggle=0x304;
+    check(toggle_emote_bindings(recommended,false).companion==0x304 && toggle_emote_bindings(recommended,false).native==0x302,"distinct companion and native toggles did not retain both protections");
+    recommended.native.bindings[10]=0x80000070;
+    check(toggle_emote_bindings(recommended,false).native==0,"keyboard stock binding was treated as a controller chord");
     dingosdk::ControllerLookState glance;
     glance.update(chord_route.glance,{true,0,1},false);
     check(glance.update(chord_route.glance,{true,0x102,1},false)[0]==-30,"distinct glance down did not fire");

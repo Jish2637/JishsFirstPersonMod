@@ -98,9 +98,10 @@ void tick_mod(std::uintptr_t client) noexcept {
         // input gap just because glance settings or camera ownership changed.
         const bool toggle_filter_blocked=panel_gameplay_blocked() || !world || !stock_bridge_ready() || !menu_ready || visible || !controller.available || !focused;
         const auto toggle_filter_route=route_controller_input(settings.config,toggle_filter_blocked);
+        const auto emote_toggles=toggle_emote_bindings(settings.config,toggle_filter_blocked);
         update_spectator_session(world && game_camera_suspended(),settings.config,context,
             !world || !menu_ready || visible || !focused,client);
-        publish_toggle_filter(settings.config.toggle,!toggle_filter_route.toggle_blocked,controller.device,context);
+        publish_toggle_filter(emote_toggles.companion,emote_toggles.enabled(),controller.device,context,emote_toggles.native);
         if(current_owner!=glance_owner) { glance_owner=current_owner;look.reset(); }
         auto movement=live_camera_movement();
         if(!settings.config.look_only) tick_hippy_jump(settings.config,comfort,movement,source_flight_now());
@@ -130,7 +131,7 @@ void tick_mod(std::uintptr_t client) noexcept {
         // Camera readiness can briefly drop while the queued toggle executes.
         // Its emote suppression belongs to live gameplay, not camera readiness.
         publish_glance_filter(input_route.glance,!glance_blocked,current_owner,controller.device,
-            settings.config.toggle,!toggle_filter_route.toggle_blocked,context);
+            emote_toggles.companion,emote_toggles.enabled(),context,emote_toggles.native);
         const bool emote=glance_emote_active();
         if(emote) {look.centre_for_emote(15);marker_glance.clear();}
         const auto shared_modifier=settings.config.board.enabled && movement.mode==2 ? settings.config.board.modifier:0;

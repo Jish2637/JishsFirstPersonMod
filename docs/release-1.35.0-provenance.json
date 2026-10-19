@@ -1,0 +1,24 @@
+{
+  "version": "1.35.0",
+  "tag_to_publish": "1.35.0-reskate-2.1.1",
+  "github_source_base_commit": "c0d2c4788fcbc1f970d4b3dc013a70f46b43bd6f",
+  "target": "official ReSkate 2.1.1 Windows x64 only",
+  "official_source_tag": "v2.1.1",
+  "official_source_commit": "db99ed4d724dd77edd2abf62f3de0dbc5bb6717e",
+  "official_dll_sha256": "d79ff144768ce8b0a8e992c9f134c670a3ff85bb3b437a0eb915876973014301",
+  "tested_source_archive": "JishsFirstPersonMod-1.34.0-native-menu-test1-reskate-2.1.1-source.zip",
+  "tested_source_archive_sha256": "08ce3e194aebc41b555f2f5e5b473f86ae109d3040918b766abe62fc67424dd0",
+  "runtime_vendor_test_files_identical_to_tested_source": 249,
+  "recommended_ini_sha256": "5685eda8e331a2a1801125408d4c50081042cfe49fc57a5d2ed454d0c566e6c9",
+  "recommended_matches_current_Main": true,
+  "mod_dll_sha256": "19d4c3acdcf75712c5579a80b1e22b626a01838bc9c5917804fc6a475d72c8bf",
+  "loader_sha256": "d77068ccd3d489a5649982c18de7d5e2fbd208fbb4f311382f05e81f1864e13d",
+  "automated_tests": {
+    "passed": 40,
+    "failed": 0
+  },
+  "compiler": "MSVC 19.51.36247.0 / VS18 2026 / C++20 / Release x64 /MT",
+  "published": false,
+  "game_installation_modified": false,
+  "publication_status": "Prepared; awaiting final release-note wording approval"
+}

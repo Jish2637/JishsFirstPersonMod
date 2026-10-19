@@ -32,6 +32,7 @@ void close_panel();
 void poll_panel_controller();
 MenuControllerResult panel_controller_snapshot();
 void panel_binding_recording(bool active);
+bool panel_recording_active();
 GameplayInput menu_controller();
 void begin_menu_key_recording();
 void cancel_menu_key_recording();
@@ -54,6 +55,7 @@ struct PanelFrame {
 };
 void route_panel_input(HWND window);
 bool install_panel_input_hooks();
+bool initialize_panel_recording();
 void set_panel_bounds(PanelBounds bounds,bool visible,bool dragging,bool keyboard,bool text_input=false);
 std::vector<MenuInput> take_panel_input();
 void hide_panel();

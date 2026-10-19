@@ -1,5 +1,6 @@
 #include "stock_bridge.h"
 #include "stock_contract.h"
+#include "native_211.h"
 #include "bridge_resolver.h"
 #include "comfort_policy.h"
 #include "camera_cycle_override.h"
@@ -197,11 +198,17 @@ bool console_hook(void* user,const char* command,char* result,std::size_t size) 
     return original_console(user,command,result,size);
 }
 void read_hook(void* user,void* model) {
+    // Our display-only edits must not become the next partial native snapshot.
+    // Invalidate only DebugModel; leave every other stock revision intact.
+    if(uses_v211_layout(selected) && model) {
+        native211::refresh_debug(model);
+    }
     original_read(user,model);
     if(!compatibility::enabled()) return;
     // A concurrent poll must never wait for this lock while holding stock's mutex.
     std::unique_lock spring_lock(spring_mutex,std::try_to_lock);
     auto* debug=reinterpret_cast<DebugPrefix*>(static_cast<std::byte*>(model)+model_debug_offset);
+    observe_stock_camera_owner(debug->free_camera || debug->drone_follow);
     // No STL object crosses DLL ownership. Only the verified POD prefix is read
     // and updated in the stock-owned model, after its normal callback returns.
     publish_native_controls(read_native_controls(model));

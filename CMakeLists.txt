@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(JishsFirstPersonMod VERSION 1.34.0 LANGUAGES C CXX ASM_MASM)
+project(JishsFirstPersonMod VERSION 1.35.0 LANGUAGES C CXX ASM_MASM)
 if(NOT WIN32 OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
     message(FATAL_ERROR "JishsFirstPersonMod requires Windows x64")
 endif()
@@ -31,33 +31,46 @@ target_include_directories(mod_settings PUBLIC src vendor)
 target_link_libraries(mod_settings PUBLIC mod_config mod_sqlite)
 add_library(mod_imgui STATIC vendor/External/imgui/imgui.cpp vendor/External/imgui/imgui_draw.cpp
     vendor/External/imgui/imgui_tables.cpp vendor/External/imgui/imgui_widgets.cpp
-    vendor/External/imgui/backends/imgui_impl_dx12.cpp)
+    )
 target_include_directories(mod_imgui PUBLIC vendor/External/imgui vendor/External/imgui/backends)
-target_link_libraries(mod_imgui PUBLIC d3d12 dxgi d3dcompiler)
+
+configure_file(assets/fonts.rc.in "${CMAKE_CURRENT_BINARY_DIR}/fonts.rc" @ONLY)
+add_library(mod_embedded_ui STATIC src/embedded_menu.cpp)
+target_compile_definitions(mod_embedded_ui PRIVATE JISH_MOD_VERSION="1.35.0")
+target_include_directories(mod_embedded_ui PUBLIC src vendor)
+target_link_libraries(mod_embedded_ui PUBLIC mod_settings mod_imgui)
+add_library(JishsFirstPersonMod SHARED
+    src/spectator_runtime.cpp
+    src/body_flip_runtime.cpp src/bootstrap.cpp src/hooks.cpp src/first_person_runtime.cpp src/stock_bridge.cpp src/stock_camera_feed.cpp src/bail_collision.cpp src/native_camera_interop.cpp src/bail_camera_trace.cpp src/head_attachment.cpp src/proven_camera.cpp src/comfort.cpp src/game_camera_ownership.cpp
+    src/proven_debug.cpp src/proven_input.cpp src/stick_runtime.cpp src/stick_input_filter.cpp vendor/Extension/UI/Overlay/playstation_input.cpp
+    vendor/Engine/Game/Build/image_identity.cpp src/embedded_runtime.cpp src/recording_input.cpp)
+target_compile_definitions(JishsFirstPersonMod PRIVATE JISH_MOD_VERSION="1.35.0")
+target_include_directories(JishsFirstPersonMod PRIVATE src vendor vendor/Extension/Skater)
+target_link_libraries(JishsFirstPersonMod PRIVATE mod_embedded_ui mod_hooks mod_compatibility bcrypt cfgmgr32 hid user32 runtimeobject windowsapp dxguid shell32)
+set_target_properties(JishsFirstPersonMod PROPERTIES PREFIX "" OUTPUT_NAME "JishsFirstPersonMod")
+include(CTest)
+if(BUILD_TESTING)
+    # Retained baseline presentation/input fixtures; never linked into the shipping DLL.
 add_library(mod_menu_input STATIC src/menu_input.cpp)
 target_include_directories(mod_menu_input PUBLIC src vendor vendor/External/imgui)
 target_link_libraries(mod_menu_input PUBLIC user32 mod_hooks)
 add_library(mod_menu_ui STATIC src/menu.cpp)
-target_compile_definitions(mod_menu_ui PRIVATE JISH_MOD_VERSION="${PROJECT_VERSION}")
+target_compile_definitions(mod_menu_ui PRIVATE JISH_MOD_VERSION="1.35.0")
 target_include_directories(mod_menu_ui PUBLIC src vendor)
 target_link_libraries(mod_menu_ui PUBLIC mod_settings mod_imgui mod_menu_input)
-configure_file(assets/fonts.rc.in "${CMAKE_CURRENT_BINARY_DIR}/fonts.rc" @ONLY)
-add_library(JishsFirstPersonMod SHARED
-    src/msc_presence_bridge.cpp
-    src/spectator_runtime.cpp
-    src/body_flip_runtime.cpp src/bootstrap.cpp src/hooks.cpp src/first_person_runtime.cpp src/stock_bridge.cpp src/stock_camera_feed.cpp src/bail_collision.cpp src/native_camera_interop.cpp src/bail_camera_trace.cpp src/head_attachment.cpp src/proven_camera.cpp src/comfort.cpp src/game_camera_ownership.cpp
-    src/proven_debug.cpp src/proven_input.cpp src/stick_runtime.cpp src/stick_input_filter.cpp vendor/Extension/UI/Overlay/playstation_input.cpp
-    vendor/Engine/Game/Build/image_identity.cpp src/menu_renderer.cpp src/recording_input.cpp
-    "${CMAKE_CURRENT_BINARY_DIR}/fonts.rc")
-target_compile_definitions(JishsFirstPersonMod PRIVATE JISH_MOD_VERSION="${PROJECT_VERSION}")
-target_include_directories(JishsFirstPersonMod PRIVATE src vendor vendor/Extension/Skater)
-target_link_libraries(JishsFirstPersonMod PRIVATE mod_menu_ui mod_hooks mod_compatibility bcrypt cfgmgr32 hid user32 runtimeobject windowsapp dxguid shell32)
-set_target_properties(JishsFirstPersonMod PROPERTIES PREFIX "" OUTPUT_NAME "JishsFirstPersonMod")
-include(CTest)
-if(BUILD_TESTING)
-    add_executable(msc_presence_tests tests/msc_presence_tests.cpp)
-    target_include_directories(msc_presence_tests PRIVATE src)
-    add_test(NAME msc_presence_server_gating_and_heartbeat COMMAND msc_presence_tests)
+
+    add_executable(embedded_runtime_tests tests/embedded_runtime_tests.cpp)
+    target_link_libraries(embedded_runtime_tests PRIVATE mod_imgui mod_hooks user32)
+    target_include_directories(embedded_runtime_tests PRIVATE src vendor)
+    add_test(NAME embedded_hook_worker_rejection_and_input_ownership COMMAND embedded_runtime_tests)
+
+    add_executable(embedded_menu_tests tests/embedded_menu_tests.cpp)
+    target_link_libraries(embedded_menu_tests PRIVATE mod_embedded_ui user32)
+    add_test(NAME embedded_ui_commands_presets_scopes_and_recording COMMAND embedded_menu_tests)
+
+    add_executable(compat211_tests tests/compat211_tests.cpp)
+    target_link_libraries(compat211_tests PRIVATE mod_compatibility)
+    add_test(NAME official_211_identity_abi_model_and_input COMMAND compat211_tests "${CMAKE_CURRENT_SOURCE_DIR}/../upstream/ReSkate-2.1.1.dll" "${CMAKE_CURRENT_SOURCE_DIR}/../upstream/ReSkate-2.1.0.dll")
     add_executable(user_data_tests tests/user_data_tests.cpp)
     target_include_directories(user_data_tests PRIVATE src)
     add_test(NAME scripts_data_migration_and_preservation COMMAND user_data_tests)
@@ -77,7 +90,7 @@ if(BUILD_TESTING)
     target_link_libraries(body_flip_tests PRIVATE mod_settings)
     add_test(NAME body_flip_detection_handoffs_and_persistence COMMAND body_flip_tests)
     add_executable(menu_layout_tests tests/menu_layout_tests.cpp src/menu.cpp "${CMAKE_CURRENT_BINARY_DIR}/fonts.rc")
-    target_compile_definitions(menu_layout_tests PRIVATE JISH_MOD_VERSION="${PROJECT_VERSION}")
+    target_compile_definitions(menu_layout_tests PRIVATE JISH_MOD_VERSION="1.35.0")
     target_link_libraries(menu_layout_tests PRIVATE mod_settings mod_imgui user32)
     add_test(NAME menu_layout_dpi COMMAND menu_layout_tests)
     add_executable(sony_input_probe tools/sony_input_probe.cpp)

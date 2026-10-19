@@ -1,13 +1,9 @@
-# Menu and controller controls
+# Menu controls — 1.35.0, ReSkate 2.1.1
 
-Press Insert to open ReSkate and the first-person panel together. F9 hides or shows the companion while Insert is open. Closing Insert closes both; reopening Insert restores the companion. Standalone opening and controller menu shortcuts are disabled, and the menu keys are fixed.
+Open **Insert → Skater → First Person**. ReSkate owns menu opening, closing, scrolling, typing and navigation with controller, mouse or keyboard. This mod does not handle F9. There is no separate panel or controller shortcut for opening it.
 
-The renderer is restored from commit cef1b1b6a557271fe99dd56072592941b3cd8cb7 (1.29.1-reskate-2.0.7). It draws through ReSkate's stock overlay submission path, with GPU fences protecting command-list reuse. It does not draw the panel outside Insert or install cursor clipping/warping hooks.
+Choose Record beside a gameplay binding, release all controller buttons, hold the desired chord, then release it to save. While recording on the focused First Person page, the verified stock readers receive neutral controller input; the mod reads the physical chord independently. Recording cancels on page exit or focus loss. Held buttons remain quarantined until released before stock navigation resumes.
 
-D-pad or left stick navigates, left/right adjusts sliders, A/Cross selects, B/Circle backs out of editing/popups or hides the panel, and LB/RB switches General/Controls/Camera. Keyboard/mouse preset text entry remains available. Clicks outside the companion reach the ReSkate menu; F9 can also hide the companion to give ReSkate the full screen.
+The primary First Person recorder is beside its setting. Directional glance recorders are in Advanced → Glances, and the on-board modifier recorder is with the on-board look controls. Personal INI presets retain supported bindings.
 
-Install the complete package with Skate closed, using its normal folder layout. Existing saved camera/controller preferences are retained. Older saved menu binding values are retained for compatibility but do not change Insert/F9 behavior.
-
-Off-board right-stick look uses the effective camera Spring settings, including Disable Spring on foot. Character-lock bail/dismount recenter faces outward; mount/dismount smoothing in that mode affects direction while preserving the configured camera position. Controller navigation remains available within scrollable menu content.
-
-The automated suite covers controller navigation, input routing, settings persistence, camera transitions and data migration. The user confirmed test7 restores working menu opening in-game. Test documents for earlier numbered builds describe historical behavior; test7 is the current menu baseline.
+See docs/RELEASE_1.35.0_VALIDATION.md for automated results and the limits of in-game confirmation.

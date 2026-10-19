@@ -1,0 +1,180 @@
+-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.26300.
+-- Configuring done (0.1s)
+-- Generating done (1.2s)
+-- Build files have been written to: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.1-native-menu-source/build
+MSBuild version 18.7.1+024f5b037 for .NET Framework
+
+  mod_detours.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mod_detours.lib
+  mod_compatibility.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mod_compatibility.lib
+  mod_config.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mod_config.lib
+  mod_imgui.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mod_imgui.lib
+  mod_sqlite.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mod_sqlite.lib
+  mod_settings.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mod_settings.lib
+  mod_embedded_ui.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mod_embedded_ui.lib
+  mod_hooks.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mod_hooks.lib
+  JishsFirstPersonMod.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\JishsFirstPersonMod.dll
+  activation_bridge_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\activation_bridge_tests.exe
+  bail_camera_trace_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\bail_camera_trace_tests.exe
+  bail_collision_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\bail_collision_tests.exe
+  bail_view_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\bail_view_tests.exe
+  binding_conflict_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\binding_conflict_tests.exe
+  board_look_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\board_look_tests.exe
+  body_flip_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\body_flip_tests.exe
+  bridge_resolver_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\bridge_resolver_tests.exe
+  camera_transition_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\camera_transition_tests.exe
+  comfort_settings_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\comfort_settings_tests.exe
+  compat211_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\compat211_tests.exe
+  config_validation.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\config_validation.exe
+  embedded_menu_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\embedded_menu_tests.exe
+  embedded_runtime_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\embedded_runtime_tests.exe
+  game_camera_ownership_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\game_camera_ownership_tests.exe
+  glance_emote_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\glance_emote_tests.exe
+  glance_filter_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\glance_filter_tests.exe
+  glance_toggle_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\glance_toggle_tests.exe
+  hippy_jump_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\hippy_jump_tests.exe
+  hook_chain.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\hook_chain.exe
+  hook_startup_retry_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\hook_startup_retry_tests.exe
+  jish_proxy.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\dinput8.dll
+  jump_episode_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\jump_episode_tests.exe
+  launcher_mod_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\launcher_mod_tests.exe
+  loader_probe.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\loader_probe.exe
+  look_smoothing_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\look_smoothing_tests.exe
+  menu_controller_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\menu_controller_tests.exe
+  menu_layout_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\menu_layout_tests.exe
+  mod_menu_input.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mod_menu_input.lib
+  menu_settings_tests.cpp
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(888,68): warning C4389: '==': signed/unsigned mismatch [G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\menu_settings_tests.vcxproj]
+  (compiling source file '../tests/menu_settings_tests.cpp')
+      C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(888,68):
+      the template instantiation context (the oldest one first) is
+          G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\tests\menu_settings_tests.cpp(93,30):
+          see reference to function template instantiation 'bool std::operator ==<uint32_t,int,0>(const std::optional<uint32_t> &,const _Ty2 &) noexcept(<expr>)' being compiled
+          with
+          [
+              _Ty2=int
+          ]
+  
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(890,34): warning C4389: '==': signed/unsigned mismatch [G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\menu_settings_tests.vcxproj]
+  (compiling source file '../tests/menu_settings_tests.cpp')
+      C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(890,34):
+      the template instantiation context (the oldest one first) is
+          G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\tests\menu_settings_tests.cpp(93,30):
+          see reference to function template instantiation 'bool std::operator ==<uint32_t,int,0>(const std::optional<uint32_t> &,const _Ty2 &) noexcept' being compiled
+          with
+          [
+              _Ty2=int
+          ]
+  
+  menu_settings_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\menu_settings_tests.exe
+  mock_stock.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mock_stock.dll
+  mod_menu_ui.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mod_menu_ui.lib
+  native_interop_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\native_interop_tests.exe
+  parkour_camera_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\parkour_camera_tests.exe
+  proven_behavior.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\proven_behavior.exe
+  proxy_forwarding_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\proxy_forwarding_tests.exe
+  rotating_log_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\rotating_log_tests.exe
+  skate_host_probe.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\Skate.exe
+  sony_input_probe.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\sony_input_probe.exe
+  spectator_runtime_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\spectator_runtime_tests.exe
+  spectator_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\spectator_tests.exe
+  spring_policy_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\spring_policy_tests.exe
+  stick_look_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\stick_look_tests.exe
+  stock_contract_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\stock_contract_tests.exe
+  user_data_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\user_data_tests.exe
+Test project G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.1-native-menu-source/build
+      Start  1: embedded_hook_worker_rejection_and_input_ownership
+ 1/40 Test  #1: embedded_hook_worker_rejection_and_input_ownership .......   Passed    0.02 sec
+      Start  2: embedded_ui_commands_presets_scopes_and_recording
+ 2/40 Test  #2: embedded_ui_commands_presets_scopes_and_recording ........   Passed    0.02 sec
+      Start  3: official_211_identity_abi_model_and_input
+ 3/40 Test  #3: official_211_identity_abi_model_and_input ................   Passed    0.30 sec
+      Start  4: scripts_data_migration_and_preservation
+ 4/40 Test  #4: scripts_data_migration_and_preservation ..................   Passed    0.03 sec
+      Start  5: independent_menu_shortcut_navigation_and_persistence
+ 5/40 Test  #5: independent_menu_shortcut_navigation_and_persistence .....   Passed    0.01 sec
+      Start  6: on_board_modifier_centering_and_persistence
+ 6/40 Test  #6: on_board_modifier_centering_and_persistence ..............   Passed    0.02 sec
+      Start  7: spectator_identity_view_visibility_and_persistence
+ 7/40 Test  #7: spectator_identity_view_visibility_and_persistence .......   Passed    0.02 sec
+      Start  8: spectator_mocked_camera_render_and_restoration
+ 8/40 Test  #8: spectator_mocked_camera_render_and_restoration ...........   Passed    2.27 sec
+      Start  9: body_flip_detection_handoffs_and_persistence
+ 9/40 Test  #9: body_flip_detection_handoffs_and_persistence .............   Passed    0.01 sec
+      Start 10: menu_layout_dpi
+10/40 Test #10: menu_layout_dpi ..........................................   Passed    0.12 sec
+      Start 11: bail_collision_sweeps_recovery_and_persistence
+11/40 Test #11: bail_collision_sweeps_recovery_and_persistence ...........   Passed    0.02 sec
+      Start 12: glance_emote_taps_holds_and_contract
+12/40 Test #12: glance_emote_taps_holds_and_contract .....................   Passed    0.01 sec
+      Start 13: existing_game_filters_and_shared_hid
+13/40 Test #13: existing_game_filters_and_shared_hid .....................   Passed    0.91 sec
+      Start 14: launcher_mod_startup_switch
+14/40 Test #14: launcher_mod_startup_switch ..............................   Passed    0.02 sec
+      Start 15: legacy_pose_and_native_sample_policy
+15/40 Test #15: legacy_pose_and_native_sample_policy .....................   Passed    0.01 sec
+      Start 16: per_action_conflicts_preserve_analog_and_other_glances
+16/40 Test #16: per_action_conflicts_preserve_analog_and_other_glances ...   Passed    0.02 sec
+      Start 17: game_camera_ownership_and_existing_restrictions
+17/40 Test #17: game_camera_ownership_and_existing_restrictions ..........   Passed    0.01 sec
+      Start 18: bridge_structure_and_rejection
+18/40 Test #18: bridge_structure_and_rejection ...........................   Passed    0.01 sec
+      Start 19: optional_parkour_look_and_facing
+19/40 Test #19: optional_parkour_look_and_facing .........................   Passed    0.01 sec
+      Start 20: held_bail_view_and_head_attachment
+20/40 Test #20: held_bail_view_and_head_attachment .......................   Passed    0.01 sec
+      Start 21: hippy_jump_confirmation_and_exclusions
+21/40 Test #21: hippy_jump_confirmation_and_exclusions ...................   Passed    0.01 sec
+      Start 22: verified_jump_episode_attachment_and_lifecycle
+22/40 Test #22: verified_jump_episode_attachment_and_lifecycle ...........   Passed    0.01 sec
+      Start 23: glance_toggle_replacement_resets_and_persistence
+23/40 Test #23: glance_toggle_replacement_resets_and_persistence .........   Passed    0.01 sec
+      Start 24: bounded_bail_camera_trace
+24/40 Test #24: bounded_bail_camera_trace ................................   Passed    0.14 sec
+      Start 25: on_foot_spring_switch_and_persistence
+25/40 Test #25: on_foot_spring_switch_and_persistence ....................   Passed    0.03 sec
+      Start 26: non_bail_camera_transitions
+26/40 Test #26: non_bail_camera_transitions ..............................   Passed    0.01 sec
+      Start 27: on_foot_stick_look_math_handoff_and_persistence
+27/40 Test #27: on_foot_stick_look_math_handoff_and_persistence ..........   Passed    0.04 sec
+      Start 28: independent_smoothing_and_comfort_policy
+28/40 Test #28: independent_smoothing_and_comfort_policy .................   Passed    0.03 sec
+      Start 29: native_relative_look_smoothing
+29/40 Test #29: native_relative_look_smoothing ...........................   Passed    0.01 sec
+      Start 30: custom2_camera_math_and_latches
+30/40 Test #30: custom2_camera_math_and_latches ..........................   Passed    0.01 sec
+      Start 31: standalone_config_validation
+31/40 Test #31: standalone_config_validation .............................   Passed    0.04 sec
+      Start 32: reject_non_skate_host
+32/40 Test #32: reject_non_skate_host ....................................   Passed    0.03 sec
+      Start 33: reject_skate_without_reskate
+33/40 Test #33: reject_skate_without_reskate .............................   Passed    0.03 sec
+      Start 34: transient_thread_access_retry_and_safe_refusal
+34/40 Test #34: transient_thread_access_retry_and_safe_refusal ...........   Passed    2.51 sec
+      Start 35: stock_detour_tail_chain
+35/40 Test #35: stock_detour_tail_chain ..................................   Passed    0.01 sec
+      Start 36: menu_recording_persistence_migration_and_routing
+36/40 Test #36: menu_recording_persistence_migration_and_routing .........   Passed    0.17 sec
+      Start 37: shared_stock_camera_settings_contract
+37/40 Test #37: shared_stock_camera_settings_contract ....................   Passed    0.01 sec
+      Start 38: companion_toggle_calls_native_queue_without_tick
+38/40 Test #38: companion_toggle_calls_native_queue_without_tick .........   Passed    0.01 sec
+      Start 39: proxy_exports_forwarding_and_unrelated_host
+39/40 Test #39: proxy_exports_forwarding_and_unrelated_host ..............   Passed    0.29 sec
+      Start 40: rotating_logs_retention_and_recovery
+40/40 Test #40: rotating_logs_retention_and_recovery .....................   Passed    0.04 sec
+
+100% tests passed, 0 tests failed out of 40
+
+Total Test time (real) =   7.37 sec
+-- Up-to-date: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.1-native-menu-source/release/./dinput8.dll
+-- Up-to-date: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.1-native-menu-source/release/scripts/Custom/JishsFirstPersonMod.dll
+-- Up-to-date: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.1-native-menu-source/release/scripts/Custom/jishs_first_person_mod.lua
+-- Installing: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.1-native-menu-source/release/scripts/Custom/FirstPerson/presets/bundled/recommended.ini
+-- Up-to-date: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.1-native-menu-source/release/Mods
+-- Up-to-date: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.1-native-menu-source/release/Mods/JishsFirstPersonMod
+-- Up-to-date: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.1-native-menu-source/release/Mods/JishsFirstPersonMod/manifest.json
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          E81402274B6D9D86242463222C448B0490A386B7275255928A78B07D63845091       G:\CodexCustom\ReSkateFirstPerso…
+

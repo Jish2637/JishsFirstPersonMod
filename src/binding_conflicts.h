@@ -34,4 +34,13 @@ inline ControllerInputRoute route_controller_input(const Config& config,bool blo
     for(unsigned i=0;i<4;++i) if(conflicts.glance[i]) route.glance[i].combo=0;
     return route;
 }
+struct ToggleEmoteBindings { std::uint32_t companion{},native{};bool enabled() const {return companion || native;} };
+inline ToggleEmoteBindings toggle_emote_bindings(const Config& config,bool blocked) {
+    if(blocked) return {};
+    // Verified 2.1.x ControllerBindingsModel: nine tool/vote chords, then
+    // action_combos[0]=menu and action_combos[1]=first_person (POD byte 44).
+    const auto native=config.native.active ? config.native.bindings[10]:0;
+    return {route_controller_input(config,false).toggle_blocked ? 0:config.toggle,
+        dingosdk::valid_controller_combo(native) ? native:0};
+}
 }

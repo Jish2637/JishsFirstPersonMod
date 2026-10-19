@@ -88,11 +88,11 @@ void test_native_hid_adapters() {
     native_original_completion_ex=fake_native_completion_ex;native_original_close=fake_native_close;
     native_original_report=fake_native_report;
     dingosdk::FirstPersonLookControls bindings;for(unsigned i=0;i<4;++i)bindings[i].combo=0x100|(1u<<i);
-    DWORD toggle{};
-    auto publish=[&] {publish_glance_filter(bindings,qa_active,{1,2,3,4},0x100,toggle,toggle!=0,1200);};
+    DWORD toggle{},native_toggle{};
+    auto publish=[&] {publish_glance_filter(bindings,qa_active,{1,2,3,4},0x100,toggle,toggle || native_toggle,1200,native_toggle);};
     auto reset=[&] {clear_glance_filter();native_hid_devices.clear();native_hid_requests.clear();
         qa_hid_pending=qa_hid_incomplete=qa_hid_abort=qa_hid_shared=qa_hid_batch=false;
-        qa_focus=qa_active=true;qa_menu=qa_spectator=false;toggle=0;qa_hid_callbacks=0;qa_now+=1000;publish();};
+        qa_focus=qa_active=true;qa_menu=qa_spectator=false;toggle=native_toggle=0;qa_hid_callbacks=0;qa_now+=1000;publish();};
     auto physical=[&](unsigned hat,unsigned shoulders=1) {
         qa_hid_physical.fill(0);qa_hid_physical[0]=1;
         for(unsigned i=1;i<5;++i) qa_hid_physical[i]=128;
@@ -161,8 +161,8 @@ void test_native_hid_adapters() {
     physical(0);check(native_read_file(qa_hid_file,buffer.data(),2048,&bytes,nullptr) &&
         (buffer[8]&15)==8 && (buffer[72]&15)==8 && !glance_emote_active(),"Repeated native batch hold became a double tap");
     // The actual user's hotkey: L1 + R1 + Down, in both camera modes.
-    for(bool active:{false,true}) {
-        reset();qa_active=active;toggle=0x302;publish();
+    for(bool native_owned:{false,true}) for(bool active:{false,true}) {
+        reset();qa_active=active;if(native_owned) native_toggle=0x302;else toggle=0x302;publish();
         check(sync(4,3)==8,"Native Edge enter/exit full chord gesture leaked");
         sync(8,3);check(sync(4,3)==8 && !glance_emote_active(),"Native Edge enter/exit repeated tap became emote");
         qa_active=!active;qa_spectator=true;qa_now+=1200;

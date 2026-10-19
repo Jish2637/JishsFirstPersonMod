@@ -11,3 +11,5 @@ build-output.log
 /build.log
 /configure.log
 /tests.log
+
+/build*/

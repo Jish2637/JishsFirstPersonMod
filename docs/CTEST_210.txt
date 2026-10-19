@@ -1,0 +1,607 @@
+Start testing: Oct 18 08:40 GMT Summer Time
+----------------------------------------------------------
+1/38 Testing: official_210_identity_abi_model_and_input
+1/38 Test: official_210_identity_abi_model_and_input
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/compat210_tests.exe" "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/../upstream/ReSkate-2.1.0.dll"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"official_210_identity_abi_model_and_input" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+2.1.0 identity, all native entry tamper guards, partial-model refresh and controller ownership passed.
+<end of output>
+Test time =   0.26 sec
+----------------------------------------------------------
+Test Passed.
+"official_210_identity_abi_model_and_input" end time: Oct 18 08:40 GMT Summer Time
+"official_210_identity_abi_model_and_input" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/38 Testing: scripts_data_migration_and_preservation
+2/38 Test: scripts_data_migration_and_preservation
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/user_data_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"scripts_data_migration_and_preservation" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+User data migration and preservation passed
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"scripts_data_migration_and_preservation" end time: Oct 18 08:40 GMT Summer Time
+"scripts_data_migration_and_preservation" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/38 Testing: independent_menu_shortcut_navigation_and_persistence
+3/38 Test: independent_menu_shortcut_navigation_and_persistence
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/menu_controller_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"independent_menu_shortcut_navigation_and_persistence" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Hidden/open shortcuts, navigation, tabs, focus, recording, reconnect and persistence passed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"independent_menu_shortcut_navigation_and_persistence" end time: Oct 18 08:40 GMT Summer Time
+"independent_menu_shortcut_navigation_and_persistence" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/38 Testing: on_board_modifier_centering_and_persistence
+4/38 Test: on_board_modifier_centering_and_persistence
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/board_look_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"on_board_modifier_centering_and_persistence" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+On-board modifier, neutral arming, centering, retention, lifecycle and persistence passed
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"on_board_modifier_centering_and_persistence" end time: Oct 18 08:40 GMT Summer Time
+"on_board_modifier_centering_and_persistence" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/38 Testing: spectator_identity_view_visibility_and_persistence
+5/38 Test: spectator_identity_view_visibility_and_persistence
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/spectator_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"spectator_identity_view_visibility_and_persistence" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Spectator contracts, identity, render visibility, handoffs, FOV, lifecycle and persistence passed
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"spectator_identity_view_visibility_and_persistence" end time: Oct 18 08:40 GMT Summer Time
+"spectator_identity_view_visibility_and_persistence" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/38 Testing: spectator_mocked_camera_render_and_restoration
+6/38 Test: spectator_mocked_camera_render_and_restoration
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/spectator_runtime_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"spectator_mocked_camera_render_and_restoration" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Mocked spectator runtime camera, render visibility, FOV, input and restoration passed
+<end of output>
+Test time =   2.22 sec
+----------------------------------------------------------
+Test Passed.
+"spectator_mocked_camera_render_and_restoration" end time: Oct 18 08:40 GMT Summer Time
+"spectator_mocked_camera_render_and_restoration" time elapsed: 00:00:02
+----------------------------------------------------------
+
+7/38 Testing: body_flip_detection_handoffs_and_persistence
+7/38 Test: body_flip_detection_handoffs_and_persistence
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/body_flip_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"body_flip_detection_handoffs_and_persistence" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Body flip detector, direct head lock, smooth handoffs and persistence passed
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"body_flip_detection_handoffs_and_persistence" end time: Oct 18 08:40 GMT Summer Time
+"body_flip_detection_handoffs_and_persistence" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/38 Testing: menu_layout_dpi
+8/38 Test: menu_layout_dpi
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/menu_layout_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"menu_layout_dpi" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Menu frames rendered at 100%, 150%, 200% DPI
+<end of output>
+Test time =   0.26 sec
+----------------------------------------------------------
+Test Passed.
+"menu_layout_dpi" end time: Oct 18 08:40 GMT Summer Time
+"menu_layout_dpi" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/38 Testing: bail_collision_sweeps_recovery_and_persistence
+9/38 Test: bail_collision_sweeps_recovery_and_persistence
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/bail_collision_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"bail_collision_sweeps_recovery_and_persistence" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Collision resolver, native rejection, persistence and recovery passed
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"bail_collision_sweeps_recovery_and_persistence" end time: Oct 18 08:40 GMT Summer Time
+"bail_collision_sweeps_recovery_and_persistence" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/38 Testing: glance_emote_taps_holds_and_contract
+10/38 Test: glance_emote_taps_holds_and_contract
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/glance_emote_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"glance_emote_taps_holds_and_contract" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Tap timing, holds, modifier, directions, controllers, glance rearm and HID contract guards passed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"glance_emote_taps_holds_and_contract" end time: Oct 18 08:40 GMT Summer Time
+"glance_emote_taps_holds_and_contract" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/38 Testing: existing_game_filters_and_shared_hid
+11/38 Test: existing_game_filters_and_shared_hid
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/glance_filter_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"existing_game_filters_and_shared_hid" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+DirectInput A/W state, custom formats, buffered peeks/timestamps, mixed reads, enter/exit hotkeys and Windows hook discovery passed
+Native DualSense Edge HID sync/async/callback/port adapters, oversized buffers, full enter/exit chord and private reader parity passed
+Actual XInput/shared HID adapters, private reads, interruptions and duplicated reports passed
+<end of output>
+Test time =   0.93 sec
+----------------------------------------------------------
+Test Passed.
+"existing_game_filters_and_shared_hid" end time: Oct 18 08:40 GMT Summer Time
+"existing_game_filters_and_shared_hid" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/38 Testing: launcher_mod_startup_switch
+12/38 Test: launcher_mod_startup_switch
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/launcher_mod_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"launcher_mod_startup_switch" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Launcher enable/disable, unlisted defaults, case matching, malformed settings and legacy installs passed
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"launcher_mod_startup_switch" end time: Oct 18 08:40 GMT Summer Time
+"launcher_mod_startup_switch" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/38 Testing: legacy_pose_and_native_sample_policy
+13/38 Test: legacy_pose_and_native_sample_policy
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/native_interop_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"legacy_pose_and_native_sample_policy" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Native sample overrides preserve settings and legacy bail/head/stick behavior passed
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"legacy_pose_and_native_sample_policy" end time: Oct 18 08:40 GMT Summer Time
+"legacy_pose_and_native_sample_policy" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/38 Testing: per_action_conflicts_preserve_analog_and_other_glances
+14/38 Test: per_action_conflicts_preserve_analog_and_other_glances
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/binding_conflict_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"per_action_conflicts_preserve_analog_and_other_glances" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Per-action conflicts, analog/glance routing, neutral restoration, activation and persistence passed
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"per_action_conflicts_preserve_analog_and_other_glances" end time: Oct 18 08:40 GMT Summer Time
+"per_action_conflicts_preserve_analog_and_other_glances" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/38 Testing: game_camera_ownership_and_existing_restrictions
+15/38 Test: game_camera_ownership_and_existing_restrictions
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/game_camera_ownership_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"game_camera_ownership_and_existing_restrictions" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Ownership and existing restriction checks passed.
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"game_camera_ownership_and_existing_restrictions" end time: Oct 18 08:40 GMT Summer Time
+"game_camera_ownership_and_existing_restrictions" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/38 Testing: bridge_structure_and_rejection
+16/38 Test: bridge_structure_and_rejection
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/bridge_resolver_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"bridge_structure_and_rejection" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Empty/invalid image guards passed; historical fixtures tested separately
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"bridge_structure_and_rejection" end time: Oct 18 08:40 GMT Summer Time
+"bridge_structure_and_rejection" time elapsed: 00:00:00
+----------------------------------------------------------
+
+17/38 Testing: optional_parkour_look_and_facing
+17/38 Test: optional_parkour_look_and_facing
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/parkour_camera_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"optional_parkour_look_and_facing" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Parkour look toggle, attachment separation, facing ownership and neutral entry passed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"optional_parkour_look_and_facing" end time: Oct 18 08:40 GMT Summer Time
+"optional_parkour_look_and_facing" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/38 Testing: held_bail_view_and_head_attachment
+18/38 Test: held_bail_view_and_head_attachment
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/bail_view_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"held_bail_view_and_head_attachment" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Head-facing bails, smoothed get-up head-follow, seamless camera return and lifecycle tests passed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"held_bail_view_and_head_attachment" end time: Oct 18 08:40 GMT Summer Time
+"held_bail_view_and_head_attachment" time elapsed: 00:00:00
+----------------------------------------------------------
+
+19/38 Testing: hippy_jump_confirmation_and_exclusions
+19/38 Test: hippy_jump_confirmation_and_exclusions
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/hippy_jump_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"hippy_jump_confirmation_and_exclusions" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Hippy-jump confirmation, exclusions and tick history passed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"hippy_jump_confirmation_and_exclusions" end time: Oct 18 08:40 GMT Summer Time
+"hippy_jump_confirmation_and_exclusions" time elapsed: 00:00:00
+----------------------------------------------------------
+
+20/38 Testing: verified_jump_episode_attachment_and_lifecycle
+20/38 Test: verified_jump_episode_attachment_and_lifecycle
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/jump_episode_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"verified_jump_episode_attachment_and_lifecycle" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Jump contract rejection, full-stage attachment, independent switches and lifecycle resets passed
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"verified_jump_episode_attachment_and_lifecycle" end time: Oct 18 08:40 GMT Summer Time
+"verified_jump_episode_attachment_and_lifecycle" time elapsed: 00:00:00
+----------------------------------------------------------
+
+21/38 Testing: glance_toggle_replacement_resets_and_persistence
+21/38 Test: glance_toggle_replacement_resets_and_persistence
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/glance_toggle_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"glance_toggle_replacement_resets_and_persistence" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Toggle/hold glances, replacement, press edges, interruptions, conflicts and persistence passed
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"glance_toggle_replacement_resets_and_persistence" end time: Oct 18 08:40 GMT Summer Time
+"glance_toggle_replacement_resets_and_persistence" time elapsed: 00:00:00
+----------------------------------------------------------
+
+22/38 Testing: bounded_bail_camera_trace
+22/38 Test: bounded_bail_camera_trace
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/bail_camera_trace_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"bounded_bail_camera_trace" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Bail trace pre-context, deferred I/O, queue bounds and rotation and continued capture passed
+<end of output>
+Test time =   0.17 sec
+----------------------------------------------------------
+Test Passed.
+"bounded_bail_camera_trace" end time: Oct 18 08:40 GMT Summer Time
+"bounded_bail_camera_trace" time elapsed: 00:00:00
+----------------------------------------------------------
+
+23/38 Testing: on_foot_spring_switch_and_persistence
+23/38 Test: on_foot_spring_switch_and_persistence
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/spring_policy_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"on_foot_spring_switch_and_persistence" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+State-based Spring policy, native queue restoration and preference persistence passed
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"on_foot_spring_switch_and_persistence" end time: Oct 18 08:40 GMT Summer Time
+"on_foot_spring_switch_and_persistence" time elapsed: 00:00:00
+----------------------------------------------------------
+
+24/38 Testing: non_bail_camera_transitions
+24/38 Test: non_bail_camera_transitions
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/camera_transition_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"non_bail_camera_transitions" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Non-bail camera state transitions and reset policy passed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"non_bail_camera_transitions" end time: Oct 18 08:40 GMT Summer Time
+"non_bail_camera_transitions" time elapsed: 00:00:00
+----------------------------------------------------------
+
+25/38 Testing: on_foot_stick_look_math_handoff_and_persistence
+25/38 Test: on_foot_stick_look_math_handoff_and_persistence
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/stick_look_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"on_foot_stick_look_math_handoff_and_persistence" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Stick axes, timing, neutral handoff, smoothing, native facing and persistence passed
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"on_foot_stick_look_math_handoff_and_persistence" end time: Oct 18 08:40 GMT Summer Time
+"on_foot_stick_look_math_handoff_and_persistence" time elapsed: 00:00:00
+----------------------------------------------------------
+
+26/38 Testing: independent_smoothing_and_comfort_policy
+26/38 Test: independent_smoothing_and_comfort_policy
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/comfort_settings_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"independent_smoothing_and_comfort_policy" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Independent smoothing, persistence, linkage continuity and comfort policy checks passed
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"independent_smoothing_and_comfort_policy" end time: Oct 18 08:40 GMT Summer Time
+"independent_smoothing_and_comfort_policy" time elapsed: 00:00:00
+----------------------------------------------------------
+
+27/38 Testing: native_relative_look_smoothing
+27/38 Test: native_relative_look_smoothing
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/look_smoothing_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"native_relative_look_smoothing" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"native_relative_look_smoothing" end time: Oct 18 08:40 GMT Summer Time
+"native_relative_look_smoothing" time elapsed: 00:00:00
+----------------------------------------------------------
+
+28/38 Testing: custom2_camera_math_and_latches
+28/38 Test: custom2_camera_math_and_latches
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/proven_behavior.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"custom2_camera_math_and_latches" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"custom2_camera_math_and_latches" end time: Oct 18 08:40 GMT Summer Time
+"custom2_camera_math_and_latches" time elapsed: 00:00:00
+----------------------------------------------------------
+
+29/38 Testing: standalone_config_validation
+29/38 Test: standalone_config_validation
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/config_validation.exe" "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/defaults.ini"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"standalone_config_validation" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"standalone_config_validation" end time: Oct 18 08:40 GMT Summer Time
+"standalone_config_validation" time elapsed: 00:00:00
+----------------------------------------------------------
+
+30/38 Testing: reject_non_skate_host
+30/38 Test: reject_non_skate_host
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/loader_probe.exe" "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/JishsFirstPersonMod.dll"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"reject_non_skate_host" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"reject_non_skate_host" end time: Oct 18 08:40 GMT Summer Time
+"reject_non_skate_host" time elapsed: 00:00:00
+----------------------------------------------------------
+
+31/38 Testing: reject_skate_without_reskate
+31/38 Test: reject_skate_without_reskate
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/Skate.exe" "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/JishsFirstPersonMod.dll"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"reject_skate_without_reskate" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"reject_skate_without_reskate" end time: Oct 18 08:40 GMT Summer Time
+"reject_skate_without_reskate" time elapsed: 00:00:00
+----------------------------------------------------------
+
+32/38 Testing: transient_thread_access_retry_and_safe_refusal
+32/38 Test: transient_thread_access_retry_and_safe_refusal
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/hook_startup_retry_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"transient_thread_access_retry_and_safe_refusal" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Transient access retry, bounded live-thread refusal, recovery and rollback passed
+<end of output>
+Test time =   2.46 sec
+----------------------------------------------------------
+Test Passed.
+"transient_thread_access_retry_and_safe_refusal" end time: Oct 18 08:40 GMT Summer Time
+"transient_thread_access_retry_and_safe_refusal" time elapsed: 00:00:02
+----------------------------------------------------------
+
+33/38 Testing: stock_detour_tail_chain
+33/38 Test: stock_detour_tail_chain
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/hook_chain.exe" "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/mock_stock.dll"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"stock_detour_tail_chain" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"stock_detour_tail_chain" end time: Oct 18 08:40 GMT Summer Time
+"stock_detour_tail_chain" time elapsed: 00:00:00
+----------------------------------------------------------
+
+34/38 Testing: menu_recording_persistence_migration_and_routing
+34/38 Test: menu_recording_persistence_migration_and_routing
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/menu_settings_tests.exe" "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/presets/recommended.ini"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"menu_recording_persistence_migration_and_routing" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Menu recording, routing, persistence, conflicts, typed requests and native migration passed
+<end of output>
+Test time =   0.14 sec
+----------------------------------------------------------
+Test Passed.
+"menu_recording_persistence_migration_and_routing" end time: Oct 18 08:40 GMT Summer Time
+"menu_recording_persistence_migration_and_routing" time elapsed: 00:00:00
+----------------------------------------------------------
+
+35/38 Testing: shared_stock_camera_settings_contract
+35/38 Test: shared_stock_camera_settings_contract
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/stock_contract_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"shared_stock_camera_settings_contract" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Stock camera request mapping, shared preferences, game FOV and reset passed
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"shared_stock_camera_settings_contract" end time: Oct 18 08:40 GMT Summer Time
+"shared_stock_camera_settings_contract" time elapsed: 00:00:00
+----------------------------------------------------------
+
+36/38 Testing: companion_toggle_calls_native_queue_without_tick
+36/38 Test: companion_toggle_calls_native_queue_without_tick
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/activation_bridge_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"companion_toggle_calls_native_queue_without_tick" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Native menu activation forwarding and acknowledgement passed without a controller tick
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"companion_toggle_calls_native_queue_without_tick" end time: Oct 18 08:40 GMT Summer Time
+"companion_toggle_calls_native_queue_without_tick" time elapsed: 00:00:00
+----------------------------------------------------------
+
+37/38 Testing: proxy_exports_forwarding_and_unrelated_host
+37/38 Test: proxy_exports_forwarding_and_unrelated_host
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/proxy_forwarding_tests.exe" "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/dinput8.dll"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"proxy_exports_forwarding_and_unrelated_host" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+All six named/ordinal exports present; native format and DirectInput creation forward; unrelated host refused.
+<end of output>
+Test time =   0.29 sec
+----------------------------------------------------------
+Test Passed.
+"proxy_exports_forwarding_and_unrelated_host" end time: Oct 18 08:40 GMT Summer Time
+"proxy_exports_forwarding_and_unrelated_host" time elapsed: 00:00:00
+----------------------------------------------------------
+
+38/38 Testing: rotating_logs_retention_and_recovery
+38/38 Test: rotating_logs_retention_and_recovery
+Command: "G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build/Release/rotating_log_tests.exe"
+Directory: G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.0-source/build
+"rotating_logs_retention_and_recovery" start time: Oct 18 08:40 GMT Summer Time
+Output:
+----------------------------------------------------------
+Retention, latest history, CSV headers and blocked-rotation recovery passed
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"rotating_logs_retention_and_recovery" end time: Oct 18 08:40 GMT Summer Time
+"rotating_logs_retention_and_recovery" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 18 08:40 GMT Summer Time

@@ -1,0 +1,20 @@
+{
+  "package": "1.34.0-native-menu-test1",
+  "target": "official ReSkate 2.1.1 Windows x64",
+  "baseline_source": "Release/JishsFirstPersonMod-1.34.0-compat-test2-reskate-2.1.1-source.zip",
+  "baseline_source_sha256": "64260dd54a5c19716e7fe25d1cbb60555ef813a37228d4ce4944fb7998250910",
+  "baseline_client_dll_sha256": "39337692506166d9f93677b620b95b86b0f6ec424164f2b18604c285b6c09c6f",
+  "mod_dll_sha256": "e81402274b6d9d86242463222c448b0490a386b7275255928a78b07d63845091",
+  "official_source_commit": "db99ed4d724dd77edd2abf62f3de0dbc5bb6717e",
+  "official_source_tag": "v2.1.1",
+  "official_runtime_sha256": "d79ff144768ce8b0a8e992c9f134c670a3ff85bb3b437a0eb915876973014301",
+  "official_runtime_included": false,
+  "ui_reference": "Jish2637/ReSkate jish-fpm-native (layout only; no native camera/profile runtime adopted)",
+  "compiler": "MSVC 19.51.36247.0, VS 18 2026, Windows x64 Release /MT, C++20, _ITERATOR_DEBUG_LEVEL=0",
+  "imgui": "1.91.9b (19191), all seven core/config source files match official after newline normalization",
+  "new_binary_entries": "tools/migration211/embedded-contracts.json",
+  "published": false,
+  "installed": "Only bundled recommended.ini updated at user request; runtime installation unchanged",
+  "recommended_preset_sha256": "5685eda8e331a2a1801125408d4c50081042cfe49fc57a5d2ed454d0c566e6c9",
+  "recommended_preset_origin": "User Main.ini, exact copy"
+}

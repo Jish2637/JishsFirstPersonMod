@@ -22,7 +22,9 @@ int main(int argc,char** argv) {
     const auto recommended=read_config(argv[1]);validate_config(recommended);
     require(recommended.toggle==770 && recommended.spring.enabled && recommended.spring.rotation[0]<-16 &&
         recommended.stick.yaw_speed==171 && recommended.stick.mount_smoothing==70 && recommended.stick.dismount_smoothing==35 &&
-        !recommended.link_smoothing && recommended.third_person_bailing && recommended.disable_spring_on_foot && recommended.stick.lock_mount_jump && recommended.stick.lock_hippy_jump,
+        !recommended.link_smoothing && !recommended.third_person_bailing && recommended.third_person_recovery &&
+        !recommended.stick_spring.enabled && recommended.board.enabled && recommended.board.modifier==256 &&
+        recommended.board.look_smoothing==12 && recommended.toggle_glances && recommended.remember_marker_glance && recommended.disable_spring_on_foot && recommended.stick.lock_mount_jump && recommended.stick.lock_hippy_jump,
         "tested recommended settings changed");
     const auto library_dir=root/"personal-presets";
     std::filesystem::remove_all(library_dir);

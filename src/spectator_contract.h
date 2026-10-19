@@ -7,16 +7,16 @@
 #include <string>
 #include <string_view>
 namespace jishsfirstpersonmod::spectator {
-// ReSkate 2.0.7 only. Official MSVC /MT release layout, checked against the
+// ReSkate 2.1.1 only. Official MSVC /MT release layout, checked against the
 // shipped image by tools/audit_spectator_bridge.py. Never invoke its STL ABI.
-inline constexpr std::uintptr_t party_getter=0x11bee0,party_pointer=0x9311c0;
-inline constexpr std::uintptr_t remote_getter=0xf6b00,remote_pointer=0x931068;
-inline constexpr std::uintptr_t render_hook=0xf6cf0,party_transform_return=0x2245bf,party_fov_return=0x2245df;
-inline constexpr std::string_view party_signature="4883ec288b0dd6c9830065488b042558000000bab8e80000488b04c88b04023905c35281007f2b488b05b25281004883c428c3";
-inline constexpr std::string_view remote_signature="48895c2410574883ec208b0db01d860065488b042558000000488b3cc8b8b8e800008b0438390545a583007f34b810000000486904387803000048030527a58300";
+inline constexpr std::uintptr_t party_getter=0xa734e0,party_pointer=0x17a25f8;
+inline constexpr std::uintptr_t remote_getter=0xa4acf0,remote_pointer=0x17a2460;
+inline constexpr std::uintptr_t render_hook=0xa4aee0,party_transform_return=0xbdbb2f,party_fov_return=0xbdbb4f;
+inline constexpr std::string_view party_signature="4883ec288b0d4ee6e80065488b042558000000ba80ff0000488b04c88b04023905fbf0d2007f2b488b05eaf0d2004883";
+inline constexpr std::string_view remote_signature="48895c2410574883ec208b0d386eeb0065488b042558000000488b3cc8b880ff00008b043839054d77d5007f34b81000000048690438780300004803052f77d5";
 inline constexpr std::string_view render_signature="48895c240848896c2410565741564883ec204c8bf2488bf1e8330400004c8b40";
-inline constexpr std::string_view transform_signature="498b8788020000488b542450498bceffd0f30f108c2490020000410f2fc876110f2ff1760c488b0d76de7000e8b15d0000";
-inline constexpr std::uintptr_t selected_offset=0x3828,epoch_offset=0x3830,published_offset=0x10;
+inline constexpr std::string_view transform_signature="498b87200f0000488b542450498bceffd0f30f108c2490020000410f2fc876110f2ff1760c488b0d76ccc400e8b15d0000";
+inline constexpr std::uintptr_t selected_offset=0x3850,epoch_offset=0x3858,published_offset=0x10;
 inline constexpr std::size_t players=250,record_stride=152,remote_stride=888,position_stride=56;
 struct Identity {
     std::uint64_t id{},epoch{},generation{};

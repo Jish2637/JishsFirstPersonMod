@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "native_211.h"
 #include "owned_hooks.h"
 #include <intrin.h>
 #include <mutex>
@@ -59,8 +60,12 @@ SHORT WINAPI panel_async_key(int key) {
     const auto error=GetLastError();
     HMODULE owner{};
     const bool mouse=key==VK_LBUTTON || key==VK_RBUTTON || key==VK_MBUTTON || key==VK_XBUTTON1 || key==VK_XBUTTON2;
-    const bool block=mouse && GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-        reinterpret_cast<LPCWSTR>(caller),&owner) && owner==GetModuleHandleW(L"reskate.dll") && owns_mouse();
+    bool keyboard{};
+    {auto& input=state();std::lock_guard lock(input.mutex);
+     keyboard=key!=VK_INSERT && key!=VK_ESCAPE && input.router.visible && input.router.keyboard && input.selected &&
+        GetAncestor(input.selected,GA_ROOT)==GetForegroundWindow();}
+    const bool block=(mouse ? owns_mouse():keyboard) && GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        reinterpret_cast<LPCWSTR>(caller),&owner) && owner==GetModuleHandleW(L"reskate.dll");
     SetLastError(error);
     return block ? 0:result;
 }
@@ -146,12 +151,17 @@ std::vector<MenuInput> take_panel_input() {
 void hide_panel() { set_panel_bounds({},false,false,false); }
 void close_panel() {auto& input=state();{std::lock_guard lock(input.mutex);input.hotkey.hidden=true;}hide_panel();}
 bool panel_gameplay_blocked() {auto& input=state();std::lock_guard lock(input.mutex);return input.router.visible;}
+bool panel_recording_active() {
+    auto& input=state();std::lock_guard lock(input.mutex);
+    return input.router.visible && input.selected && GetAncestor(input.selected,GA_ROOT)==GetForegroundWindow() && input.binding_recording;
+}
 void panel_binding_recording(bool active) {auto& input=state();std::lock_guard lock(input.mutex);input.binding_recording=active;}
 MenuControllerResult panel_controller_snapshot() {auto& input=state();std::lock_guard lock(input.mutex);return input.controller_frame;}
 void poll_panel_controller() {
-    const auto pad=menu_controller();auto& input=state();std::lock_guard lock(input.mutex);
+    const GameplayInput pad{};auto& input=state();std::lock_guard lock(input.mutex);
     const bool focused=input.selected && GetAncestor(input.selected,GA_ROOT)==GetForegroundWindow();
-    input.controller_frame=input.controller.update(0,pad,input.router.visible,focused,input.binding_recording || input.hotkey.recording);
+    static_assert(!native211::panel_controller_navigation);
+    (void)pad;(void)focused;input.controller_frame={}; // Stock owns controller menu navigation.
 }
 bool panel_user_visible() {
     const auto config=menu_snapshot().config;

@@ -3,8 +3,8 @@
 #include "Extension/Multiplayer/Remote/native_skater_internal.h"
 #include <cstdio>
 #include <cstddef>
-static_assert(offsetof(dingosdk::overlay::detail::State,callbacks)==0x590 && offsetof(dingosdk::overlay::detail::State,model)==0x5c0);
-static_assert(offsetof(dingosdk::overlay::Model,bindings)==0x5f78);
+static_assert(offsetof(dingosdk::overlay::detail::State,callbacks)==0x5b0 && offsetof(dingosdk::overlay::detail::State,model)==0x5e0);
+static_assert(offsetof(dingosdk::overlay::Model,bindings)==0x5fe0);
 static_assert(int(dingosdk::overlay::DebugAction::reset_first_person_arm)==34);
 int main() {
 using namespace dingosdk::overlay;

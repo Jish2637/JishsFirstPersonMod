@@ -18,7 +18,7 @@ Preset loading keeps your current First Person on/off choice, panel shortcut, co
 
 
 
-General contains compatibility and comfort options. Controls contains the panel shortcut, controller bindings and right-stick look. Camera contains FOV, smoothing, head attachment and board transitions. Hover (?) for details. Save feedback stays below the scrolling tab content.
+Open Insert → Skater → First Person. The primary binding and presets are at the top; Advanced groups contain view/stabilization, automatic camera switching, glances, attachment/transitions, on-foot look and on-board look. Hover controls for help. Recording stays beside its corresponding feature.
 
 
 
@@ -69,11 +69,11 @@ This release builds successfully and passes the automated checks. Native code an
 
 
 
-Press **Insert** to open both menus. **F9** hides or shows the first-person panel inside Insert. Closing Insert closes both; reopening Insert restores the panel. Standalone opening is disabled. Menu keys are fixed to Insert and F9; controller shortcuts for opening the panel are disabled. Losing focus or closing the panel cancels recording. Loading camera presets preserves global menu access settings. See [controller menu controls](CONTROLLER_MENU.md).
+Open **Insert → Skater → First Person**. Stock ReSkate owns the menu and its controller/mouse/keyboard navigation. F9 is no longer handled by the mod. Leaving the page or losing focus cancels recording; release held buttons before navigation resumes. See [controller menu controls](CONTROLLER_MENU.md).
 
 
 
-For a tested starting point, press **Load Jish's recommended preset** in the mod's Insert panel. This applies the bundled tested controller bindings, camera/spring values, independent look smoothing, comfort options and on-foot stick settings, and saves automatically. The recommended snapshot now enables Disable Spring on foot, keeping camera Spring on board and making walking and parkour more responsive. Existing settings are retained until you press the button. The preset does not toggle First Person or change stock Noclip/boost bindings; conflicting stock chords are marked and paused while the other preset settings apply. The bundled file is scripts/Custom/presets/recommended.ini.
+For a tested starting point, select **Jish's Recommended** and press **Load** on the First Person page. This applies the bundled tested controller bindings, camera/spring values, independent look smoothing, comfort options and on-foot stick settings, and saves automatically. The recommended snapshot now enables Disable Spring on foot, keeping camera Spring on board and making walking and parkour more responsive. Existing settings are retained until you press the button. The preset does not toggle First Person or change stock Noclip/boost bindings; conflicting stock chords are marked and paused while the other preset settings apply. The bundled file is scripts/Custom/FirstPerson/presets/bundled/recommended.ini. On-foot right-stick smoothing is disabled and on-board right-stick look is enabled in the current recommended preset; glance smoothing and on-board look smoothing 12 remain enabled.
 
 
 
@@ -204,7 +204,7 @@ Continue Auto Center Until New Look Input defaults on. A return started by modif
 
 ## Menu and controller controls
 
-See CONTROLLER_MENU.md. Insert opens both menus; F9 hides/shows this panel inside Insert.
+See CONTROLLER_MENU.md. Open Insert → Skater → First Person; there is no separate panel or mod F9 shortcut.
 Front-flip offset fix: the flip target uses animated head pose plus configured position/rotation offsets directly. It no longer inherits the transient native-camera/head delta used by bail calibration. Regression tests cover both pitch directions, zero offsets, configured offsets and a Spring-lagged normal camera. Gameplay validation of this fix is pending.
 
 ### First-person spectator view (1.30)

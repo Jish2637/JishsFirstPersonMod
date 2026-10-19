@@ -1,4 +1,4 @@
-param([string]$ModVersion = "1.34.0", [string]$ReSkateVersion = "2.0.7")
+param([string]$ModVersion = "1.35.0", [string]$ReSkateVersion = "2.1.1")
 
 $ErrorActionPreference = 'Stop'
 
@@ -44,7 +44,7 @@ try {
 
             $relative = [IO.Path]::GetRelativePath($PSScriptRoot, $file.FullName).Replace('\','/')
 
-            if ($relative -match '^(build|release|\.hook-tools|\.git)/|(^|/)__pycache__/|^(build-output|build|configure|tests)\.log$|\.zip$|\.pyc$') { continue }
+            if ($relative -match '^(build[^/]*|release|\.hook-tools|\.git)/|(^|/)__pycache__/|^(build-output|build|configure|tests)\.log$|\.zip$|\.pyc$') { continue }
 
             [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, $file.FullName, $relative, [IO.Compression.CompressionLevel]::Optimal) | Out-Null
 

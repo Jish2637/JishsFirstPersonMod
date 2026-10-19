@@ -8,10 +8,11 @@ namespace jishsfirstpersonmod {
 class ToggleEmoteBlock {
     std::uint32_t held_{};
 public:
-    std::uint32_t update(std::uint32_t combo,std::uint32_t buttons) {
+    std::uint32_t update(std::uint32_t combo,std::uint32_t buttons,std::uint32_t native=0) {
         held_&=buttons&15;
-        if((combo&0x100) && (combo&15) && dingosdk::valid_controller_combo(combo) && (buttons&combo)==combo)
-            held_|=combo&15;
+        for(const auto binding:{combo,native})
+            if((binding&0x100) && (binding&15) && dingosdk::valid_controller_combo(binding) && (buttons&binding)==binding)
+                held_|=binding&15;
         return held_;
     }
 };

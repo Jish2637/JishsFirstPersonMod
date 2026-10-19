@@ -1,0 +1,10 @@
+{
+  "official_dll_sha256": "d79ff144768ce8b0a8e992c9f134c670a3ff85bb3b437a0eb915876973014301",
+  "verified_entries": 11,
+  "page_dispatch_widget_allocator_relationships": "PASS",
+  "imgui_core_and_config": "MATCH",
+  "baseline_src_and_vendor_files_unchanged": 199,
+  "shipping_frame_and_F9_ownership": "STOCK",
+  "closed_Insert_polling": "50 ms worker, guarded original poll",
+  "result": "PASS"
+}

@@ -37,7 +37,7 @@ spectator::View view;
 std::optional<spectator::Target> target;
 struct RenderEvidence { spectator::Identity actor;std::uintptr_t buffer;double sampled; };
 std::optional<RenderEvidence> render_evidence;
-std::string feedback="First-person spectator view requires verified ReSkate 2.0.7.";
+std::string feedback="First-person spectator view requires verified ReSkate 2.1.1.";
 using Render=bool(*)(std::uintptr_t,std::uintptr_t);
 Render original_render{};
 spectator::HiddenHead hidden;
@@ -129,7 +129,7 @@ void initialize_spectator(std::uintptr_t game,std::uintptr_t stock,SpectatorRend
     }
     if(result!=HookOk) { unavailable("render hook installation failed: "+hook_failure_description(result));return; }
     { std::lock_guard lock(spectator_mutex);feedback="Spectator view: follow camera. Use the First Person binding while watching.";supported=true; }
-    log("Spectator head view: verified ReSkate 2.0.7 ID/slot/generation bridge and party camera/render callbacks.");
+    log("Spectator head view: verified ReSkate 2.1.1 ID/slot/generation bridge and party camera/render callbacks.");
 }
 void update_spectator_session(bool watching,const Config& config,std::uintptr_t next_context,bool blocked,std::uintptr_t client) {
     const bool previously_enabled=preference_seen.exchange(config.spectator_first_person);

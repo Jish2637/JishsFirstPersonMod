@@ -1,7 +1,7 @@
 struct FakeDirect {
     void** table{};
     bool sony=true,ansi=false,axes=false;
-    DWORD l1=52,pov=32,cross=49;
+    DWORD l1=52,pov=32,cross=49,r1=53;bool rb{};
     std::vector<unsigned char> physical=std::vector<unsigned char>(sizeof(DIJOYSTATE2),0);
     std::vector<DIDEVICEOBJECTDATA> queued;
     HRESULT state_result=DI_OK,data_result=DI_OK;
@@ -22,6 +22,7 @@ HRESULT STDMETHODCALLTYPE fake_direct_object(void* pointer,void* output,DWORD of
     DWORD type{};WORD page{},usage{};
     if(offset==device.pov) {type=DIDFT_POV;page=1;usage=0x39;}
     else if(offset==device.l1) {type=DIDFT_PSHBUTTON|DIDFT_MAKEINSTANCE(4);page=9;usage=5;}
+    else if(offset==device.r1) {type=DIDFT_PSHBUTTON|DIDFT_MAKEINSTANCE(5);page=9;usage=6;}
     else if(offset==device.cross) {type=DIDFT_PSHBUTTON|DIDFT_MAKEINSTANCE(1);page=9;usage=2;}
     else if(device.axes && (offset==offsetof(DIJOYSTATE,lZ) || offset==offsetof(DIJOYSTATE,lRz))) {
         type=DIDFT_ABSAXIS;page=1;usage=offset==offsetof(DIJOYSTATE,lZ) ? 0x32:0x35;
@@ -63,12 +64,13 @@ void test_direct_input_adapters() {
     direct_hooks[di_unacquire][0].original=reinterpret_cast<void*>(&fake_direct_acquire);
     direct_hooks[di_release][0].original=reinterpret_cast<void*>(&fake_direct_release);
     dingosdk::FirstPersonLookControls bindings;for(unsigned i=0;i<4;++i) bindings[i].combo=0x100|(1u<<i);
-    DWORD toggle{};std::uintptr_t context=900;
-    auto publish=[&] {publish_glance_filter(bindings,qa_active,{1,2,3,4},0x100,toggle,toggle!=0,context);};
-    auto reset=[&] {clear_glance_filter();direct_devices.clear();qa_focus=qa_active=true;qa_menu=qa_spectator=false;toggle=0;qa_now+=1000;publish();};
+    DWORD toggle{},native_toggle{};std::uintptr_t context=900;
+    auto publish=[&] {publish_glance_filter(bindings,qa_active,{1,2,3,4},0x100,toggle,toggle || native_toggle,context,native_toggle);};
+    auto reset=[&] {clear_glance_filter();direct_devices.clear();qa_focus=qa_active=true;qa_menu=qa_spectator=false;toggle=native_toggle=0;qa_now+=1000;publish();};
     auto physical=[&](FakeDirect& device,DWORD hat,bool l1=true) {
         std::fill(device.physical.begin(),device.physical.end(),0x33);
         device.physical[device.l1]=l1?0x80:0;
+        device.physical[device.r1]=device.rb?0x80:0;
         device.physical[device.cross]=0x80;
         std::memcpy(device.physical.data()+device.pov,&hat,4);
     };
@@ -116,6 +118,21 @@ void test_direct_input_adapters() {
         check(poll(device,0,false)==0xffffffffu,"Camera transition/L1-first release lost hotkey latch");
         poll(device,0xffffffffu,false);check(poll(device,0,false)==0,"Hotkey release did not clear latch");
         qa_spectator=false;
+    }
+    for(bool active:{false,true}) {
+        reset();qa_active=active;native_toggle=0x302;FakeDirect native;native.table=table.data();native.rb=true;
+        check(poll(native,18000)==0xffffffffu,"native-owned DirectInput enter/exit toggle leaked");
+        qa_active=!active;native.rb=false;
+        check(poll(native,18000,false)==0xffffffffu,"native DirectInput shoulder-first release leaked");
+        poll(native,0xffffffffu,false);native.rb=true;
+        check(poll(native,18000)==0xffffffffu && !glance_emote_active(),"native DirectInput double tap leaked");
+        raw_controller_read=true;check(poll(native,18000)==18000,"native DirectInput binding sampler was blocked");raw_controller_read=false;
+        reset();qa_active=active;native_toggle=0x302;FakeDirect batch;batch.table=table.data();batch.rb=true;physical(batch,18000);
+        event(batch,batch.l1,0x80,static_cast<DWORD>(qa_now),1);event(batch,batch.r1,0x80,static_cast<DWORD>(qa_now),2);
+        event(batch,batch.pov,18000,static_cast<DWORD>(qa_now),3);
+        const auto peek=buffered(batch,DIGDD_PEEK);
+        check(peek.size()==3 && peek.back().dwData==0xffffffffu,"native buffered DirectInput toggle leaked");
+        check(buffered(batch).back().dwData==0xffffffffu,"native buffered peek replay leaked");
     }
     reset();toggle=0x1101;publish();FakeDirect extended;extended.table=table.data();
     check(poll(extended,0)==0xffffffffu,"Additional Cross hotkey button was not mapped");

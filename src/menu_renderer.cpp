@@ -274,6 +274,7 @@ bool start_menu() {
             !attach(table[39],reinterpret_cast<void*>(&resize1_hook),reinterpret_cast<void**>(&original_resize1),"ResizeBuffers1") ||
             !attach(queue_table[10],reinterpret_cast<void*>(&execute_hook),reinterpret_cast<void**>(&original_execute),"ExecuteCommandLists")) return false;
         if(!install_panel_input_hooks()) throw std::runtime_error("Companion mouse polling isolation hook failed.");
+        if(!initialize_panel_recording()) throw std::runtime_error("Verified controller recording readers unavailable.");
         const auto status=apply_owned_hooks();
         if(status!=HookOk) { log("ERROR: menu hook transaction failed: "+std::to_string(status)); return false; }
         log("Companion menu presentation hooks installed; waiting for stock's overlay draw.");

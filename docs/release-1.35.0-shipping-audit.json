@@ -1,0 +1,259 @@
+{
+  "no_graphics_discovery_or_window_creation_imports": true,
+  "release_version_string_verified": true,
+  "imports": {
+    "bcrypt.dll": [
+      "BCryptFinishHash",
+      "BCryptHashData",
+      "BCryptDestroyHash",
+      "BCryptCloseAlgorithmProvider",
+      "BCryptCreateHash",
+      "BCryptOpenAlgorithmProvider"
+    ],
+    "CFGMGR32.dll": [
+      "CM_Get_Device_Interface_ListW",
+      "CM_Get_Device_Interface_List_SizeW"
+    ],
+    "HID.DLL": [
+      "HidD_GetAttributes",
+      "HidP_GetCaps",
+      "HidD_GetPreparsedData",
+      "HidD_FreePreparsedData",
+      "HidD_GetHidGuid"
+    ],
+    "USER32.dll": [
+      "GetWindowThreadProcessId",
+      "GetRawInputDeviceInfoW",
+      "GetAncestor",
+      "GetForegroundWindow"
+    ],
+    "api-ms-win-core-errorhandling-l1-1-0.dll": [
+      "SetLastError",
+      "SetUnhandledExceptionFilter",
+      "UnhandledExceptionFilter",
+      "GetLastError"
+    ],
+    "api-ms-win-core-synch-l1-2-0.dll": [
+      "WakeAllConditionVariable",
+      "Sleep",
+      "SleepConditionVariableSRW"
+    ],
+    "api-ms-win-core-processthreads-l1-1-0.dll": [
+      "GetCurrentProcessId",
+      "CreateThread",
+      "GetCurrentThreadId",
+      "GetCurrentProcess",
+      "GetStartupInfoW",
+      "ExitThread",
+      "TerminateProcess",
+      "ExitProcess",
+      "OpenThread",
+      "GetThreadId",
+      "GetProcessIdOfThread"
+    ],
+    "api-ms-win-core-sysinfo-l1-1-0.dll": [
+      "GetTickCount64",
+      "GetSystemDirectoryW",
+      "GetSystemInfo"
+    ],
+    "api-ms-win-core-memory-l1-1-0.dll": [
+      "VirtualAlloc",
+      "VirtualQuery",
+      "ReadProcessMemory",
+      "VirtualProtect",
+      "VirtualFree"
+    ],
+    "api-ms-win-core-processenvironment-l1-1-0.dll": [
+      "SetEnvironmentVariableW",
+      "GetEnvironmentVariableW",
+      "GetCommandLineA",
+      "SetStdHandle",
+      "FreeEnvironmentStringsW",
+      "GetEnvironmentStringsW",
+      "GetStdHandle",
+      "GetCommandLineW"
+    ],
+    "api-ms-win-core-debug-l1-1-0.dll": [
+      "IsDebuggerPresent",
+      "OutputDebugStringA"
+    ],
+    "api-ms-win-core-handle-l1-1-0.dll": [
+      "CloseHandle"
+    ],
+    "api-ms-win-core-libraryloader-l1-2-0.dll": [
+      "GetModuleHandleW",
+      "LoadLibraryExW",
+      "FreeLibrary",
+      "GetProcAddress",
+      "DisableThreadLibraryCalls",
+      "GetModuleFileNameW",
+      "GetModuleHandleExW",
+      "FreeLibraryAndExitThread"
+    ],
+    "api-ms-win-core-heap-l2-1-0.dll": [
+      "LocalFree"
+    ],
+    "api-ms-win-shcore-obsolete-l1-1-0.dll": [
+      "CommandLineToArgvW"
+    ],
+    "api-ms-win-core-toolhelp-l1-1-0.dll": [
+      "Thread32Next",
+      "CreateToolhelp32Snapshot",
+      "Thread32First"
+    ],
+    "api-ms-win-core-file-l1-1-0.dll": [
+      "SetFilePointerEx",
+      "ReadFile",
+      "FindFirstFileExW",
+      "FindFirstFileW",
+      "FindClose",
+      "CreateFileW",
+      "FindNextFileW",
+      "GetFileSizeEx",
+      "GetFileInformationByHandle",
+      "CreateDirectoryW",
+      "SetFileInformationByHandle",
+      "GetFileType"
+    ],
+    "api-ms-win-core-profile-l1-1-0.dll": [
+      "QueryPerformanceFrequency",
+      "QueryPerformanceCounter"
+    ],
+    "api-ms-win-core-synch-l1-1-0.dll": [
+      "WaitForSingleObject",
+      "SetEvent",
+      "InitializeCriticalSectionEx",
+      "TryAcquireSRWLockExclusive",
+      "AcquireSRWLockExclusive",
+      "ReleaseSRWLockExclusive",
+      "ResetEvent",
+      "CreateEventW"
+    ],
+    "api-ms-win-core-io-l1-1-0.dll": [
+      "GetOverlappedResult",
+      "CancelIoEx"
+    ],
+    "api-ms-win-core-processthreads-l1-1-1.dll": [
+      "FlushInstructionCache",
+      "IsProcessorFeaturePresent"
+    ],
+    "KERNEL32.dll": [
+      "GetFullPathNameW",
+      "SetThreadContext",
+      "GetThreadContext",
+      "ResumeThread",
+      "SuspendThread",
+      "GetCurrentThread",
+      "DeleteCriticalSection",
+      "TryEnterCriticalSection",
+      "LeaveCriticalSection",
+      "EnterCriticalSection",
+      "InitializeCriticalSection",
+      "RaiseException",
+      "AreFileApisANSI",
+      "HeapCreate",
+      "HeapFree",
+      "WriteFile",
+      "GetDiskFreeSpaceW",
+      "LockFile",
+      "SetFilePointer",
+      "GetFullPathNameA",
+      "SetEndOfFile",
+      "UnlockFileEx",
+      "GetTempPathW",
+      "CreateMutexW",
+      "GetFileAttributesW",
+      "UnmapViewOfFile",
+      "HeapValidate",
+      "HeapSize",
+      "MultiByteToWideChar",
+      "GetTempPathA",
+      "FormatMessageW",
+      "GetDiskFreeSpaceA",
+      "GetFileAttributesA",
+      "GetFileAttributesExW",
+      "OutputDebugStringW",
+      "FlushViewOfFile",
+      "CreateFileA",
+      "WaitForSingleObjectEx",
+      "DeleteFileA",
+      "DeleteFileW",
+      "HeapReAlloc",
+      "HeapAlloc",
+      "HeapCompact",
+      "HeapDestroy",
+      "UnlockFile",
+      "LockFileEx",
+      "GetFileSize",
+      "GetProcessHeap",
+      "SystemTimeToFileTime",
+      "WideCharToMultiByte",
+      "GetSystemTimeAsFileTime",
+      "GetSystemTime",
+      "FormatMessageA",
+      "CreateFileMappingW",
+      "MapViewOfFile",
+      "GetTickCount",
+      "FlushFileBuffers",
+      "MoveFileExW",
+      "CompareStringOrdinal",
+      "Module32NextW",
+      "Module32FirstW"
+    ],
+    "api-ms-win-core-localization-l1-2-0.dll": [
+      "GetUserDefaultLCID",
+      "IsValidLocale",
+      "GetLocaleInfoEx",
+      "GetLocaleInfoW",
+      "GetCPInfo",
+      "LCMapStringEx",
+      "IsValidCodePage",
+      "EnumSystemLocalesW",
+      "GetACP",
+      "LCMapStringW",
+      "GetOEMCP"
+    ],
+    "api-ms-win-core-file-l1-2-0.dll": [
+      "CreateFile2"
+    ],
+    "api-ms-win-core-file-l2-1-0.dll": [
+      "GetFileInformationByHandleEx",
+      "CopyFile2"
+    ],
+    "api-ms-win-core-util-l1-1-0.dll": [
+      "EncodePointer",
+      "DecodePointer"
+    ],
+    "api-ms-win-core-string-l1-1-0.dll": [
+      "GetStringTypeW",
+      "CompareStringW"
+    ],
+    "api-ms-win-core-interlocked-l1-1-0.dll": [
+      "InitializeSListHead",
+      "InterlockedFlushSList"
+    ],
+    "api-ms-win-core-rtlsupport-l1-1-0.dll": [
+      "RtlPcToFileHeader",
+      "RtlCaptureContext",
+      "RtlVirtualUnwind",
+      "RtlUnwind",
+      "RtlLookupFunctionEntry",
+      "RtlUnwindEx"
+    ],
+    "api-ms-win-core-fibers-l1-1-0.dll": [
+      "FlsAlloc",
+      "FlsFree",
+      "FlsSetValue",
+      "FlsGetValue"
+    ],
+    "api-ms-win-core-console-l1-1-0.dll": [
+      "GetConsoleOutputCP",
+      "ReadConsoleW",
+      "GetConsoleMode",
+      "WriteConsoleW"
+    ],
+    "api-ms-win-core-timezone-l1-1-0.dll": [
+      "GetTimeZoneInformation"
+    ]
+  }
+}

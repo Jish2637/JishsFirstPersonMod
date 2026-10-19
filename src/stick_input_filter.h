@@ -26,9 +26,9 @@ inline bool filter_sony_dpad(dingosdk::PlayStationPad kind,std::span<std::uint8_
     sony_report_crc(report);return true;
 }
 void publish_glance_filter(const dingosdk::FirstPersonLookControls&,bool eligible,const std::array<std::uintptr_t,4>& owner,unsigned device,
-                          std::uint32_t toggle=0,bool toggle_eligible=false,std::uintptr_t toggle_context=0);
+                          std::uint32_t toggle=0,bool toggle_eligible=false,std::uintptr_t toggle_context=0,std::uint32_t native_toggle=0);
 void clear_glance_filter();
-void publish_toggle_filter(std::uint32_t toggle,bool allowed,unsigned device,std::uintptr_t context);
+void publish_toggle_filter(std::uint32_t toggle,bool allowed,unsigned device,std::uintptr_t context,std::uint32_t native_toggle=0);
 bool glance_emote_active();
 bool glance_emote_filter_ready();
 void private_controller_handle(void* handle,bool add);

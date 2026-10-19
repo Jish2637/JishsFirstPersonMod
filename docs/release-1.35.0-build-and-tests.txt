@@ -1,0 +1,508 @@
+-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.26300.
+-- The C compiler identification is MSVC 19.51.36247.0
+-- The CXX compiler identification is MSVC 19.51.36247.0
+-- The ASM_MASM compiler identification is MSVC
+-- Found assembler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/ml64.exe
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/cl.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/cl.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (3.2s)
+-- Generating done (0.6s)
+-- Build files have been written to: G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/build
+MSBuild version 18.7.1+024f5b037 for .NET Framework
+
+  1>Checking Build System
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  detours.cpp
+  modules.cpp
+  disasm.cpp
+  image.cpp
+  creatwth.cpp
+  disolx86.cpp
+  disolx64.cpp
+  disolia64.cpp
+  disolarm.cpp
+  disolarm64.cpp
+  Generating Code...
+  mod_detours.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mod_detours.lib
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  bridge_resolver.cpp
+  image_identity.cpp
+  Generating Code...
+  mod_compatibility.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mod_compatibility.lib
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  config.cpp
+  mod_config.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mod_config.lib
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  imgui.cpp
+  imgui_draw.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  Generating Code...
+  mod_imgui.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mod_imgui.lib
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  sqlite3.c
+  mod_sqlite.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mod_sqlite.lib
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  settings.cpp
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\src\settings.cpp(356,32): warning C4996: 'std::filesystem::u8path': warning STL4021: The std::filesystem::u8path() overloads are deprecated in C++20. The constructors of std::filesystem::path provide equivalent functionality via construction from u8string, u8string_view, or iterators with value_type char8_t. You can define _SILENCE_CXX20_U8PATH_DEPRECATION_WARNING or _SILENCE_ALL_CXX20_DEPRECATION_WARNINGS to suppress this warning. [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\mod_settings.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\src\settings.cpp(389,122): warning C4996: 'std::filesystem::u8path': warning STL4021: The std::filesystem::u8path() overloads are deprecated in C++20. The constructors of std::filesystem::path provide equivalent functionality via construction from u8string, u8string_view, or iterators with value_type char8_t. You can define _SILENCE_CXX20_U8PATH_DEPRECATION_WARNING or _SILENCE_ALL_CXX20_DEPRECATION_WARNINGS to suppress this warning. [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\mod_settings.vcxproj]
+      G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\src\settings.cpp(389,122):
+      the template instantiation context (the oldest one first) is
+          G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\src\settings.cpp(389,10):
+          see reference to function template instantiation 'void std::sort<std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,jishsfirstpersonmod::PresetLibrary::list::<lambda_1>>(const _RanIt,const _RanIt,_Pr)' being compiled
+          with
+          [
+              _Ty=std::string,
+              _RanIt=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<std::string>>>,
+              _Pr=jishsfirstpersonmod::PresetLibrary::list::<lambda_1>
+          ]
+          C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\algorithm(9085,10):
+          see reference to function template instantiation 'void std::_Sort_unchecked<std::basic_string<char,std::char_traits<char>,std::allocator<char>>*,_Fn>(_RanIt,_RanIt,__int64,_Pr)' being compiled
+          with
+          [
+              _Fn=jishsfirstpersonmod::PresetLibrary::list::<lambda_1>,
+              _RanIt=std::basic_string<char,std::char_traits<char>,std::allocator<char>> *,
+              _Pr=jishsfirstpersonmod::PresetLibrary::list::<lambda_1>
+          ]
+          C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\algorithm(9055,18):
+          see reference to function template instantiation '_BidIt std::_Insertion_sort_unchecked<_RanIt,_Pr>(const _BidIt,const _BidIt,_Pr)' being compiled
+          with
+          [
+              _BidIt=std::basic_string<char,std::char_traits<char>,std::allocator<char>> *,
+              _RanIt=std::basic_string<char,std::char_traits<char>,std::allocator<char>> *,
+              _Pr=jishsfirstpersonmod::PresetLibrary::list::<lambda_1>
+          ]
+          C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\algorithm(8923,17):
+          see reference to function template instantiation 'bool jishsfirstpersonmod::PresetLibrary::list::<lambda_1>::operator ()<std::basic_string<char,std::char_traits<char>,std::allocator<char>>,std::basic_string<char,std::char_traits<char>,std::allocator<char>>>(const _T1 &,const _T2 &) const' being compiled
+          with
+          [
+              _T1=std::basic_string<char,std::char_traits<char>,std::allocator<char>>,
+              _T2=std::basic_string<char,std::char_traits<char>,std::allocator<char>>
+          ]
+  
+  mod_settings.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mod_settings.lib
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  embedded_menu.cpp
+  mod_embedded_ui.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mod_embedded_ui.lib
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  hooks.cpp
+  mod_hooks.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mod_hooks.lib
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  spectator_runtime.cpp
+  body_flip_runtime.cpp
+  bootstrap.cpp
+  hooks.cpp
+  first_person_runtime.cpp
+  stock_bridge.cpp
+  stock_camera_feed.cpp
+  bail_collision.cpp
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\src\bail_collision.cpp(16,1): warning C4324: 'jishsfirstpersonmod::`anonymous-namespace'::SphereRequest': structure was padded due to alignment specifier [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\JishsFirstPersonMod.vcxproj]
+  native_camera_interop.cpp
+  bail_camera_trace.cpp
+  head_attachment.cpp
+  proven_camera.cpp
+  comfort.cpp
+  game_camera_ownership.cpp
+  proven_debug.cpp
+  proven_input.cpp
+  stick_runtime.cpp
+  stick_input_filter.cpp
+  playstation_input.cpp
+  image_identity.cpp
+  Generating Code...
+  Compiling...
+  embedded_runtime.cpp
+  recording_input.cpp
+  Generating Code...
+     Creating library G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/build/Release/JishsFirstPersonMod.lib and object G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/build/Release/JishsFirstPersonMod.exp
+  JishsFirstPersonMod.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\JishsFirstPersonMod.dll
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  activation_bridge_tests.cpp
+  activation_bridge_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\activation_bridge_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  bail_camera_trace_tests.cpp
+  bail_camera_trace.cpp
+  head_attachment.cpp
+  Generating Code...
+  bail_camera_trace_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\bail_camera_trace_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  bail_collision_tests.cpp
+  bail_collision_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\bail_collision_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  bail_view_tests.cpp
+  bail_view_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\bail_view_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  binding_conflict_tests.cpp
+  binding_conflict_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\binding_conflict_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  board_look_tests.cpp
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\board_look_tests.cpp(106,67): warning C4456: declaration of 'pad' hides previous local declaration [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\board_look_tests.vcxproj]
+      G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\board_look_tests.cpp(82,54):
+      see declaration of 'pad'
+  
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\board_look_tests.cpp(134,57): warning C4456: declaration of 'pad' hides previous local declaration [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\board_look_tests.vcxproj]
+      G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\board_look_tests.cpp(82,54):
+      see declaration of 'pad'
+  
+  board_look_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\board_look_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  body_flip_tests.cpp
+  body_flip_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\body_flip_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  bridge_resolver_tests.cpp
+  bridge_resolver_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\bridge_resolver_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  camera_transition_tests.cpp
+  camera_transition_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\camera_transition_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  comfort_settings_tests.cpp
+  comfort_settings_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\comfort_settings_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  compat211_tests.cpp
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\bridge_resolver_tests.cpp(96,1): warning C4715: 'historical_fixture_main': not all control paths return a value [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\compat211_tests.vcxproj]
+  compat211_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\compat211_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  config_validation.cpp
+  config_validation.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\config_validation.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  embedded_menu_tests.cpp
+  embedded_menu_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\embedded_menu_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  embedded_runtime_tests.cpp
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\embedded_runtime_tests.cpp(9,41): warning C4312: 'reinterpret_cast': conversion from 'int' to 'HWND' of greater size [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\embedded_runtime_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\src\embedded_runtime.cpp(21,37): warning C4459: declaration of 'enabled' hides global declaration [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\embedded_runtime_tests.vcxproj]
+  (compiling source file '../tests/embedded_runtime_tests.cpp')
+      G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\embedded_runtime_tests.cpp(7,69):
+      see declaration of 'enabled'
+  
+  embedded_runtime_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\embedded_runtime_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  game_camera_ownership_tests.cpp
+  game_camera_ownership_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\game_camera_ownership_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  glance_emote_tests.cpp
+  glance_emote_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\glance_emote_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  glance_filter_tests.cpp
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(49,74): warning C4244: '=': conversion from 'unsigned int' to 'WORD', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(64,70): warning C4244: '=': conversion from 'unsigned int' to '_Ty', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(64,70): warning C4244:         with [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(64,70): warning C4244:         [ [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(64,70): warning C4244:             _Ty=uint8_t [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(64,70): warning C4244:         ] [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(65,66): warning C4244: '=': conversion from 'unsigned int' to '_Ty', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(65,66): warning C4244:         with [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(65,66): warning C4244:         [ [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(65,66): warning C4244:             _Ty=uint8_t [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(65,66): warning C4244:         ] [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(65,104): warning C4244: '=': conversion from 'unsigned int' to '_Ty', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(65,104): warning C4244:         with [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(65,104): warning C4244:         [ [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(65,104): warning C4244:             _Ty=uint8_t [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(65,104): warning C4244:         ] [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(88,147): warning C4244: '=': conversion from 'unsigned int' to 'BYTE', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(88,166): warning C4244: '=': conversion from 'unsigned int' to 'BYTE', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(106,81): warning C4244: '=': conversion from 'unsigned int' to 'WORD', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(123,77): warning C4244: '=': conversion from 'unsigned int' to '_Ty', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(123,77): warning C4244:         with [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(123,77): warning C4244:         [ [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(123,77): warning C4244:             _Ty=uint8_t [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(123,77): warning C4244:         ] [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(181,94): warning C4244: '=': conversion from 'unsigned int' to 'WORD', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(203,69): warning C4244: '=': conversion from 'unsigned int' to '_Ty', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(203,69): warning C4244:         with [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(203,69): warning C4244:         [ [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(203,69): warning C4244:             _Ty=uint8_t [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(203,69): warning C4244:         ] [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(203,91): warning C4244: '=': conversion from 'unsigned int' to '_Ty', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(203,91): warning C4244:         with [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(203,91): warning C4244:         [ [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(203,91): warning C4244:             _Ty=uint8_t [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\glance_filter_tests.cpp(203,91): warning C4244:         ] [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5604,24): warning C4244: '=': conversion from 'const _Ty' to 'unsigned char', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5604,24): warning C4244:         with [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5604,24): warning C4244:         [ [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5604,24): warning C4244:             _Ty=int [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5604,24): warning C4244:         ] [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+  (compiling source file '../tests/glance_filter_tests.cpp')
+      C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5604,24):
+      the template instantiation context (the oldest one first) is
+          G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\direct_input_adapter_tests.inl(71,14):
+          see reference to function template instantiation 'void std::fill<std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,int>(const _FwdIt,const _FwdIt,const int &)' being compiled
+          with
+          [
+              _Ty=uint8_t,
+              _FwdIt=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<uint8_t>>>
+          ]
+  
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5648,27): warning C4244: '=': conversion from 'const _Ty' to 'unsigned char', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5648,27): warning C4244:         with [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5648,27): warning C4244:         [ [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5648,27): warning C4244:             _Ty=int [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5648,27): warning C4244:         ] [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+  (compiling source file '../tests/glance_filter_tests.cpp')
+      C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5648,27):
+      the template instantiation context (the oldest one first) is
+          G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\native_hid_adapter_tests.inl(78,10):
+          see reference to function template instantiation '_OutIt *std::fill_n<unsigned char*,int,int>(_OutIt,const _Diff,const _Ty &)' being compiled
+          with
+          [
+              _OutIt=unsigned char *,
+              _Diff=int,
+              _Ty=int
+          ]
+  
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5547,37): warning C4244: 'initializing': conversion from 'const _Ty' to 'unsigned char', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5547,37): warning C4244:         with [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5547,37): warning C4244:         [ [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5547,37): warning C4244:             _Ty=int [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5547,37): warning C4244:         ] [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
+  (compiling source file '../tests/glance_filter_tests.cpp')
+      C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5547,37):
+      the template instantiation context (the oldest one first) is
+          G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\direct_input_adapter_tests.inl(71,14):
+          see reference to function template instantiation 'void std::fill<std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,int>(const _FwdIt,const _FwdIt,const int &)' being compiled
+          with
+          [
+              _Ty=uint8_t,
+              _FwdIt=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<uint8_t>>>
+          ]
+          C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5593,22):
+          see reference to function template instantiation 'void std::_Fill_memset<unsigned char*,_Ty>(_CtgIt,const _Ty,const size_t)' being compiled
+          with
+          [
+              _Ty=int,
+              _CtgIt=unsigned char *
+          ]
+  
+  glance_filter_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\glance_filter_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  glance_toggle_tests.cpp
+  glance_toggle_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\glance_toggle_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  hippy_jump_tests.cpp
+  hippy_jump_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\hippy_jump_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  Assembling G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\src\camera_tail.asm...
+  hook_chain.cpp
+  hook_chain.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\hook_chain.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  hook_startup_retry_tests.cpp
+  hook_startup_retry_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\hook_startup_retry_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  proxy_loader.cpp
+  image_identity.cpp
+  Generating Code...
+G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/src/proxy_loader.def : warning LNK4104: export of symbol 'DllCanUnloadNow' should be PRIVATE [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\jish_proxy.vcxproj]
+G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/src/proxy_loader.def : warning LNK4104: export of symbol 'DllGetClassObject' should be PRIVATE [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\jish_proxy.vcxproj]
+G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/src/proxy_loader.def : warning LNK4104: export of symbol 'DllRegisterServer' should be PRIVATE [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\jish_proxy.vcxproj]
+G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/src/proxy_loader.def : warning LNK4104: export of symbol 'DllUnregisterServer' should be PRIVATE [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\jish_proxy.vcxproj]
+     Creating library G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/build/Release/dinput8.lib and object G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/build/Release/dinput8.exp
+  jish_proxy.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\dinput8.dll
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  jump_episode_tests.cpp
+  jump_episode_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\jump_episode_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  launcher_mod_tests.cpp
+  launcher_mod_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\launcher_mod_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  loader_probe.cpp
+  loader_probe.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\loader_probe.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  look_smoothing_tests.cpp
+  look_smoothing_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\look_smoothing_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  menu_controller_tests.cpp
+  menu_controller_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\menu_controller_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  menu_layout_tests.cpp
+  menu.cpp
+  Generating Code...
+  menu_layout_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\menu_layout_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  menu_input.cpp
+  mod_menu_input.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mod_menu_input.lib
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  menu_settings_tests.cpp
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(888,68): warning C4389: '==': signed/unsigned mismatch [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\menu_settings_tests.vcxproj]
+  (compiling source file '../tests/menu_settings_tests.cpp')
+      C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(888,68):
+      the template instantiation context (the oldest one first) is
+          G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\menu_settings_tests.cpp(93,30):
+          see reference to function template instantiation 'bool std::operator ==<uint32_t,int,0>(const std::optional<uint32_t> &,const _Ty2 &) noexcept(<expr>)' being compiled
+          with
+          [
+              _Ty2=int
+          ]
+  
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(890,34): warning C4389: '==': signed/unsigned mismatch [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\menu_settings_tests.vcxproj]
+  (compiling source file '../tests/menu_settings_tests.cpp')
+      C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(890,34):
+      the template instantiation context (the oldest one first) is
+          G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\menu_settings_tests.cpp(93,30):
+          see reference to function template instantiation 'bool std::operator ==<uint32_t,int,0>(const std::optional<uint32_t> &,const _Ty2 &) noexcept' being compiled
+          with
+          [
+              _Ty2=int
+          ]
+  
+  menu_settings_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\menu_settings_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  mock_stock.cpp
+     Creating library G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/build/Release/mock_stock.lib and object G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/build/Release/mock_stock.exp
+  mock_stock.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mock_stock.dll
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  menu.cpp
+  mod_menu_ui.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mod_menu_ui.lib
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  native_interop_tests.cpp
+  native_interop_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\native_interop_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  parkour_camera_tests.cpp
+  parkour_camera_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\parkour_camera_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  proven_behavior.cpp
+  proven_behavior.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\proven_behavior.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  proxy_forwarding_tests.cpp
+  proxy_forwarding_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\proxy_forwarding_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  rotating_log_tests.cpp
+  rotating_log_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\rotating_log_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  loader_probe.cpp
+  skate_host_probe.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\Skate.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  sony_input_probe.cpp
+G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tools\sony_input_probe.cpp(1,9): warning C4005: 'WIN32_LEAN_AND_MEAN': macro redefinition [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\sony_input_probe.vcxproj]
+      G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tools\sony_input_probe.cpp(1,9):
+      'WIN32_LEAN_AND_MEAN' previously declared on the command line
+  
+  sony_input_probe.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\sony_input_probe.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  spectator_runtime_tests.cpp
+  spectator_runtime.cpp
+  head_attachment.cpp
+  Generating Code...
+  spectator_runtime_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\spectator_runtime_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  spectator_tests.cpp
+  spectator_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\spectator_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  spring_policy_tests.cpp
+  spring_policy_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\spring_policy_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  stick_look_tests.cpp
+  stick_look_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\stick_look_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  stock_contract_tests.cpp
+  stock_contract_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\stock_contract_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+  user_data_tests.cpp
+  user_data_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\user_data_tests.exe
+  Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
+Test project G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/build
+      Start  1: embedded_hook_worker_rejection_and_input_ownership
+ 1/40 Test  #1: embedded_hook_worker_rejection_and_input_ownership .......   Passed    0.19 sec
+      Start  2: embedded_ui_commands_presets_scopes_and_recording
+ 2/40 Test  #2: embedded_ui_commands_presets_scopes_and_recording ........   Passed    0.07 sec
+      Start  3: official_211_identity_abi_model_and_input
+ 3/40 Test  #3: official_211_identity_abi_model_and_input ................   Passed    0.34 sec
+      Start  4: scripts_data_migration_and_preservation
+ 4/40 Test  #4: scripts_data_migration_and_preservation ..................   Passed    0.06 sec
+      Start  5: independent_menu_shortcut_navigation_and_persistence
+ 5/40 Test  #5: independent_menu_shortcut_navigation_and_persistence .....   Passed    0.11 sec
+      Start  6: on_board_modifier_centering_and_persistence
+ 6/40 Test  #6: on_board_modifier_centering_and_persistence ..............   Passed    0.06 sec
+      Start  7: spectator_identity_view_visibility_and_persistence
+ 7/40 Test  #7: spectator_identity_view_visibility_and_persistence .......   Passed    0.13 sec
+      Start  8: spectator_mocked_camera_render_and_restoration
+ 8/40 Test  #8: spectator_mocked_camera_render_and_restoration ...........   Passed    2.41 sec
+      Start  9: body_flip_detection_handoffs_and_persistence
+ 9/40 Test  #9: body_flip_detection_handoffs_and_persistence .............   Passed    0.06 sec
+      Start 10: menu_layout_dpi
+10/40 Test #10: menu_layout_dpi ..........................................   Passed    0.21 sec
+      Start 11: bail_collision_sweeps_recovery_and_persistence
+11/40 Test #11: bail_collision_sweeps_recovery_and_persistence ...........   Passed    0.07 sec
+      Start 12: glance_emote_taps_holds_and_contract
+12/40 Test #12: glance_emote_taps_holds_and_contract .....................   Passed    0.06 sec
+      Start 13: existing_game_filters_and_shared_hid
+13/40 Test #13: existing_game_filters_and_shared_hid .....................   Passed    0.99 sec
+      Start 14: launcher_mod_startup_switch
+14/40 Test #14: launcher_mod_startup_switch ..............................   Passed    0.07 sec
+      Start 15: legacy_pose_and_native_sample_policy
+15/40 Test #15: legacy_pose_and_native_sample_policy .....................   Passed    0.05 sec
+      Start 16: per_action_conflicts_preserve_analog_and_other_glances
+16/40 Test #16: per_action_conflicts_preserve_analog_and_other_glances ...   Passed    0.06 sec
+      Start 17: game_camera_ownership_and_existing_restrictions
+17/40 Test #17: game_camera_ownership_and_existing_restrictions ..........   Passed    0.04 sec
+      Start 18: bridge_structure_and_rejection
+18/40 Test #18: bridge_structure_and_rejection ...........................   Passed    0.04 sec
+      Start 19: optional_parkour_look_and_facing
+19/40 Test #19: optional_parkour_look_and_facing .........................   Passed    0.05 sec
+      Start 20: held_bail_view_and_head_attachment
+20/40 Test #20: held_bail_view_and_head_attachment .......................   Passed    0.05 sec
+      Start 21: hippy_jump_confirmation_and_exclusions
+21/40 Test #21: hippy_jump_confirmation_and_exclusions ...................   Passed    0.05 sec
+      Start 22: verified_jump_episode_attachment_and_lifecycle
+22/40 Test #22: verified_jump_episode_attachment_and_lifecycle ...........   Passed    0.04 sec
+      Start 23: glance_toggle_replacement_resets_and_persistence
+23/40 Test #23: glance_toggle_replacement_resets_and_persistence .........   Passed    0.14 sec
+      Start 24: bounded_bail_camera_trace
+24/40 Test #24: bounded_bail_camera_trace ................................   Passed    0.17 sec
+      Start 25: on_foot_spring_switch_and_persistence
+25/40 Test #25: on_foot_spring_switch_and_persistence ....................   Passed    0.06 sec
+      Start 26: non_bail_camera_transitions
+26/40 Test #26: non_bail_camera_transitions ..............................   Passed    0.05 sec
+      Start 27: on_foot_stick_look_math_handoff_and_persistence
+27/40 Test #27: on_foot_stick_look_math_handoff_and_persistence ..........   Passed    0.07 sec
+      Start 28: independent_smoothing_and_comfort_policy
+28/40 Test #28: independent_smoothing_and_comfort_policy .................   Passed    0.13 sec
+      Start 29: native_relative_look_smoothing
+29/40 Test #29: native_relative_look_smoothing ...........................   Passed    0.03 sec
+      Start 30: custom2_camera_math_and_latches
+30/40 Test #30: custom2_camera_math_and_latches ..........................   Passed    0.04 sec
+      Start 31: standalone_config_validation
+31/40 Test #31: standalone_config_validation .............................   Passed    0.07 sec
+      Start 32: reject_non_skate_host
+32/40 Test #32: reject_non_skate_host ....................................   Passed    0.08 sec
+      Start 33: reject_skate_without_reskate
+33/40 Test #33: reject_skate_without_reskate .............................   Passed    0.06 sec
+      Start 34: transient_thread_access_retry_and_safe_refusal
+34/40 Test #34: transient_thread_access_retry_and_safe_refusal ...........   Passed    2.55 sec
+      Start 35: stock_detour_tail_chain
+35/40 Test #35: stock_detour_tail_chain ..................................   Passed    0.08 sec
+      Start 36: menu_recording_persistence_migration_and_routing
+36/40 Test #36: menu_recording_persistence_migration_and_routing .........   Passed    0.10 sec
+      Start 37: shared_stock_camera_settings_contract
+37/40 Test #37: shared_stock_camera_settings_contract ....................   Passed    0.07 sec
+      Start 38: companion_toggle_calls_native_queue_without_tick
+38/40 Test #38: companion_toggle_calls_native_queue_without_tick .........   Passed    0.07 sec
+      Start 39: proxy_exports_forwarding_and_unrelated_host
+39/40 Test #39: proxy_exports_forwarding_and_unrelated_host ..............   Passed    0.35 sec
+      Start 40: rotating_logs_retention_and_recovery
+40/40 Test #40: rotating_logs_retention_and_recovery .....................   Passed    0.08 sec
+
+100% tests passed, 0 tests failed out of 40
+
+Total Test time (real) =  11.39 sec
+-- Installing: G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/release/./dinput8.dll
+-- Installing: G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/release/scripts/Custom/JishsFirstPersonMod.dll
+-- Installing: G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/release/scripts/Custom/jishs_first_person_mod.lua
+-- Installing: G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/release/scripts/Custom/FirstPerson/presets/bundled/recommended.ini
+-- Installing: G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/release/Mods
+-- Installing: G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/release/Mods/JishsFirstPersonMod
+-- Installing: G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/release/Mods/JishsFirstPersonMod/manifest.json
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          19D4C3ACDCF75712C5579A80B1E22B626A01838BC9C5917804FC6A475D72C8BF       G:\CodexCustom\ReSkateFirstPerso…
+
