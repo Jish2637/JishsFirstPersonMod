@@ -1,0 +1,27 @@
+{
+  "label": "1.36.0",
+  "handover_sha256": "eda781d0b88a0e6ff97fb4be820fca7d4c297fa9ac1f5d0e560f1538783c5251",
+  "source_origin": "supplied handover ZIP",
+  "upstream_miniz_source_commit": "db99ed4d724dd77edd2abf62f3de0dbc5bb6717e",
+  "original_src_changed": [
+    "src/bootstrap.cpp",
+    "src/embedded_menu.cpp"
+  ],
+  "test_results": {
+    "passed": 43,
+    "failed": 0
+  },
+  "live_github_download": "Historical test1 PASS; not repeated for wording-only test2",
+  "automatic_relaunch": false,
+  "hot_reload": false,
+  "published": false,
+  "game_installation_modified": false,
+  "JishsFirstPersonMod.dll_sha256": "bfb2eba69843e00206fdc94c933521495d651168e05ac7eaa83e3d8142cea986",
+  "dinput8.dll_sha256": "ad07475446a1dbcf0d50894b716433078cc6a6239ae7b4dc9e7eafd34a286c87",
+  "FirstPersonUpdater.exe_sha256": "369e30da14f013adfb2cc5d2c720898fec69abcb5f8743eef8836bffe80f762f",
+  "test2_changes": [
+    "Available-update status rendered green using scoped host ImGui text color",
+    "Queued status and completion/failure popups use user-approved wording"
+  ],
+  "user_confirmed_in_game": "Updater test1 and test2 confirmed working; release preserves test2 implementation with version metadata updates."
+}

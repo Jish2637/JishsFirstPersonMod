@@ -1,4 +1,4 @@
-param([string]$ModVersion = "1.35.0", [string]$ReSkateVersion = "2.1.1")
+param([string]$ModVersion = "1.36.0", [string]$ReSkateVersion = "2.1.1")
 
 $ErrorActionPreference = 'Stop'
 
@@ -10,7 +10,8 @@ Push-Location $PSScriptRoot
 
 try {
 
-    if (!(Test-Path release/dinput8.dll) -or
+    if (!(Test-Path release/scripts/Custom/FirstPerson/updater/FirstPersonUpdater.exe) -or
+        !(Test-Path release/dinput8.dll) -or
 
         !(Test-Path release/scripts/Custom/JishsFirstPersonMod.dll) -or
 
@@ -22,7 +23,7 @@ try {
 
     if (Test-Path -LiteralPath $legacyDll) { Remove-Item -LiteralPath $legacyDll }
 
-    $licensePaths = @('vendor/LICENSE','vendor/External/detours/LICENSE.txt','vendor/External/rapidjson/LICENSE.txt','vendor/External/imgui/LICENSE.txt')
+    $licensePaths = @('vendor/LICENSE','vendor/External/detours/LICENSE.txt','vendor/External/rapidjson/LICENSE.txt','vendor/External/imgui/LICENSE.txt','vendor/External/miniz/LICENSE.txt')
 
     $licenseText = ($licensePaths | ForEach-Object { "--- $_ ---`n" + [IO.File]::ReadAllText((Join-Path $PSScriptRoot $_)) }) -join "`n`n"
 

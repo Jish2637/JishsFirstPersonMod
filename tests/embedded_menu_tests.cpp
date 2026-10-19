@@ -63,7 +63,7 @@ int main() {try {
   ImGui::NewFrame();ImGui::Begin("Host page");
   auto* window=ImGui::GetCurrentWindow();
   ImGui::PushID("first-person");
-  for(const char* label:{"Advanced","View and stabilization","Automatic camera switching","Glances","Attachment and transitions","On-foot right stick look","On-board right stick look"}) {
+  for(const char* label:{"Mod updates","Advanced","View and stabilization","Automatic camera switching","Glances","Attachment and transitions","On-foot right stick look","On-board right stick look"}) {
    window->StateStorage.SetInt(window->GetID(label),1);
   }
   ImGui::PopID();

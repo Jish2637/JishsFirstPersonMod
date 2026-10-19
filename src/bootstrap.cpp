@@ -1,3 +1,4 @@
+#include "release_updates.h"
 #include "mod.h"
 #include "Engine/Game/Build/image_identity.h"
 #include "Extension/UI/Overlay/overlay.h"
@@ -136,6 +137,7 @@ DWORD WINAPI worker(void*) noexcept {
             jishsfirstpersonmod::publish_runtime(false,false,"Camera hooks failed. See JishsFirstPersonMod.log."); status = 3; return 0;
         }
         if(!jishsfirstpersonmod::start_menu()) { status=3;return 0; }
+        jishsfirstpersonmod::release_updates::start(jishsfirstpersonmod::module_directory(),jishsfirstpersonmod::data_directory());
         jishsfirstpersonmod::compatibility::enable();rollback.committed=true;
         status = 2;
         jishsfirstpersonmod::log("initialised once; controller requests feed the existing native ReSkate camera");

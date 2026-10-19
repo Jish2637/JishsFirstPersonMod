@@ -1,3 +1,4 @@
+#include "release_updates.h"
 #include "embedded_menu.h"
 #include <imgui_internal.h>
 #include "bail_collision.h"
@@ -149,6 +150,38 @@ void draw_embedded_page(void* menu,const EmbeddedWidgets& native,dingosdk::Contr
             ImGui::TextWrapped("%s",menu_snapshot().feedback.c_str());ImGui::EndPopup();
         }
     const auto stick_change=[&]() {Command command;command.kind=CommandKind::stick_settings;command.stick=config.stick;submit_command(command);};
+if(ImGui::CollapsingHeader("Mod updates")) {
+    using namespace release_updates;
+    const auto update=snapshot();
+    if(update.available) {
+        ImGui::PushStyleColor(ImGuiCol_Text,ImVec4(0.30f,0.90f,0.40f,1.0f));
+        ImGui::TextWrapped("%s",update.status.c_str());
+        ImGui::PopStyleColor();
+    } else native.note(update.status.c_str());
+    if(!update.installed.empty()) ImGui::Text("Installed manifest: %s",update.installed.c_str());
+    if(!update.latest.empty()) ImGui::Text("Latest compatible release: %s",update.latest.c_str());
+    bool enabled=update.automatic;
+    if(native.toggle(menu,"Check for updates on launch","One background check per launch. Download and installation require your choice.",&enabled,true,"N/A")) automatic(enabled);
+    ImGui::BeginDisabled(update.busy || update.armed);
+    ImGui::BeginDisabled(update.ready);
+    if(ImGui::Button("Check for updates")) check();
+    ImGui::EndDisabled();
+    if(update.available) {
+        if(ImGui::Button("Download update")) {cancel_panel_recording();download();}
+        ImGui::SameLine();if(ImGui::Button("Later")) later();
+    }
+    if(update.ready) {
+        if(ImGui::Button("Install after I close Skate")) {cancel_panel_recording();install_after_exit();}
+        native.note("The one-shot installer waits for you to exit Skate normally. Wait for its completion message before starting again. Nothing relaunches automatically.");
+    }
+    ImGui::EndDisabled();
+    if(update.busy && update.total) {
+        ImGui::ProgressBar(static_cast<float>(double(update.received)/update.total));
+        ImGui::Text("%.1f / %.1f MB",update.received/1048576.0,update.total/1048576.0);
+    }
+    if(update.busy || update.armed) {if(ImGui::Button("Cancel update")) release_updates::cancel();}
+    if(update.ready || update.armed) {if(ImGui::Button("Open update folder")) open_folder();}
+}
 if(ImGui::CollapsingHeader("Advanced")) {
 if(ImGui::TreeNodeEx("View and stabilization",ImGuiTreeNodeFlags_None)) {
         bool stabilize=config.native.stabilize;

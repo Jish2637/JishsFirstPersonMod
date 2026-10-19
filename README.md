@@ -1,21 +1,31 @@
-# Jish’s First Person Mod 1.35.0 — ReSkate 2.1.1
+# Jish’s First Person Mod 1.36.0 — ReSkate 2.1.1
 
-A DLL mod for the exact official ReSkate 2.1.1 runtime, with first-person camera controls, directional glances, on-foot and on-board right-stick look, head attachment, spectator options, bindings and personal INI presets.
+## What’s new
 
-## Installation and use
+- Added an updater inside **Insert → Skater → First Person → Mod updates**.
+- New updates appear in **green**, making them easier to spot.
+- The mod can check for updates when you start the game. You can turn this off and check manually whenever you like.
+- You choose when to download and install. Your saved settings and personal presets are kept.
 
-Close Skate. Extract `JishsFirstPersonMod-1.35.0-reskate-2.1.1.zip` beside Skate.exe and ReSkateLauncher.exe, merging Mods and scripts and replacing this mod’s existing files. Enable Jish’s First Person Mod in the launcher.
+## How updates work
 
-Open **Insert → Skater → First Person**. Stock ReSkate handles menu navigation using controller, mouse or keyboard. Explicit binding recording captures a raw controller chord until release. The separate panel and its F9 shortcut have been removed.
+1. Open **Mod updates**. When an update is available, choose **Download update**.
+2. Once the download is ready, choose **Install after I close Skate**.
+3. Close Skate normally and wait for the update’s completion message.
+4. Start ReSkate yourself when you’re ready to play again.
 
-Existing settings and personal presets remain in `scripts/Custom/FirstPerson`. **Reapply your preferred preset after updating.** Select Jish’s Recommended and Load to use the updated recommended settings. Recommended disables on-foot right-stick smoothing and enables on-board right-stick look with LB; glance smoothing and on-board look smoothing 12 remain as configured in the tested Main preset.
+The updater does not close the game or restart it for you. You can choose **Later** to leave an available update for another time, or **Cancel update** before installation starts.
 
-Only official ReSkate 2.1.1 is supported by this package. ReSkate.dll is not included. MSC first-person nametag reporting is removed.
+**Install this release manually once to get the updater. Future compatible mod updates can then be downloaded from the menu.** The updater updates this mod; it does not update ReSkate itself.
 
-## Source and validation
+## Installation
 
-Run `./build.ps1` with VS 18 2026 C++ tools on Windows x64 to build, run the 40 tests and stage locally. Run `./package.ps1` for client/source ZIPs. The install ZIP contains only dinput8.dll, scripts, Mods and LICENSE.txt. These scripts never install to the game or publish.
+Close Skate. Extract `JishsFirstPersonMod-1.36.0-reskate-2.1.1.zip` into your ReSkate folder beside `Skate.exe` and `ReSkateLauncher.exe`, merging **Mods** and **scripts** and replacing this mod’s existing files. Enable **Jish’s First Person Mod** in the launcher.
 
-The 1.35.0 release changes version metadata and documentation from the user-tested native-menu build; runtime source and the Main-based Recommended preset are preserved. See [release notes](docs/RELEASE_1.35.0.md), [validation](docs/RELEASE_1.35.0_VALIDATION.md), and [provenance](docs/release-1.35.0-provenance.json). Other reports in docs are historical records for their named builds.
+Open **Insert → Skater → First Person**.
 
-Source and build tools are available in this repository. GitHub releases attach only the client installation ZIP. The embedded DLL uses the stock ImGui frame/context, fonts, theme and verified widget helpers. A separate process-lifetime worker keeps existing guarded 50 ms camera/settings refresh independent of presentation. No companion graphics backend is started.
+Existing settings and personal presets are preserved. Requires **official ReSkate 2.1.1**.
+
+## Building from source
+
+On Windows x64 with Visual Studio C++ tools, run `./build.ps1`, then `./package.ps1`. The build runs the automated tests before staging the files. See [updater documentation](docs/UPDATER.md) for supported installations and behavior.
