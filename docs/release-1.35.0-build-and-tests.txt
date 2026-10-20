@@ -87,7 +87,7 @@ G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\src\settings.cpp(389,
               _T1=std::basic_string<char,std::char_traits<char>,std::allocator<char>>,
               _T2=std::basic_string<char,std::char_traits<char>,std::allocator<char>>
           ]
-  
+
   mod_settings.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\mod_settings.lib
   Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
   embedded_menu.cpp
@@ -147,11 +147,11 @@ G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\src\bail_collision.cp
 G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\board_look_tests.cpp(106,67): warning C4456: declaration of 'pad' hides previous local declaration [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\board_look_tests.vcxproj]
       G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\board_look_tests.cpp(82,54):
       see declaration of 'pad'
-  
+
 G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\board_look_tests.cpp(134,57): warning C4456: declaration of 'pad' hides previous local declaration [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\board_look_tests.vcxproj]
       G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\board_look_tests.cpp(82,54):
       see declaration of 'pad'
-  
+
   board_look_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\board_look_tests.exe
   Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
   body_flip_tests.cpp
@@ -182,7 +182,7 @@ G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\src\embedded_runtime.
   (compiling source file '../tests/embedded_runtime_tests.cpp')
       G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tests\embedded_runtime_tests.cpp(7,69):
       see declaration of 'enabled'
-  
+
   embedded_runtime_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\embedded_runtime_tests.exe
   Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
   game_camera_ownership_tests.cpp
@@ -242,7 +242,7 @@ C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\
               _Ty=uint8_t,
               _FwdIt=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<uint8_t>>>
           ]
-  
+
 C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5648,27): warning C4244: '=': conversion from 'const _Ty' to 'unsigned char', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
 C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5648,27): warning C4244:         with [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
 C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5648,27): warning C4244:         [ [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
@@ -259,7 +259,7 @@ C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\
               _Diff=int,
               _Ty=int
           ]
-  
+
 C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5547,37): warning C4244: 'initializing': conversion from 'const _Ty' to 'unsigned char', possible loss of data [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
 C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5547,37): warning C4244:         with [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
 C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5547,37): warning C4244:         [ [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\glance_filter_tests.vcxproj]
@@ -282,7 +282,7 @@ C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\
               _Ty=int,
               _CtgIt=unsigned char *
           ]
-  
+
   glance_filter_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\glance_filter_tests.exe
   Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
   glance_toggle_tests.cpp
@@ -342,7 +342,7 @@ C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\
           [
               _Ty2=int
           ]
-  
+
 C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(890,34): warning C4389: '==': signed/unsigned mismatch [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\menu_settings_tests.vcxproj]
   (compiling source file '../tests/menu_settings_tests.cpp')
       C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(890,34):
@@ -353,7 +353,7 @@ C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\
           [
               _Ty2=int
           ]
-  
+
   menu_settings_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\menu_settings_tests.exe
   Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
   mock_stock.cpp
@@ -385,7 +385,7 @@ C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\
 G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tools\sony_input_probe.cpp(1,9): warning C4005: 'WIN32_LEAN_AND_MEAN': macro redefinition [G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\sony_input_probe.vcxproj]
       G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\tools\sony_input_probe.cpp(1,9):
       'WIN32_LEAN_AND_MEAN' previously declared on the command line
-  
+
   sony_input_probe.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\release-1.35.0-source\build\Release\sony_input_probe.exe
   Building Custom Rule G:/CodexCustom/ReSkateFirstPersonMod/release-1.35.0-source/CMakeLists.txt
   spectator_runtime_tests.cpp
@@ -505,4 +505,3 @@ Total Test time (real) =  11.39 sec
 Algorithm       Hash                                                                   Path
 ---------       ----                                                                   ----
 SHA256          19D4C3ACDCF75712C5579A80B1E22B626A01838BC9C5917804FC6A475D72C8BF       G:\CodexCustom\ReSkateFirstPerso…
-

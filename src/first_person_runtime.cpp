@@ -21,6 +21,7 @@ void tick_mod(std::uintptr_t client) noexcept {
     static ControllerComboLatch toggle;
     static GlanceControlsState look;
     static MarkerGlanceMemory marker_glance;
+    static std::uint64_t glance_marker_generation{};
     static std::array<std::uintptr_t,4> glance_owner{};
     static std::uint64_t revision{};
     static Config input_config;
@@ -38,7 +39,7 @@ void tick_mod(std::uintptr_t client) noexcept {
         const auto next_context=reader.pointer(client,8);
         const auto state=reader.value<std::uint32_t>(client,0xc4);reader.verify();
         if(!reported) { reported=true;log("Controller tick reached native client; state="+std::to_string(state)); }
-        if(context!=next_context) { context=next_context;camera=0;toggle={};look={};marker_glance.clear();clear_comfort_state(); }
+        if(context!=next_context) { context=next_context;camera=0;toggle={};look={};marker_glance.clear();clear_comfort_state();clear_marker_return(); }
         const auto settings=menu_snapshot();
         if(settings.revision!=revision) {
             if(!revision || input_config.stick.lock_mount_jump!=settings.config.stick.lock_mount_jump ||
@@ -60,6 +61,7 @@ void tick_mod(std::uintptr_t client) noexcept {
         update_game_camera_ownership(client,base);
         update_comfort(client,base);
         const bool world=state==13 || state==21;
+        if(!world) clear_marker_return();
         if(world) {
             try {
                 SourceTrial trial;trial.base=base;
@@ -86,12 +88,24 @@ void tick_mod(std::uintptr_t client) noexcept {
             memory::read(glance_owner[1],entity_vtable) && entity_vtable==base+addr::engine::skater_entity_vtable &&
             memory::read(glance_owner[1]+0x20,entity_context) && entity_context==context &&
             memory::read(glance_owner[1]+0x7e0,teleport_flag) && teleport_flag!=0;
-        marker_glance.observe(settings.config.remember_marker_glance && settings.config.toggle_glances &&
+        const bool remember_glance=settings.config.remember_marker_glance && settings.config.toggle_glances &&
             world && menu_ready && !visible && !panel_gameplay_blocked() && focused && controller.available &&
-            !game_camera_suspended() && stock_first_person_requested(),returning_to_marker,look.selection(),controller.device,
+            !game_camera_suspended() && stock_first_person_requested();
+        marker_glance.observe(remember_glance,returning_to_marker,look.selection(),controller.device,
             context,source_flight_now());
         const auto input_route=route_controller_input(settings.config,blocked);
         const auto comfort=comfort_snapshot();
+        observe_marker_return(comfort,glance_owner[1]);
+        const auto marker=marker_return_status();
+        if(marker.generation!=glance_marker_generation) {
+            glance_marker_generation=marker.generation;
+            if(marker.pending || marker.neutral) {
+                // Position-only detection must obey the same optional glance
+                // memory as a flag-observed return, including camera-first order.
+                marker_glance.observe(remember_glance,true,look.selection(),controller.device,context,source_flight_now());
+                look.reset();
+            }
+        }
         const std::array<std::uintptr_t,4> current_owner{comfort.core,comfort.entity,comfort.context,comfort.rig};
         // Publish toggle suppression before any head, camera or hair-related
         // work. Reconcile actual binding/world changes here without opening an
@@ -137,7 +151,7 @@ void tick_mod(std::uintptr_t client) noexcept {
         const auto shared_modifier=settings.config.board.enabled && movement.mode==2 ? settings.config.board.modifier:0;
         auto angles=look.update(input_route.glance,controller,glance_blocked,settings.config.toggle_glances,shared_modifier);
         if(bail && !returning_to_marker) marker_glance.clear();
-        const int remembered=marker_glance.take(!glance_blocked && !returning_to_marker);
+        const int remembered=marker_glance.take(!glance_blocked && !returning_to_marker && !marker.pending);
         if(remembered>=0 && look.restore_selection(remembered)) {
             angles=look.selection_angles();log("Return to marker: restored toggled glance.");
         }

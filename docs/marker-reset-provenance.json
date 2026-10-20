@@ -1,0 +1,14 @@
+{
+  "label": "1.36.1-marker-reset-test2",
+  "baseline_commit": "92c97d3cca2f0cd1a48ff9069684975958453698",
+  "baseline_release": "1.36.0-reskate-2.1.1",
+  "tests_passed": 45,
+  "tests_failed": 0,
+  "in_game_validation": "Pending user acceptance; test1 failed the reported behavior",
+  "game_installation_modified": false,
+  "published": false,
+  "native_math_reference_sha256": "842b859568983d68b4e3c158b55e18b4b5072d35cde66e3cfb8018a464ec23a5",
+  "client_dll_sha256": "d88c5cb18ada1f58f65f1ee6d1460ccd2867be4841f5c757f3f3b2609b8a4876",
+  "proxy_sha256": "0a6b77b4d7eaf81f7176a8217e0013127e1330029db4463d6e3559d767b60414",
+  "updater_sha256": "4b1ff830c5619c636f7f3fdfc6193630c0e025f18019beb92ab2865d10b5a972"
+}

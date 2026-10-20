@@ -1,0 +1,14 @@
+{
+  "label": "1.36.1-native-head-look-test2",
+  "baseline": "user-confirmed 1.36.1-native-head-look-test1",
+  "tests_passed": 47,
+  "tests_failed": 0,
+  "option": "Native head movement",
+  "default_enabled": false,
+  "separate_test_ini": "removed and ignored",
+  "native_audit": "PASS",
+  "in_game_validation": "Prior passthrough confirmed; new menu/persistence integration pending",
+  "published": false,
+  "game_installation_modified": false,
+  "client_dll_sha256": "7fc9e8887194b07269e10e9e7b52ce8714a69919567c88e3146df6f6526d63b7"
+}

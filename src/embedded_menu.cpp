@@ -40,6 +40,7 @@ if(std::strcmp(label,"Lock head during on-board body flips")==0) return "Detects
 if(std::strcmp(label,"Attach head position during mounting / jumping")==0) return "Follows your head position while getting on the board and during on-foot jumps. Disable Spring on foot can make the difference less noticeable. ReSkate stabilization and Follow flips pause while the mod follows your head; your settings are kept.";
 if(std::strcmp(label,"Attach head position during hippy jumps")==0) return "Follows your head position during hippy jumps. Ollies and other board jumps are unchanged. Disable Spring on foot can make the difference less noticeable.";
 if(std::strcmp(label,"Smooth foot/board transitions")==0) return "Adjusts getting on and off the board separately. These settings are separate from camera Spring and button-glance smoothing.";
+if(std::strcmp(label,"Native head movement")==0) return "Lets Skate move your character's head when you use right-stick look on foot in Camera only mode, so other players can see you looking around. This changes how the camera feels. Turn it off to keep the previous camera feel. Does not apply to Camera and character or on-board look.";
 if(std::strcmp(label,"Right-stick look on foot")==0) return "Move the right stick to look around while walking in first person. Looking pauses while getting on the board.";
 if(std::strcmp(label,"Allow looking during jumps and climbing")==0) return "Enables right-stick look and button glances during climbing and supported jumps. Leave this off to keep ReSkate's normal view during climbing and attached jumps. These actions turn only the camera. This does not change head attachment, and look still pauses while getting on the board.";
 if(std::strcmp(label,"Enable on-board Right Stick Free Look")==0) return "Hold your modifier to look around while on board in first person. The right stick stops controlling tricks while held. Release the modifier to restore skating controls.";
@@ -402,6 +403,10 @@ if(ImGui::TreeNodeEx("On-foot right stick look",ImGuiTreeNodeFlags_None)) {
             config.stick.turn_character=mode==1;stick_change();
         }
         help_marker("Camera only lets you look without turning your skater. Camera and character turns your skater too. Compatibility mode uses camera only.");
+        ImGui::EndDisabled();
+        ImGui::BeginDisabled(config.stick.turn_character && !config.look_only);
+        if(readable_checkbox("Native head movement",&config.stick.native_head_look)) stick_change();
+        help_marker("Lets Skate move your character's head when you use right-stick look on foot in Camera only mode, so other players can see you looking around. This changes how the camera feels. Turn it off to keep the previous camera feel. Does not apply to Camera and character or on-board look.");
         ImGui::EndDisabled();
         fit_control("Horizontal sensitivity");
         if(widget_slider("Horizontal sensitivity",&config.stick.yaw_speed,1,720,"%.0f deg/s",ImGuiSliderFlags_AlwaysClamp)) stick_change();

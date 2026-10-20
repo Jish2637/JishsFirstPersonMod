@@ -1,6 +1,6 @@
 {
   "name": "Jish's First Person Mod",
   "author": "Jish",
-  "version_number": "1.36.0",
-  "description": "First-person camera and settings for official ReSkate 2.1.1. Open Insert > Skater > First Person. Check for mod updates, download them and install after closing Skate. Settings and personal presets are preserved."
+  "version_number": "1.36.2",
+  "description": "Local ReSkate 2.1.1 test with Native head movement in the on-foot right-stick settings. Optional; changes camera feel."
 }

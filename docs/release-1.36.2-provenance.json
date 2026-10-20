@@ -1,0 +1,21 @@
+{
+  "release_version": "1.36.2",
+  "tag": "1.36.2-reskate-2.1.1",
+  "source_baseline": "user-approved 1.36.1-native-head-look-test2",
+  "internal_build_label": "1.36.1-native-head-look-test2 (intentionally retained; supplied tested archive unchanged)",
+  "asset_filename": "JishsFirstPersonMod-1.36.2-reskate-2.1.1.zip",
+  "asset_sha256": "5a0f85fcf2584a3cf6de2bde73b8e6bd6caf3d42b3d914d32e5946be89ca5daa",
+  "asset_size": 1687309,
+  "runtime_source_matches_tested_build": true,
+  "tests_passed": 47,
+  "tests_failed": 0,
+  "updater_package_validation": "PASS: 7 owned files, exact version, size/hash and layout",
+  "new_head_option": "User-confirmed passthrough; menu test2 approved for release",
+  "marker_in_game_status": "Reset implementation included; no separate live acceptance was explicitly recorded",
+  "game_installation_modified": false,
+  "binaries": {
+    "scripts/Custom/JishsFirstPersonMod.dll": "7fc9e8887194b07269e10e9e7b52ce8714a69919567c88e3146df6f6526d63b7",
+    "dinput8.dll": "6627cc91151b272051f6dea8d00f32235a6a275651b08641a704f1b35501d382",
+    "scripts/Custom/FirstPerson/updater/FirstPersonUpdater.exe": "e226dc89522c513df62866bb2a47ea6b14df42f4d09cf8ee88c2182f3b161849"
+  }
+}

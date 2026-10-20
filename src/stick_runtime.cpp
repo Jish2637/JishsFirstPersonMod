@@ -1,4 +1,6 @@
 #include "stick_runtime.h"
+#include "native_head_look.h"
+#include "marker_reset.h"
 #include "menu.h"
 #include "stock_bridge.h"
 #include "native.h"
@@ -38,11 +40,14 @@ std::mutex mutex;
 StickLookState look;
 BoardLookState board_look;
 bool recenter_handoff{};
-struct Request { ComfortSnapshot owner;StickAim aim;bool turn{};unsigned device{};double time{};float body_heading{};bool head_valid{},recovery{},board{};StickAxes native_axes{}; } request;
+MarkerReset marker_reset;
+std::uintptr_t marker_scene{};double marker_return_started{};
+std::atomic<std::uint64_t> marker_generation{};
+struct Request { ComfortSnapshot owner;StickAim aim;bool turn{};unsigned device{};double time{};float body_heading{};bool head_valid{},recovery{},board{};StickAxes native_axes{};std::uint64_t generation{}; } request;
 float native_heading{},displayed_pitch{};double heading_time{};
 double now() { return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count(); }
 bool live_foot(const Request& value) {
-    if(game_camera_suspended() || panel_gameplay_blocked()) return false;
+    if(value.generation!=marker_generation.load() || game_camera_suspended() || panel_gameplay_blocked()) return false;
     if(!compatibility::enabled()) return false;
     if(!(value.board ? value.aim.active:value.aim.capture) || !value.head_valid || now()-value.time>.1 || !stock_first_person_active() || !stock_first_person_requested()) return false;
     bool visible{};if(!overlay_available(visible) || visible) return false;
@@ -58,11 +63,12 @@ bool live_foot(const Request& value) {
 }
 Request snapshot() { std::lock_guard lock(mutex);return request; }
 void motion_hook(std::uintptr_t rig,std::uintptr_t context,const Matrix* supplied,std::uint8_t flags) {
-    const auto error=GetLastError();const auto value=snapshot();
+    const auto error=GetLastError();observe_marker_return(comfort_snapshot());const auto value=snapshot();
     if(menu_snapshot().config.look_only) { original_motion(rig,context,supplied,flags);return; }
     alignas(16) Matrix matrix{};
     if(value.turn && value.aim.active && character_facing_allowed(comfort_snapshot(),live_camera_movement()) && rig==value.owner.rig && context==value.owner.context && live_foot(value) && supplied &&
        dingosdk::memory::read(reinterpret_cast<std::uintptr_t>(supplied),matrix) && dingosdk::valid_flight_transform(matrix)) {
+        if(value.generation!=marker_generation.load()) { SetLastError(error);original_motion(rig,context,supplied,flags);return; }
         matrix=face_heading(matrix,value.aim.body_heading);
         SetLastError(error);original_motion(rig,context,&matrix,flags);return;
     }
@@ -174,6 +180,67 @@ void tick_hippy_jump(const Config& config,const ComfortSnapshot& owner,CameraMov
     movement.hippy=hippy_detector.update(evidence,time);
 }
 int live_camera_movement_mode() { return live_camera_movement().custom_mode; }
+std::uint64_t observe_marker_return(const ComfortSnapshot& state,std::uintptr_t previous_entity) {
+    using namespace dingosdk;
+    std::lock_guard lock(mutex);
+    if(game_camera_suspended() || (state.initialized ? !state.master:!stock_first_person_requested())) {
+        if(marker_reset.owner[0] || marker_reset.pending || marker_reset.neutral) {
+            marker_reset.clear();marker_generation=marker_reset.generation;heading_time=0;
+            look.reset();board_look.reset();request={};recenter_handoff=false;
+        }
+        return marker_reset.generation;
+    }
+    auto owner=marker_reset.owner;
+    if(state.state_valid) owner={state.core,state.entity,state.context,state.rig};
+    const auto entity=state.state_valid ? state.entity:previous_entity ? previous_entity:owner[1];
+    if(!entity || (owner[1] && entity!=owner[1])) return marker_reset.generation;
+    const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    std::uintptr_t vtable{},component{},core{},physics{},rig{},rig_context{},scene{};std::uint8_t flag{};
+    if(!memory::read(entity,vtable) || vtable!=base+addr::engine::skater_entity_vtable ||
+       !memory::read(entity+0x20,scene) || !scene || !memory::read(entity+0x628,component) || !memory::read(component+0x70,core) || core!=owner[0] ||
+       !memory::read(core+0x3c0,physics) || physics!=owner[2] ||
+       !memory::read(core+0x438,rig) || rig!=owner[3] || !memory::read(rig,rig_context) || rig_context!=physics || !memory::read(entity+0x7e0,flag)) return marker_reset.generation;
+    Matrix body{};const bool positioned=memory::read(owner[3]+0x4720,body) && valid_flight_transform(body);
+    const auto before=marker_reset.generation;
+    const bool continuation=marker_reset.pending && marker_scene==scene && now()-marker_return_started<=5;
+    if(continuation && owner!=marker_reset.owner) log("Return to marker: local rig replaced; pending native reset retained within this world.");
+    const bool began=marker_reset.observe(owner,flag!=0,positioned,{body[12],body[13],body[14]},continuation);
+    marker_scene=scene;
+    if(began) marker_return_started=now();
+    if(before!=marker_reset.generation) {
+        marker_generation=marker_reset.generation;look.reset();board_look.reset();request={};heading_time=0;recenter_handoff=false;
+    }
+    if(began) log("Return to marker: discarded pre-teleport look; waiting for fresh native view.");
+    return marker_reset.generation;
+}
+bool update_marker_native_view(const ComfortSnapshot& state,const Matrix& pose,bool valid,bool allow_seed) {
+    using namespace dingosdk::first_person;
+    std::lock_guard lock(mutex);
+    const MarkerReset::Owner owner{state.core,state.entity,state.context,state.rig};
+    const bool accepted=allow_seed && marker_reset.accept_native(owner,valid);
+    // While neutral is pending, follow fresh stock facing instead of freezing
+    // the first post-teleport sample if the player moves before centring.
+    if(!accepted && !(valid && marker_reset.neutral && !marker_reset.teleport && owner==marker_reset.owner)) return false;
+    const auto back=rotate(orientation(pose),{0,0,1});
+    native_heading=std::atan2(back[0],back[2])*180/std::numbers::pi_v<float>;
+    displayed_pitch=std::asin(std::clamp(-back[1],-1.f,1.f))*180/std::numbers::pi_v<float>;
+    heading_time=now();recenter_handoff=false;
+    if(accepted) log("Return to marker: fresh native heading accepted; waiting for neutral stick.");
+    return accepted;
+}
+MarkerReturnStatus marker_return_status() {
+    std::lock_guard lock(mutex);return {marker_reset.generation,marker_reset.pending || marker_reset.teleport,marker_reset.neutral,marker_reset.teleport};
+}
+bool accept_marker_native_view(const ComfortSnapshot& state,const Matrix& pose,bool valid) {
+    return update_marker_native_view(state,pose,valid,true);
+}
+void refresh_marker_native_view(const ComfortSnapshot& state,const Matrix& pose,bool valid) {
+    update_marker_native_view(state,pose,valid,false);
+}
+void clear_marker_return() {
+    std::lock_guard lock(mutex);marker_scene=0;marker_return_started=0;marker_reset.clear();marker_generation=marker_reset.generation;
+    look.reset();board_look.reset();request={};heading_time=0;recenter_handoff=false;
+}
 void stop_stick_look() { std::lock_guard lock(mutex);look.reset();board_look.reset();request={}; }
 void suspend_custom_camera() { stop_stick_look();camera_suspended=true; }
 bool take_camera_suspension() { return camera_suspended.exchange(false); }
@@ -181,7 +248,7 @@ void note_camera_view(const dingosdk::first_person::Matrix& pose,dingosdk::first
     using namespace dingosdk::first_person;
     const auto base=normalized(multiply(orientation(pose),conjugate(glance)));
     const auto back=rotate(base,{0,0,1});
-    std::lock_guard lock(mutex);native_heading=std::atan2(back[0],back[2])*180/std::numbers::pi_v<float>;
+    std::lock_guard lock(mutex);if(marker_reset.pending || marker_reset.neutral) return;native_heading=std::atan2(back[0],back[2])*180/std::numbers::pi_v<float>;
     displayed_pitch=std::asin(std::clamp(-back[1],-1.f,1.f))*180/std::numbers::pi_v<float>;
     heading_time=now();
 }
@@ -191,7 +258,12 @@ StickInputPolicy stick_input_policy(unsigned slot) {
     const auto value=snapshot();
     if(slot!=~0u && (slot>=4 || value.device>15 || !(value.device&(1u<<slot)))) return {};
     if(!value.aim.capture || !live_foot(value)) return {};
-    if(!value.board) return {~0u,{}};
+    if(!value.board) {
+        const auto config=menu_snapshot().config;
+        if(native_head_look_passthrough(config.stick.native_head_look,value.aim.active,config.stick.enabled,
+            config.look_only,config.stick.turn_character,value.turn,value.recovery)) return {};
+        return {~0u,{}};
+    }
     const auto settings=menu_snapshot().config.board;
     return settings.enabled ? StickInputPolicy{settings.modifier,value.native_axes}:StickInputPolicy{};
 }
@@ -201,6 +273,7 @@ bool stick_captures_input(unsigned slot,std::uint32_t buttons) {
     return mask && (mask==~0u || (buttons&mask)==mask);
 }
 void tick_stick_look(const Config& config,const GameplayInput& input,const ComfortSnapshot& owner,bool inhibited) {
+    observe_marker_return(owner);
     const double time=now();const auto movement=live_camera_movement();
     const auto head=read_animation_head(owner);
     Matrix body{};const bool body_valid=owner.rig && dingosdk::memory::read(owner.rig+0x4720,body) && dingosdk::valid_flight_transform(body);
@@ -208,14 +281,24 @@ void tick_stick_look(const Config& config,const GameplayInput& input,const Comfo
     const bool eligible=ready && !inhibited && movement.mode==1 && camera_look_allowed(config,owner,movement) &&
         (!bail_camera_locked(owner,movement) || !movement.view_hold) && head.valid && body_valid;
     std::lock_guard lock(mutex);
-    if(bail_camera_locked(owner,movement) || movement.mode==2) recenter_handoff=true;
+    if(marker_reset.pending || marker_reset.teleport) {look.reset();board_look.reset();request={};return;}
+    const auto axes=radial_stick({input.right_x,input.right_y},movement.mode==2 ? config.board.deadzone:config.stick.deadzone);
+    bool seeded=false;
+    if(marker_reset.neutral) {
+        const bool allowed=ready && !inhibited && input.available && input.device && head.valid && body_valid &&
+            camera_look_allowed(config,owner,movement) && (movement.mode==1 || movement.mode==2);
+        if(!marker_reset.take_neutral(allowed,axes.x==0 && axes.y==0)) {look.reset();board_look.reset();request={};return;}
+        look.seed(config.stick,input.device,time,native_heading,displayed_pitch,matrix_heading(body));
+        heading_time=time;recenter_handoff=false;seeded=true;
+    }
+    if(!seeded && (bail_camera_locked(owner,movement) || movement.mode==2)) recenter_handoff=true;
     if(movement.mode==2) {
         look.reset();
         const bool board_eligible=ready && !inhibited && board_free_look_allowed(config,owner,movement) && head.valid && body_valid;
         if(request.owner.core && (!request.board || request.owner.core!=owner.core || request.owner.entity!=owner.entity ||
             request.owner.context!=owner.context || request.owner.rig!=owner.rig)) board_look.reset();
         const auto aim=board_look.update(config.board,{input.right_x,input.right_y},board_eligible,input,time);
-        request={owner,aim,false,input.device,time,0,head.valid,false,true,board_look.native_axes(config.board)};
+        request={owner,aim,false,input.device,time,0,head.valid,false,true,board_look.native_axes(config.board),marker_reset.generation};
         return;
     }
     board_look.reset();
@@ -229,7 +312,7 @@ void tick_stick_look(const Config& config,const GameplayInput& input,const Comfo
     const bool turn=!config.look_only && config.stick.turn_character && character_facing_allowed(owner,movement);
     const bool recovery=!config.look_only && bail_camera_locked(owner,movement);
     if(request.owner.core && request.recovery!=recovery) look.reset();
-    if(turn && !request.turn) {
+    if(turn && !request.turn && !seeded) {
         if(recenter_handoff) {
             // Camera +Z points backward; after dismount/bail, face away from the body.
             look.recenter_facing();recenter_handoff=false;
@@ -240,7 +323,7 @@ void tick_stick_look(const Config& config,const GameplayInput& input,const Comfo
     auto stick=config.stick;if(recovery) stick.turn_character=false;
     auto aim=look.update(stick,{input.right_x,input.right_y},true,input.device,time,recovery ? 0:native_heading,
         recovery ? 0:body_heading,effective.stick_spring,recovery ? 0:displayed_pitch);
-    request={owner,aim,turn,input.device,time,body_heading,head.valid,recovery};
+    request={owner,aim,turn,input.device,time,body_heading,head.valid,recovery,false,{},marker_reset.generation};
 }
 bool attach_stick_runtime(std::uintptr_t base) {
     using namespace dingosdk;

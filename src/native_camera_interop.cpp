@@ -1,4 +1,9 @@
 #include "native_camera_interop.h"
+#include "marker_native_reset.h"
+#include "stick_runtime.h"
+#include "head_attachment.h"
+#include "Extension/Skater/free_flight.h"
+#include <mutex>
 #include "stock_contract.h"
 #include "stock_bridge.h"
 #include "bridge_resolver.h"
@@ -19,20 +24,61 @@ using Vec3=dingosdk::first_person::Vec3;
 // DLL's render, FrameSpring::sample, and activation call sites.
 using Sample=Matrix*(*)(Matrix*,void*,const Matrix*,const NativeFirstPersonSettings*,double,const Vec3*);
 Sample original_sample{};
+std::mutex marker_sample_mutex;MarkerNativeReset marker_samples;
 Matrix* sample_hook(Matrix* output,void* spring,const Matrix* head,
                     const NativeFirstPersonSettings* saved,double now,const Vec3* origin) {
     const auto error=GetLastError();
-    bool locked{};
+    bool locked{},reset_native{},fresh_head{};
     NativeFirstPersonSettings settings{};
+    ComfortSnapshot owner{};MarkerReturnStatus marker{};
+    std::unique_lock marker_lock(marker_sample_mutex,std::defer_lock);
     if(compatibility::enabled() && !game_camera_suspended() && stock_first_person_requested() && saved) {
         const auto config=menu_snapshot().config;
-        const auto owner=comfort_snapshot();const auto movement=live_camera_movement();
+        owner=comfort_snapshot();observe_marker_return(owner);marker=marker_return_status();
+        const auto movement=live_camera_movement();
         locked=owner.state_valid && movement.mode && head_position_attached(config,owner,movement);
-        if(locked) locked=dingosdk::memory::read(reinterpret_cast<std::uintptr_t>(saved),settings);
+        marker_lock.lock();
+        // A pending generation must survive the short invalid-owner interval.
+        // The observer's pending bit includes the teleport flag, so only count
+        // frames with a verified local owner after the native flag clears.
+        marker_samples.observe(marker.generation,marker.pending,!owner.state_valid || marker.teleport,now);
+        reset_native=marker_samples.reset_sample(marker.pending,now);
+        if(locked || reset_native) {
+            if(!dingosdk::memory::read(reinterpret_cast<std::uintptr_t>(saved),settings)) {locked=false;reset_native=false;}
+        }
+        if(marker.pending && !marker.teleport && marker_samples.ready() && owner.state_valid && movement.mode && head && origin) {
+            Matrix raw{};Vec3 root{};Matrix body{};
+            const auto animation=read_animation_head(owner);
+            if(animation.valid && dingosdk::memory::read(reinterpret_cast<std::uintptr_t>(head),raw) &&
+               dingosdk::memory::read(reinterpret_cast<std::uintptr_t>(origin),root) &&
+               dingosdk::memory::read(owner.rig+0x4720,body) && dingosdk::valid_flight_transform(raw) && dingosdk::valid_flight_transform(body)) {
+                using namespace dingosdk::first_person;
+                const auto q=orientation(animation.head);
+                auto expected=raw;
+                const auto right=rotate(q,{0,0,-1}),up=rotate(q,{1,0,0}),back=rotate(q,{0,-1,0});
+                for(unsigned i=0;i<3;++i) {expected[i]=right[i];expected[4+i]=up[i];expected[8+i]=back[i];}
+                const auto a=orientation(raw),b=orientation(expected);
+                float dot=0;for(unsigned i=0;i<4;++i) dot+=a[i]*b[i];
+                fresh_head=length(subtract(root,{animation.root[12],animation.root[13],animation.root[14]}))<.05f &&
+                    length(subtract(root,{body[12],body[13],body[14]}))<.5f && std::abs(dot)>.9995f;
+            }
+        }
     }
-    if(locked) settings=effective_native_sample(settings,true);
+    // Turning off these temporary sample flags resets both native Spring and
+    // its stabilization history to the supplied head. Saved preferences and
+    // activation remain unchanged; no opaque spring memory is written.
+    if(locked || reset_native) settings=effective_native_sample(settings,true);
     SetLastError(error);
-    return original_sample(output,spring,head,locked ? &settings:saved,now,origin);
+    auto* result=original_sample(output,spring,head,(locked || reset_native) ? &settings:saved,now,origin);
+    if(reset_native && fresh_head && result && marker_return_status().generation==marker.generation) {
+        Matrix rebuilt{};
+        if(dingosdk::memory::read(reinterpret_cast<std::uintptr_t>(result),rebuilt) && dingosdk::valid_flight_transform(rebuilt) &&
+           accept_marker_native_view(owner,rebuilt,true)) {
+            marker_samples.completed(now);
+            log("Return to marker: native spring and stabilization rebuilt from current head; previous camera transform discarded.");
+        }
+    }
+    return result;
 }
 }
 bool install_native_camera_interop(void* module) {

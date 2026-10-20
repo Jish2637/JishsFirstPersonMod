@@ -7,6 +7,13 @@ namespace jishsfirstpersonmod {
 bool install_stick_runtime(std::uintptr_t base);
 void tick_stick_look(const Config&,const GameplayInput&,const ComfortSnapshot&,bool inhibited);
 void stop_stick_look();
+void clear_marker_return();
+struct MarkerReturnStatus {std::uint64_t generation{};bool pending{},neutral{},teleport{};};
+MarkerReturnStatus marker_return_status();
+// Observe before producing/consuming aim, including camera-first callback order.
+std::uint64_t observe_marker_return(const ComfortSnapshot&,std::uintptr_t previous_entity=0);
+bool accept_marker_native_view(const ComfortSnapshot&,const dingosdk::first_person::Matrix&,bool valid);
+void refresh_marker_native_view(const ComfortSnapshot&,const dingosdk::first_person::Matrix&,bool valid);
 void note_native_camera_heading(const dingosdk::first_person::Matrix& pose);
 void note_camera_view(const dingosdk::first_person::Matrix&,dingosdk::first_person::Quat glance);
 StickAim stick_camera_aim();

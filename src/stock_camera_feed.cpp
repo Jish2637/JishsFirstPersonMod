@@ -42,6 +42,7 @@ CollisionPoint collision_seed{},collision_player{};
 bool collision_seed_ready{},collision_player_ready{};
 std::uintptr_t collision_world{};
 std::uintptr_t smoothing_camera{};
+std::uint64_t smoothing_marker_generation{};
 std::array<std::uintptr_t,5> transition_owner{};
 bool from_stock(void* caller) {
     HMODULE owner{};return GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
@@ -86,12 +87,23 @@ void transform_hook(std::uintptr_t camera,const Matrix* input) {
         { std::lock_guard lock(smoothing_mutex);reset_camera_smoothing(); }
         original_transform(camera,input);return;
     }
+    const auto marker_generation=observe_marker_return(comfort_snapshot());
     const auto watched=watched_camera.load();
     if(compatibility::enabled() && input && (!watched || camera==watched) && stock_first_person_requested() && from_stock(_ReturnAddress())) {
         watched_camera=camera;Matrix native{};
         if(dingosdk::memory::read(reinterpret_cast<std::uintptr_t>(input),native) && dingosdk::valid_flight_transform(native)) {
             auto matrix=native;auto movement=live_camera_movement();
             const auto state=comfort_snapshot();const auto settings=menu_snapshot();const auto& config=settings.config;
+            // Consume only the stock pose, never the previously composed look.
+            refresh_marker_native_view(state,native,state.state_valid && movement.mode &&
+                camera_look_allowed(config,state,movement) && read_animation_head(state).valid);
+            {
+                std::lock_guard lock(smoothing_mutex);
+                if(smoothing_marker_generation!=marker_generation) {
+                    reset_camera_smoothing();smoothing_marker_generation=marker_generation;
+                    if(marker_return_status().pending || marker_return_status().neutral) {look_pitch=0;look_yaw=0;}
+                }
+            }
             if(config.look_only) {
                 dingosdk::first_person::Quat glance{0,0,0,1};
                 {

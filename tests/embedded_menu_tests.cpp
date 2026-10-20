@@ -30,7 +30,9 @@ void begin(void*,const char* id,const char*,const char*) {ImGui::PushID(id);ImGu
 void end() {ImGui::EndGroup();ImGui::PopID();}
 void field(void*,const char* label,const char*) {field_label=label;ImGui::TextUnformatted(label);}
 void note(const char* text) {ImGui::TextUnformatted(text);}
-bool toggle(void*,const char* label,const char*,bool* value,bool,const char*) {
+bool toggle(void*,const char* label,const char* help,bool* value,bool,const char*) {
+ if(std::strcmp(label,"Native head movement")==0)
+  if(!help || std::string(help).find("changes how the camera feels")==std::string::npos) throw std::runtime_error("native head tooltip missing feel explanation");
  ++toggles;ImGui::Checkbox(label,value);
  if(fire==label) {*value=!*value;fire.clear();return true;}return false;
 }
@@ -56,7 +58,7 @@ int main() {try {
  ImGui::GetAllocatorFunctions(&old_a,&old_f,&old_u);
  auto* host=ImGui::CreateContext();ImGui::SetCurrentContext(previous);
  EmbeddedWidgets widgets{begin,end,field,note,toggle,[](int,bool,float){return true;},slider};
- for(const char* action:{"","Enable First Person","Right-stick look on foot","First person on board only","Horizontal sensitivity"}) {
+ for(const char* action:{"","Enable First Person","Native head movement","Right-stick look on foot","First person on board only","Horizontal sensitivity"}) {
   ScopedHostImGui scope(host,allocate,release,nullptr);
   auto& io=ImGui::GetIO();io.IniFilename=nullptr;io.DisplaySize={1000,800};io.DeltaTime=1.f/60;
   unsigned char* pixels;int w,h;io.Fonts->GetTexDataAsRGBA32(&pixels,&w,&h);
@@ -84,10 +86,12 @@ int main() {try {
  require(ImGui::GetCurrentContext()==previous,"exception context restoration");
  require(toggles>20 && sliders>20,"advanced controls omitted");
  require(menu_snapshot().config.on_board_only,"comfort command route");
+ require(menu_snapshot().config.stick.native_head_look,"native head option command route");
  require(menu_snapshot().config.stick.yaw_speed==360.5f,"native slider command route");
  require(save_personal_preset("Embedded"),"INI preset save");
  require(personal_presets()==std::vector<std::string>{"Embedded"},"preset refresh");
  require(load_personal_preset("Embedded"),"INI preset load");
+ require(menu_snapshot().config.stick.native_head_look,"native head option lost through personal preset");
  require(delete_personal_preset("Embedded") && personal_presets().empty(),"preset deletion");
  EmbeddedVisibility visible{true,false,true,true,3,1,100,90};
  require(visible.capture(true),"focused page capture");

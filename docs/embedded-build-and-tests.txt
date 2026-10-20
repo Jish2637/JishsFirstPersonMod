@@ -53,7 +53,7 @@ C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\
           [
               _Ty2=int
           ]
-  
+
 C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(890,34): warning C4389: '==': signed/unsigned mismatch [G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\menu_settings_tests.vcxproj]
   (compiling source file '../tests/menu_settings_tests.cpp')
       C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\optional(890,34):
@@ -64,7 +64,7 @@ C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\
           [
               _Ty2=int
           ]
-  
+
   menu_settings_tests.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\menu_settings_tests.exe
   mock_stock.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mock_stock.dll
   mod_menu_ui.vcxproj -> G:\CodexCustom\ReSkateFirstPersonMod\local-reskate-2.1.1-native-menu-source\build\Release\mod_menu_ui.lib
@@ -177,4 +177,3 @@ Total Test time (real) =   7.37 sec
 Algorithm       Hash                                                                   Path
 ---------       ----                                                                   ----
 SHA256          E81402274B6D9D86242463222C448B0490A386B7275255928A78B07D63845091       G:\CodexCustom\ReSkateFirstPerso…
-
