@@ -1,11 +1,9 @@
 cmake_minimum_required(VERSION 3.25)
-project(JishsFirstPersonMod VERSION 1.36.2 LANGUAGES C CXX ASM_MASM)
+project(JishsFirstPersonMod VERSION 1.36.3 LANGUAGES C CXX ASM_MASM)
 if(NOT WIN32 OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
     message(FATAL_ERROR "JishsFirstPersonMod requires Windows x64")
 endif()
-# Release 1.36.2 reuses the user-tested binaries. Internal JISH_MOD_VERSION
-# labels below intentionally retain their tested build identity; public version
-# and updater ordering come from the 1.36.2 launcher manifest.
+# Public, embedded-menu and runtime build identities match this release.
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -54,7 +52,7 @@ target_include_directories(FirstPersonUpdater PRIVATE src "${CMAKE_CURRENT_BINAR
 target_link_libraries(FirstPersonUpdater PRIVATE mod_update_core shell32)
 install(TARGETS FirstPersonUpdater RUNTIME DESTINATION scripts/Custom/FirstPerson/updater)
 add_library(mod_embedded_ui STATIC src/embedded_menu.cpp)
-target_compile_definitions(mod_embedded_ui PRIVATE JISH_MOD_VERSION="1.36.1-native-head-look-test2")
+target_compile_definitions(mod_embedded_ui PRIVATE JISH_MOD_VERSION="1.36.3")
 target_include_directories(mod_embedded_ui PUBLIC src vendor)
 target_link_libraries(mod_embedded_ui PUBLIC mod_settings mod_imgui mod_updates)
 add_library(JishsFirstPersonMod SHARED
@@ -62,7 +60,7 @@ add_library(JishsFirstPersonMod SHARED
     src/body_flip_runtime.cpp src/bootstrap.cpp src/hooks.cpp src/first_person_runtime.cpp src/stock_bridge.cpp src/stock_camera_feed.cpp src/bail_collision.cpp src/native_camera_interop.cpp src/bail_camera_trace.cpp src/head_attachment.cpp src/proven_camera.cpp src/comfort.cpp src/game_camera_ownership.cpp
     src/proven_debug.cpp src/proven_input.cpp src/stick_runtime.cpp src/stick_input_filter.cpp vendor/Extension/UI/Overlay/playstation_input.cpp
     vendor/Engine/Game/Build/image_identity.cpp src/embedded_runtime.cpp src/recording_input.cpp)
-target_compile_definitions(JishsFirstPersonMod PRIVATE JISH_MOD_VERSION="1.36.1-native-head-look-test2")
+target_compile_definitions(JishsFirstPersonMod PRIVATE JISH_MOD_VERSION="1.36.3")
 target_include_directories(JishsFirstPersonMod PRIVATE src vendor vendor/Extension/Skater)
 target_link_libraries(JishsFirstPersonMod PRIVATE mod_embedded_ui mod_hooks mod_compatibility bcrypt cfgmgr32 hid user32 runtimeobject windowsapp dxguid shell32)
 set_target_properties(JishsFirstPersonMod PROPERTIES PREFIX "" OUTPUT_NAME "JishsFirstPersonMod")
@@ -99,7 +97,7 @@ add_library(mod_menu_input STATIC src/menu_input.cpp)
 target_include_directories(mod_menu_input PUBLIC src vendor vendor/External/imgui)
 target_link_libraries(mod_menu_input PUBLIC user32 mod_hooks)
 add_library(mod_menu_ui STATIC src/menu.cpp)
-target_compile_definitions(mod_menu_ui PRIVATE JISH_MOD_VERSION="1.36.1-native-head-look-test2")
+target_compile_definitions(mod_menu_ui PRIVATE JISH_MOD_VERSION="1.36.3")
 target_include_directories(mod_menu_ui PUBLIC src vendor)
 target_link_libraries(mod_menu_ui PUBLIC mod_settings mod_imgui mod_menu_input)
 
@@ -134,7 +132,7 @@ target_link_libraries(mod_menu_ui PUBLIC mod_settings mod_imgui mod_menu_input)
     target_link_libraries(body_flip_tests PRIVATE mod_settings)
     add_test(NAME body_flip_detection_handoffs_and_persistence COMMAND body_flip_tests)
     add_executable(menu_layout_tests tests/menu_layout_tests.cpp src/menu.cpp "${CMAKE_CURRENT_BINARY_DIR}/fonts.rc")
-    target_compile_definitions(menu_layout_tests PRIVATE JISH_MOD_VERSION="1.36.1-native-head-look-test2")
+    target_compile_definitions(menu_layout_tests PRIVATE JISH_MOD_VERSION="1.36.3")
     target_link_libraries(menu_layout_tests PRIVATE mod_settings mod_imgui user32)
     add_test(NAME menu_layout_dpi COMMAND menu_layout_tests)
     add_executable(sony_input_probe tools/sony_input_probe.cpp)

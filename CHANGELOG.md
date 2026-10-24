@@ -1,6 +1,6 @@
 # Changelog
 
-## ReSkate 2.1.2 update
+## 1.36.3 — ReSkate 2.1.2
 
 - Improved bail camera rotation so the view follows the player’s head more consistently during falls.
 - Improved bail camera collision handling to reduce sticking in walls, floors and objects after hard impacts.
