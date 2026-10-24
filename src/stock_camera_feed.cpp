@@ -41,6 +41,7 @@ BailCollision collision;
 CollisionPoint collision_seed{},collision_player{};
 bool collision_seed_ready{},collision_player_ready{};
 std::uintptr_t collision_world{};
+unsigned collision_wipeout{};bool collision_bailing{};
 std::uintptr_t smoothing_camera{};
 std::uint64_t smoothing_marker_generation{};
 std::array<std::uintptr_t,5> transition_owner{};
@@ -49,6 +50,7 @@ bool from_stock(void* caller) {
         reinterpret_cast<LPCWSTR>(caller),&owner) && owner==stock_module;
 }
 void reset_camera_smoothing() {
+    collision_wipeout=0;collision_bailing=false;
     reset_body_flip();flip_camera.reset();
     collision.reset();collision_seed_ready=collision_player_ready=false;collision_world=0;
     smoothing.reset();transition.reset();bail_view.reset();set_bail_view_suspended(false);smoothing_camera=0;
@@ -152,6 +154,12 @@ void transform_hook(std::uintptr_t camera,const Matrix* input) {
                         (camera_overrides_allowed(state,movement) && movement.mode==2 && movement.custom_mode==2);
                     const bool recovery=bail && camera_look_allowed(config,state,movement) && head.valid;
                     if(config.third_person_bailing) bail_view.reset();
+                    const unsigned wipeout=unsigned(state.animation_wipeout)|(unsigned(state.wipeout_request)<<1);
+                    if((bail && !collision_bailing) || (movement.recovery_verified && state.animation_valid && (wipeout&~collision_wipeout))) {
+                        collision.reset();collision_seed_ready=false;
+                    }
+                    collision_bailing=bail;
+                    if(movement.recovery_verified && state.animation_valid) collision_wipeout=wipeout;
                     const bool previous_getup=bail_view.getup_episode();
                     const auto* player=movement.position_valid ? &movement.position:nullptr;
                     const bool control=movement.recovery_controllable || (!bail && normal);
@@ -241,10 +249,28 @@ void transform_hook(std::uintptr_t camera,const Matrix* input) {
                             // normal position (including head attachment), not
                             // the stock camera position saved before composition.
                             const CollisionPoint normal_target=normal_position;
+                            CollisionEscape escape;
+                            const CollisionEscape* escape_frame=nullptr;
+                            if(head.valid && view.calibrated) {
+                                escape.head=view.head_target;
+                                const auto rotation=head_camera_rotation(head);
+                                escape.axes={dingosdk::first_person::rotate(rotation,{0,1,0}),
+                                    dingosdk::first_person::rotate(rotation,{1,0,0}),dingosdk::first_person::rotate(rotation,{0,0,-1})};
+                                escape_frame=&escape;
+                            }
                             const auto corrected=collision.resolve(desired,seed,frame,[&](auto from,auto to,float radius) { return native_bail_sweep(world,from,to,radius); },
-                                control && bail_view.detached(),&normal_target,bail_view.position_return_remaining(frame));
+                                control && bail_view.detached(),&normal_target,bail_view.position_return_remaining(frame),
+                                bail && !control && !bail_view.detached() && head.valid && view.calibrated,escape_frame);
                             for(unsigned i=0;i<3;++i) matrix[12+i]=corrected[i];
                             bail_view.accept_displayed_position(corrected);
+                            view.collision=collision.info();
+                            if(std::string_view(view.collision.fallback_reason)!="none") {
+                                static ULONGLONG last_report{};const auto tick=GetTickCount64();
+                                if(!last_report || tick-last_report>=5000) {
+                                    last_report=tick;log(std::string("Bail collision head fallback: ")+view.collision.fallback_reason+
+                                        "; obstruction_ms="+std::to_string(view.collision.obstruction_seconds*1000));
+                                }
+                            }
                         } else { collision.reset();collision_world=0; }
                         collision_seed={matrix[12],matrix[13],matrix[14]};collision_seed_ready=true;
                         if(!bail && valid) bail_view.remember(matrix,native,head,normal && !flip_owned);
@@ -307,7 +333,7 @@ bool install_stock_camera_feed(std::uintptr_t base,HMODULE stock) {
     original_transform=reinterpret_cast<Transform>(base+addresses::camera_transform_setter);
     feed_prepared.store(true,std::memory_order_release);
     set_background_flush(flush_bail_camera_trace);
-    log("Camera trace v11 ready: smoothed get-up head position and seamless 300 ms return; no get-up character writes.");
+    log("Camera trace v12 ready: smoothed get-up head position and seamless 300 ms return; no get-up character writes.");
     bool source_ready=false;
     for(unsigned tries=0;tries<6000;++tries) {
         std::uint8_t initialized{};std::uintptr_t live_base{},callback{};

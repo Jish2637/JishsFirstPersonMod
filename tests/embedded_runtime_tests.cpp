@@ -38,7 +38,7 @@ int main(){try {
  polling_step();require(polls==1 && draws==0,"camera refresh depends on open Insert");
  menu_visible=true;polling_step();require(polls==2,"open-menu poll");
  enabled=false;polling_step();require(polls==2,"disabled integration polled");enabled=true;
- std::vector<std::byte> state(70000),module(0x1900000);
+ std::vector<std::byte> state(70000),module(embedded211::userdata_slot+0x1000);
  overlay_state=reinterpret_cast<std::uintptr_t>(state.data());stock_base=reinterpret_cast<std::uintptr_t>(module.data());
  auto store=[](std::uintptr_t at,const auto& value){std::memcpy(reinterpret_cast<void*>(at),&value,sizeof(value));};
  store(overlay_state+embedded211::state_menu+embedded211::menu_page,3);

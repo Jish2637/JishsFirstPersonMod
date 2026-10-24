@@ -1,4 +1,5 @@
 #include "stick_runtime.h"
+#include "spectator_runtime.h"
 #include "native_head_look.h"
 #include "marker_reset.h"
 #include "menu.h"
@@ -255,6 +256,7 @@ void note_camera_view(const dingosdk::first_person::Matrix& pose,dingosdk::first
 void note_native_camera_heading(const dingosdk::first_person::Matrix& pose) { note_camera_view(pose,{0,0,0,1}); }
 StickAim stick_camera_aim() { const auto value=snapshot();return live_foot(value) ? value.aim:StickAim{}; }
 StickInputPolicy stick_input_policy(unsigned slot) {
+    if(const auto spectator=spectator_input_policy(slot);spectator.mask) return spectator;
     const auto value=snapshot();
     if(slot!=~0u && (slot>=4 || value.device>15 || !(value.device&(1u<<slot)))) return {};
     if(!value.aim.capture || !live_foot(value)) return {};

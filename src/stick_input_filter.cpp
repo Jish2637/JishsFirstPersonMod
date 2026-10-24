@@ -91,13 +91,15 @@ StockHid original_hid{};
 void filter_sony_report(unsigned path,std::uintptr_t source,dingosdk::PlayStationPad kind,std::span<std::uint8_t> report,bool eligibility_checked=false,StickInputPolicy policy={},bool menu_capture=false) {
     if(!eligibility_checked) menu_capture=panel_gameplay_blocked();
     if(menu_capture) {neutral_sony_pad(kind,report);return;}
-    if(!eligibility_checked && !live_glances()) { clear_glance_filter();return; }
+    if(!eligibility_checked) {
+        policy=stick_input_policy();
+        if(!policy.mask && !live_glances()) {clear_glance_filter();return;}
+    }
     const auto parsed=dingosdk::parse_playstation_report(kind,report.size()>64,report.data(),report.size());
     if(!parsed) return;
     std::uint32_t buttons=parsed->buttons;
     if(parsed->left_trigger>30) buttons|=0x10000;
     if(parsed->right_trigger>30) buttons|=0x20000;
-    if(!eligibility_checked) policy=stick_input_policy();
     if(policy.captures(buttons)) set_sony_stick(kind,report,policy.axes);
     std::lock_guard lock(glance_mutex);
     auto& state=glance_sources[{path,source}];
@@ -282,13 +284,13 @@ bool install_stick_input_filter() {
        !add("GetRawInputBuffer",reinterpret_cast<void*>(&filtered_buffer),&buffer)) return false;
     original_data=reinterpret_cast<RawData>(data);original_buffer=reinterpret_cast<RawBuffer>(buffer);
     const auto stock=GetModuleHandleW(L"reskate.dll");const auto base=reinterpret_cast<std::uintptr_t>(stock);
-    const bool hid_verified=stock && stock_contract::selected && std::string_view(stock_contract::selected->version)=="2.1.1" &&
+    const bool hid_verified=stock && stock_contract::selected && std::string_view(stock_contract::selected->version)=="2.1.2" &&
         verified_stock_hid([](std::uintptr_t address,void* data,std::size_t size) { return memory::read_bytes(address,data,size); },base);
     if(hid_verified) {
         void* original{};auto* target=reinterpret_cast<void*>(base+stock_hid_rva);
         if(owned_hook_prepare(target,reinterpret_cast<void*>(&filtered_stock_hid),&original)!=HookOk) return false;
         original_hid=reinterpret_cast<StockHid>(original);pending.push_back(target);
-    } else log("Glance emote blocking unavailable: shared ReSkate 2.0.7 HID handler did not verify. Existing stick filters remain available.");
+    } else log("Glance emote blocking unavailable: shared ReSkate 2.1.2 HID handler did not verify. Existing stick filters remain available.");
     if(!prepare_direct_input(pending)) log("DirectInput gesture coverage incomplete: device adapters could not be prepared.");
     if(!prepare_native_hid(pending)) return false;
     for(auto* target:pending) if(hook_queue_enable(target)!=HookOk) return false;

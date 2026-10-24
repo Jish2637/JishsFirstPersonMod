@@ -208,7 +208,7 @@ void read_hook(void* user,void* model) {
     // A concurrent poll must never wait for this lock while holding stock's mutex.
     std::unique_lock spring_lock(spring_mutex,std::try_to_lock);
     auto* debug=reinterpret_cast<DebugPrefix*>(static_cast<std::byte*>(model)+model_debug_offset);
-    observe_stock_camera_owner(debug->free_camera || debug->drone_follow);
+    observe_stock_camera_owner(debug->free_camera || (!uses_v212_layout(selected) && debug->drone_follow));
     // No STL object crosses DLL ownership. Only the verified POD prefix is read
     // and updated in the stock-owned model, after its normal callback returns.
     publish_native_controls(read_native_controls(model));

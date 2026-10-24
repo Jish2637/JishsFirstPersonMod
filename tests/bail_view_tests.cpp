@@ -19,10 +19,10 @@ std::vector<std::string> fields(const std::string& line) { std::vector<std::stri
 void replay(const char* path) {
     std::ifstream file(path);check(bool(file),"trace cannot be read");std::string line;std::getline(file,line);
     auto names=fields(line);std::map<std::string,unsigned> columns;for(unsigned i=0;i<names.size();++i) columns[names[i]]=i;
-    BailView view;std::string event;Quat offset{0,0,0,1};bool calibrated=false;unsigned rows=0,bail_rows=0,events=0,attached_rows=0;
+    BailView view;std::string event;unsigned rows=0,bail_rows=0,events=0,attached_rows=0;
     while(std::getline(file,line)) {
         auto values=fields(line);auto value=[&](const std::string& key) { return std::stod(values.at(columns.at(key))); };
-        if(values[columns.at("event")]!=event) { event=values[columns.at("event")];view.reset();calibrated=false;++events; }
+        if(values[columns.at("event")]!=event) { event=values[columns.at("event")];view.reset();++events; }
         auto matrix=[&](const std::string& prefix) { auto result=pose();write(result,{static_cast<float>(value(prefix+"qx")),static_cast<float>(value(prefix+"qy")),static_cast<float>(value(prefix+"qz")),static_cast<float>(value(prefix+"qw"))}, {static_cast<float>(value(prefix+"x")),static_cast<float>(value(prefix+"y")),static_cast<float>(value(prefix+"z"))});return result; };
         const auto native=matrix("native_");HeadPose current;current.valid=value("head_valid")!=0;current.head=matrix("head_");current.root=matrix("root_");
         const bool bail=value("bail_latched") || value("wipeout_request") || value("animation_wipeout") || value("recovery");
@@ -30,17 +30,13 @@ void replay(const char* path) {
         const auto output=view.apply(native,current,bail,normal,value("time_ms")/1000.);
         if(bail) {
             auto expected=native;
-            if(current.valid && view.info().calibrated && calibrated)
-                write(expected,multiply(orientation(current.head),offset),{native[12],native[13],native[14]});
-            check(view.info().blocked && difference(output,expected)<.00002f,"trace bail orientation did not follow calibrated head");++bail_rows;
+            if(current.valid)
+                write(expected,head_camera_rotation(current),{native[12],native[13],native[14]});
+            check(view.info().blocked && difference(output,expected)<.00002f,"trace bail orientation did not follow physical head axes");++bail_rows;
         }
         if(view.info().attached) { ++attached_rows;check(length(subtract({output[12],output[13],output[14]},{current.head[12],current.head[13],current.head[14]}))<=.40001f,"trace head attachment drifted"); }
         if(!view.info().blocked) {
             view.remember(value("phase")==0 ? matrix("final_"):output,native,current,normal);
-            if(normal && current.valid && length(subtract({native[12],native[13],native[14]},
-                {current.head[12],current.head[13],current.head[14]}))<=.4f) {
-                offset=normalized(multiply(conjugate(orientation(current.head)),orientation(native)));calibrated=true;
-            }
         }
         ++rows;
     }
@@ -52,7 +48,8 @@ int main(int argc,char** argv) {
     BailView view;auto base=pose(20,.1f);view.apply(base,head(),false,true,0);view.remember(base,base,head(),true);
     auto moving_head=head(2);const auto held=view.apply(pose(170,4),moving_head,true,false,.016);
     check(view.info().blocked && view.info().attached && std::abs(held[12]-2.1f)<.00001f,"head attachment did not move directly");
-    check(difference(base,held)<.00001f,"bail direction changed");
+    auto head_facing=held;write(head_facing,head_camera_rotation(moving_head),{held[12],held[13],held[14]});
+    check(difference(head_facing,held)<.00001f,"bail retained calibrated native look direction");
     auto revised=pose(-170,4);revised[3]=.123f;
     auto same=view.apply(revised,moving_head,true,false,.016);
     check(difference(held,same)<.00001f && same[3]==.123f,"same-frame hold or metadata failed");
@@ -67,7 +64,7 @@ int main(int argc,char** argv) {
     check(view.info().blocked && view.info().phase==1,"renewed bail did not hold");
     view.reset();auto distant=pose(0,1);view.apply(distant,head(),false,true,0);view.remember(distant,distant,head(),true);
     auto rejected=view.apply(pose(90,2),head(1),true,false,.016);
-    check(!view.info().calibrated && rejected[12]==2 && difference(rejected,pose(90,2))<.00002f,"invalid offset calibration was accepted");
+    check(!view.info().calibrated && rejected[12]==2 && difference(rejected,head_facing)<.00002f,"invalid offset calibration was accepted");
     view.reset();view.apply(base,head(),false,true,0);view.remember(base,base,head(),true);
     auto attached=view.attach(pose(45,10),head(2));
     check(std::abs(attached[12]-2.1f)<.00001f && difference(attached,pose(45))<.00001f,"hippy attachment changed orientation or lagged position");
@@ -91,7 +88,7 @@ int main(int argc,char** argv) {
     for(int i=1;i<=20;++i) {
         write(tumble.head,from_rotation_vector({i*.12f,i*-.09f,i*.16f}),{1,0,0});
         const auto output=view.apply(pose(80,1),tumble,true,false,i*.016);
-        auto expected=tumble.head;write(expected,multiply(orientation(tumble.head),local_rotation),
+        auto expected=tumble.head;write(expected,head_camera_rotation(tumble),
             add({1,0,0},rotate(orientation(tumble.head),local_position)));
         check(difference(output,expected)<.00002f && length(subtract({output[12],output[13],output[14]},
             {expected[12],expected[13],expected[14]}))<.00001f,"full head rotation/position target failed");
@@ -172,7 +169,10 @@ int main(int argc,char** argv) {
     // Smooth live head position independently of its spinning orientation.
     view.reset();auto upright=head();auto front=pose(35,.1f);Vec3 player{0,0,0};
     view.apply(front,upright,false,true,0);view.remember(front,front,upright,true);
-    auto before=head(1);write(before.head,from_rotation_vector({.25f,.1f,.3f}),{1,0,0});
+    // A neutral camera needs the inverse joint-to-camera axis conversion;
+    // an identity Head joint physically looks upward, not horizontally.
+    const auto neutral_head=conjugate(head_camera_rotation(head()));
+    auto before=head(1);write(before.head,multiply(from_rotation_vector({.25f,.1f,.3f}),neutral_head),{1,0,0});
     auto before_spin=view.apply(pose(0,1),before,true,false,.016);
     before_spin=view.finish(before_spin,before,&player,.016,false);
     auto spinning=head(1);write(spinning.head,from_rotation_vector({1.f,-2.f,2.f}),{1,0,0});

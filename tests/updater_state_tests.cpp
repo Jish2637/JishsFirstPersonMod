@@ -21,7 +21,7 @@ int main(int argc,char** argv){try {
  const auto isolated=install_root/(L"updater-state-"+std::to_wstring(GetTickCount64()));
  write_text(install_root/L"Mods/JishsFirstPersonMod/manifest.json","{\"version_number\":\"1.34.0\"}");
  write_atomic(install_root/L"ReSkate.dll",read_file(std::filesystem::absolute(argv[1])));
- zip_fixture=read_file(std::filesystem::absolute(argv[2]));const auto tag="1.35.0-reskate-2.1.1";
+ zip_fixture=read_file(std::filesystem::absolute(argv[2]));const auto tag="1.35.0-reskate-2.1.2";
  json_fixture=std::string("{\"tag_name\":\"")+tag+"\",\"draft\":false,\"prerelease\":false,\"assets\":[{\"name\":\"JishsFirstPersonMod-"+tag+".zip\",\"browser_download_url\":\"https://github.com/Jish2637/JishsFirstPersonMod/releases/download/"+tag+"/JishsFirstPersonMod-"+tag+".zip\",\"size\":"+std::to_string(zip_fixture.size())+",\"digest\":\"sha256:"+sha256(zip_fixture)+"\"}]}";
  write_text(isolated/L"updates/preferences.ini","automatic_check=0\n");
  start(install_root/L"scripts/Custom",isolated);

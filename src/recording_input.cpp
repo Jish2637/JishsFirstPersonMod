@@ -47,7 +47,7 @@ NativeRecordingReader native_reader() {
     original_reader=reinterpret_cast<NativeRecordingReader>(reader);original_gamepad=reinterpret_cast<ReadGamepad>(gamepad);
     if(hook_queue_enable(reinterpret_cast<void*>(base+native211::controller.rva))!=HookOk ||
        hook_queue_enable(reinterpret_cast<void*>(base+native211::gamepad.rva))!=HookOk) return nullptr;
-    log("Verified 2.1.1 controller readers: stock navigation; explicit recording captures only while focused.");
+    log("Verified 2.1.2 controller readers: stock navigation; explicit recording captures only while focused.");
     return original_reader;
 
 }

@@ -39,6 +39,7 @@ std::string_view previous_episode="none",previous_reset="none";
 JumpStage previous_stage=JumpStage::unknown;
 int previous_bail_phase{},previous_getup_phase{};
 bool previous_control{};
+std::string_view previous_collision_result="none",previous_collision_fallback="none";
 std::atomic<unsigned> dropped{};
 void matrix_fields(std::ostream& out,const Matrix& pose) {
     for(unsigned i=12;i<15;++i) out<<','<<pose[i];
@@ -51,7 +52,7 @@ void record_bail_camera(const Matrix& native_pose,const Matrix& final_pose,const
         std::unique_lock lock(trace_mutex,std::try_to_lock);if(!lock.owns_lock()) { ++dropped;return; }
         const auto now=GetTickCount64();
         const bool bail=bail_camera_locked(state,movement) || view.blocked || jump_camera_action(movement);
-        if(owner!=state.core) { owner=state.core;pre.clear();previous_bail=false;previous_ready=false;start=until=next_sample=0; }
+        if(owner!=state.core) { owner=state.core;pre.clear();previous_bail=false;previous_ready=false;previous_collision_result=previous_collision_fallback="none";start=until=next_sample=0; }
         const unsigned settings=unsigned(config.look_only) | (unsigned(config.stick.enabled)<<1) |
             (unsigned(config.disable_spring_on_foot)<<2) | (unsigned(config.stick.lock_mount_jump)<<3) |
             (unsigned(config.stick.lock_hippy_jump)<<4) | (unsigned(config.spring.enabled)<<5) |
@@ -66,7 +67,8 @@ void record_bail_camera(const Matrix& native_pose,const Matrix& final_pose,const
             (action!=previous_action || reason!=previous_reason || status!=previous_status ||
              movement.jump_episode.stage!=previous_stage || movement.jump_episode.type!=previous_episode ||
              movement.jump_episode.reset_reason!=previous_reset || view.phase!=previous_bail_phase || view.getup_camera_phase!=previous_getup_phase ||
-             movement.recovery_controllable!=previous_control));
+             movement.recovery_controllable!=previous_control || view.collision.escape_result!=previous_collision_result ||
+             view.collision.fallback_reason!=previous_collision_fallback));
         if(now<next_sample && !changed) return;
         next_sample=now+50;
         if(changed) {
@@ -79,6 +81,7 @@ void record_bail_camera(const Matrix& native_pose,const Matrix& final_pose,const
         previous_action=action;previous_reason=reason;previous_status=status;
         previous_stage=movement.jump_episode.stage;previous_episode=movement.jump_episode.type;previous_reset=movement.jump_episode.reset_reason;
         previous_bail_phase=view.phase;previous_getup_phase=view.getup_camera_phase;previous_control=movement.recovery_controllable;
+        previous_collision_result=view.collision.escape_result;previous_collision_fallback=view.collision.fallback_reason;
         Sample sample;sample.time=now;sample.event=event;sample.phase=bail ? 1:2;
         sample.revision=settings_revision;sample.settings_changed=settings_changed;sample.action=action;
         sample.attachment_reason=reason;sample.attachment_requested=attachment_requested;
@@ -103,11 +106,11 @@ void flush_bail_camera_trace() noexcept {
         std::vector<Sample> batch;
         { std::lock_guard lock(trace_mutex);batch.swap(pending); }
         if(batch.empty()) return;
-        const auto path=data_directory()/"logs/bail-camera-trace-v11.csv";
+        const auto path=data_directory()/"logs/bail-camera-trace-v12.csv";
         std::filesystem::create_directories(path.parent_path());
         const std::string_view header="time_ms,event,phase,mode,custom_mode,physics,active_child,child_vtable,state_valid,animation_valid,wipeout_request,animation_wipeout,recovery,bail_latched,selector_valid,selector_current,selector_next,requested,active,saved_spring,effective_spring,native_spring,disable_foot,lock_mount_jump,mounting,jumping,stick_enabled,stick_active,turn_character,look_pitch,look_yaw,native_x,native_y,native_z,native_qx,native_qy,native_qz,native_qw,final_x,final_y,final_z,final_qx,final_qy,final_qz,final_qw,facing_valid,facing_x,facing_y,facing_z,facing_qx,facing_qy,facing_qz,facing_qw,head_valid,root_x,root_y,root_z,root_qx,root_qy,root_qz,root_qw,head_x,head_y,head_z,head_qx,head_qy,head_qz,head_qw,camera_head_distance_m,custom_position_delta_m,custom_angle_delta_deg,dropped,hold_phase,view_blocked,head_attached,offset_calibrated,offset_x,offset_y,offset_z,lock_hippy_jump,hippy_candidate,hippy_active,hippy_rising_samples,hippy_up_speed,reconciling,reconcile_remaining_deg,manual_takeover,facing_eligible\n";
         std::string extended_header(header);extended_header.pop_back();
-        extended_header+=",settings_revision,settings_changed,detected_action,attachment_reason,attachment_requested,camera_eligible,attachment_status,native_child,episode_type,episode_reset_reason,bail_view_phase,recovery_verified,recovery_controllable,recovery_flags,recovery_motion_override,head_target_qx,head_target_qy,head_target_qz,head_target_qw,recovery_look_yaw,recovery_look_pitch,getup_requested,getup_locked,getup_camera_phase,getup_blend_progress,head_target_x,head_target_y,head_target_z,body_flip_tilt,body_flip_rate,body_flip_phase,body_flip_head_lock\n";
+        extended_header+=",settings_revision,settings_changed,detected_action,attachment_reason,attachment_requested,camera_eligible,attachment_status,native_child,episode_type,episode_reset_reason,bail_view_phase,recovery_verified,recovery_controllable,recovery_flags,recovery_motion_override,head_target_qx,head_target_qy,head_target_qz,head_target_qw,recovery_look_yaw,recovery_look_pitch,getup_requested,getup_locked,getup_camera_phase,getup_blend_progress,head_target_x,head_target_y,head_target_z,body_flip_tilt,body_flip_rate,body_flip_phase,body_flip_head_lock,collision_obstruction_ms,collision_head_distance_m,collision_escape_attempts,collision_escape_queries,collision_query_valid,collision_initial_fraction,collision_escape_result,collision_fallback_reason\n";
         std::ostringstream out;
         out<<std::setprecision(9);
         for(const auto& s:batch) {
@@ -138,10 +141,14 @@ void flush_bail_camera_trace() noexcept {
                 <<','<<s.view.getup_blend;
             for(const auto value:s.view.head_target) out<<','<<value;
             out<<','<<m.body_flip_tilt<<','<<m.body_flip_rate<<','<<m.body_flip_phase<<','<<m.body_flip_head_lock;
+            const auto& collision=s.view.collision;
+            out<<','<<collision.obstruction_seconds*1000<<','<<collision.head_distance<<','<<collision.escape_attempts
+                <<','<<collision.escape_queries<<','<<collision.query_valid<<','<<collision.initial_fraction
+                <<','<<collision.escape_result<<','<<collision.fallback_reason;
             out<<'\n';
         }
         if(!append_rotating_log(path,out.str(),trace_log_limit,log_archives,extended_header))
-            log("Could not write bail-camera-trace-v11.csv; later batches will retry.");
+            log("Could not write bail-camera-trace-v12.csv; later batches will retry.");
     } catch(...) { log("Bail camera trace flush failed."); }
 }
 }

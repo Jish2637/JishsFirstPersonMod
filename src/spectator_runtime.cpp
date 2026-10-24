@@ -25,6 +25,8 @@ DWORD camera_thread{};
 SpectatorRenderWriter render_writer{};
 reskate_spectator::FrameSpring spring;
 reskate_spectator::Settings spring_settings;
+BoardLookState board_look;StickAim board_aim{};
+unsigned look_device{};std::uint32_t look_modifier{};double input_time{};
 spectator::Identity spring_owner{};
 reskate_spectator::Vec3 previous_origin{};
 double frame_time{};
@@ -37,7 +39,7 @@ spectator::View view;
 std::optional<spectator::Target> target;
 struct RenderEvidence { spectator::Identity actor;std::uintptr_t buffer;double sampled; };
 std::optional<RenderEvidence> render_evidence;
-std::string feedback="First-person spectator view requires verified ReSkate 2.1.1.";
+std::string feedback="First-person spectator view requires verified ReSkate 2.1.2.";
 using Render=bool(*)(std::uintptr_t,std::uintptr_t);
 Render original_render{};
 spectator::HiddenHead hidden;
@@ -55,7 +57,7 @@ bool write(std::uintptr_t address,const std::array<float,3>& scale) noexcept {
 void restore_head() {
     hidden.restore(memory_read,write,[](std::uintptr_t holder) { return dingosdk::multiplayer::read_native_pose_layout(memory_read,game_base,holder,512); });
 }
-void reset_look() { spring.reset();spring_owner={};frame_time=0; }
+void reset_look() { spring.reset();spring_owner={};frame_time=0;board_look.reset();board_aim={};look_device=look_modifier=0;input_time=0; }
 void discard() { restore_head();target.reset();render_evidence.reset();view_camera=0;rendered_view=false;view.discard();reset_look(); }
 bool render(std::uintptr_t animation_interface,std::uintptr_t render_data) {
     const bool result=original_render(animation_interface,render_data);
@@ -75,7 +77,7 @@ bool render(std::uintptr_t animation_interface,std::uintptr_t render_data) {
                         restore_head();
                         if(view.owns_camera() && render_writer && GetCurrentThreadId()==camera_thread && frame_time && now()-frame_time<=.250) {
                             const auto eyes=spectator::eye_pose(memory_read,pose.buffer,follow_matrix);
-                            const auto camera_pose=spring.sample(eyes.camera,spring_settings,eyes.origin);
+                            const auto camera_pose=aim_head_relative(spring.sample(eyes.camera,spring_settings,eyes.origin),board_aim);
                             const auto refined=view.apply(follow_matrix,camera_pose,target->identity,frame_time);
                             if(!render_writer(camera_client,view_camera,refined,view.fov(follow_fov,menu_snapshot().config.fov,frame_time)))
                                 throw std::runtime_error("Spectator camera ownership changed.");
@@ -97,6 +99,7 @@ bool render(std::uintptr_t animation_interface,std::uintptr_t render_data) {
 }
 }
 bool spectator_available() noexcept { return supported.load(); }
+bool spectator_first_person_enabled() {std::lock_guard lock(spectator_mutex);return view.session() && view.preferred();}
 bool spectator_transform_call(std::uintptr_t caller) noexcept { return supported.load() && caller==stock_base+spectator::party_transform_return; }
 bool spectator_fov_call(std::uintptr_t caller) noexcept { return supported.load() && caller==stock_base+spectator::party_fov_return; }
 std::string spectator_status() { std::lock_guard lock(spectator_mutex);return feedback; }
@@ -129,7 +132,7 @@ void initialize_spectator(std::uintptr_t game,std::uintptr_t stock,SpectatorRend
     }
     if(result!=HookOk) { unavailable("render hook installation failed: "+hook_failure_description(result));return; }
     { std::lock_guard lock(spectator_mutex);feedback="Spectator view: follow camera. Use the First Person binding while watching.";supported=true; }
-    log("Spectator head view: verified ReSkate 2.1.1 ID/slot/generation bridge and party camera/render callbacks.");
+    log("Spectator head view: verified ReSkate 2.1.2 ID/slot/generation bridge and party camera/render callbacks.");
 }
 void update_spectator_session(bool watching,const Config& config,std::uintptr_t next_context,bool blocked,std::uintptr_t client) {
     const bool previously_enabled=preference_seen.exchange(config.spectator_first_person);
@@ -156,8 +159,28 @@ bool toggle_spectator_view() {
     std::lock_guard lock(spectator_mutex);
     if(interrupted) { feedback="Spectator view paused. Close the menu and focus the game to switch.";return false; }
     if(!view.toggle())return false;
+    board_look.reset();board_aim={};input_time=0;
     feedback=view.preferred() ? "Spectator view: first person selected.":"Spectator view: follow camera selected.";
     log(feedback);return true;
+}
+void update_spectator_input(const Config& config,const GameplayInput& input,bool blocked) {
+    std::lock_guard lock(spectator_mutex);
+    const auto time=now();
+    const bool eligible=!blocked && !interrupted && supported.load() && compatibility::enabled() &&
+        view.session() && view.preferred() && view.owns_camera() && rendered_view && target && time-view_sampled<=.250;
+    board_aim=board_look.update(config.board,{input.right_x,input.right_y},eligible,input,time);
+    look_device=eligible ? input.device:0;look_modifier=config.board.modifier;input_time=eligible ? time:0;
+}
+StickInputPolicy spectator_input_policy(unsigned slot) {
+    // Native camera writes may poll input while the render callback already
+    // owns this mutex. Input adapters must never wait on their own renderer.
+    std::unique_lock lock(spectator_mutex,std::try_to_lock);
+    if(!lock.owns_lock()) return {};
+    if(!input_time || now()-input_time>.1 || interrupted || !view.preferred() || !view.owns_camera() ||
+        !board_aim.capture || !compatibility::enabled()) return {};
+    if(slot!=~0u && (slot>=4 || look_device>15 || !(look_device&(1u<<slot)))) return {};
+    // Spectator look must not steer the native party camera or the local skater.
+    return {look_modifier,{}};
 }
 bool spectator_transform(std::uintptr_t camera,const spectator::Matrix& normal,spectator::Matrix& output) {
     std::lock_guard lock(spectator_mutex);
@@ -192,7 +215,7 @@ bool spectator_transform(std::uintptr_t camera,const spectator::Matrix& normal,s
         // Resetting here perpetually restarts entry on rotating pose buffers.
         rendered_view=render_evidence && render_evidence->actor==id && render_evidence->buffer==pose.buffer && time-render_evidence->sampled<=.250;
         const auto previous_phase=view.phase();
-        output=view.apply(normal,spring.sample(eyes.camera,spring_settings,eyes.origin),id,time);
+        output=view.apply(normal,aim_head_relative(spring.sample(eyes.camera,spring_settings,eyes.origin),board_aim),id,time);
         if(previous_phase!=view.phase())log(std::string("Spectator camera: ")+body_flip::phase_name(view.phase())+
             " player="+std::to_string(id.id)+" slot="+std::to_string(id.slot)+" generation="+std::to_string(id.generation));
         feedback=view.owns_camera() ? (view.preferred() ? "Spectator view: first person.":"Spectator view: returning to follow camera."):

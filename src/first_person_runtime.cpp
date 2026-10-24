@@ -115,6 +115,7 @@ void tick_mod(std::uintptr_t client) noexcept {
         const auto emote_toggles=toggle_emote_bindings(settings.config,toggle_filter_blocked);
         update_spectator_session(world && game_camera_suspended(),settings.config,context,
             !world || !menu_ready || visible || !focused,client);
+        update_spectator_input(settings.config,controller,toggle_filter_blocked);
         publish_toggle_filter(emote_toggles.companion,emote_toggles.enabled(),controller.device,context,emote_toggles.native);
         if(current_owner!=glance_owner) { glance_owner=current_owner;look.reset(); }
         auto movement=live_camera_movement();

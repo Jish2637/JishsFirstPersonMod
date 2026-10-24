@@ -23,6 +23,7 @@ unsigned render_writes{};
 bool accept_camera=true;
 bool write_camera(std::uintptr_t client,std::uintptr_t camera,const Matrix& matrix,float) {
     check(client==0x1234 && camera==0x100000,"render camera identity changed");
+    check(!spectator_input_policy().mask,"reentrant render input unexpectedly acquired spectator ownership");
     ++render_writes;rendered_camera=matrix;return accept_camera;
 }
 bool native_render(std::uintptr_t,std::uintptr_t) { return true; }
@@ -169,6 +170,34 @@ int main() { try {
     replacement(holder_address+0xc0,address(render_data));
     check(std::abs(rendered_camera[13]-3.89f)<1e-4,"rendered head movement left a one-frame camera offset");
     put(buffer+103*0x30ULL+32,std::array<float,4>{0,1.6f,0,0});frame();
+    // Local modifier-held board look also applies to both spectator camera
+    // callbacks, without changing the watched player's animation pose.
+    config.board.enabled=true;config.board.look_smoothing=0;config.board.center_smoothing=0;
+    GameplayInput pad;pad.available=true;pad.device=1;
+    update_spectator_input(config,pad,false); // arm after modifier release
+    pad.buttons=config.board.modifier;update_spectator_input(config,pad,false);
+    const auto capture=spectator_input_policy(0);
+    check(capture.mask==config.board.modifier && capture.axes.x==0 && capture.axes.y==0 &&
+        !spectator_input_policy(1).mask,"spectator board-look input ownership mismatch");
+    frame();const auto straight=rendered_camera;
+    for(unsigned i=0;i<4;++i) {
+        Sleep(20);pad.right_x=.7f;update_spectator_input(config,pad,false);frame();
+    }
+    using namespace dingosdk::first_person;
+    check(length(rotation_vector(multiply(conjugate(orientation(straight)),orientation(rendered_camera))))>.05f,
+        "modifier-held spectator right stick did not rotate the rendered camera");
+    const auto looked=rendered_camera;
+    check(length(subtract({straight[12],straight[13],straight[14]},
+        {looked[12],looked[13],looked[14]}))<.00001f,"spectator freelook moved off the watched head");
+    pad.buttons=0;pad.right_x=0;
+    for(unsigned i=0;i<3;++i) {Sleep(20);update_spectator_input(config,pad,false);frame();}
+    check(!spectator_input_policy(0).mask &&
+        length(rotation_vector(multiply(conjugate(orientation(straight)),orientation(rendered_camera))))<.00001f,
+        "spectator modifier release did not recenter");
+    pad.buttons=config.board.modifier;update_spectator_input(config,pad,false);
+    update_spectator_input(config,pad,true);
+    check(!spectator_input_policy().mask,"blocked spectator input retained capture");
+    config.board.enabled=false;pad={};update_spectator_input(config,pad,false);frame();
     check(spectator_fov(camera,70)==90 && spectator_fov(camera+8,70)==70,"spectator FOV escaped owned camera");
     std::array<float,3> scale{};std::memcpy(&scale,reinterpret_cast<void*>(buffer+103*0x30ULL),sizeof(scale));check(scale==std::array<float,3>{.001f,.001f,.001f},"watched rendered head remained visible");
     accept_camera=false;replacement(holder_address+0xc0,address(render_data));accept_camera=true;

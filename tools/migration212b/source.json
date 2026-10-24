@@ -1,0 +1,11 @@
+{
+  "revision": "55a7342dc6e7e7be724a17cfc5733b7e265de8e1",
+  "dll_sha256": "96112d915c181b696b5cb8ed17b62a74d09ca2900c4383a4500c1fa88bf76e43",
+  "source_sha256": {
+    "Extension/UI/Overlay/overlay_internal.h": "34d636fc558c30c45fb204d50a50076e0ff4d25b40387c5a466ebf13b8c1f52a",
+    "Extension/UI/Overlay/overlay.h": "9a13f4e07a715dd6d2c599792db8dd9dbc9dadf44fc1c6a3f2f96e0ba1cb36fc",
+    "Extension/Multiplayer/Session/session_internal.h": "19fe0c8d2bbcfd022650918315190a655fa30411c3588e89bf6de542516be277",
+    "External/imgui/imgui.h": "2d0180859ff85e7fe66ed9999b0f05f2fc45176773046a8f86b3b6bd190b0765",
+    "External/imgui/imconfig.h": "0884061cc43e27e1d346fe18dcd1425792eb2532d3d16610a82eb5ac751f7594"
+  }
+}

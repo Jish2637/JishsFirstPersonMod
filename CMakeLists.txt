@@ -58,7 +58,7 @@ target_compile_definitions(mod_embedded_ui PRIVATE JISH_MOD_VERSION="1.36.1-nati
 target_include_directories(mod_embedded_ui PUBLIC src vendor)
 target_link_libraries(mod_embedded_ui PUBLIC mod_settings mod_imgui mod_updates)
 add_library(JishsFirstPersonMod SHARED
-    src/spectator_runtime.cpp
+    src/msc_presence_bridge.cpp src/spectator_runtime.cpp
     src/body_flip_runtime.cpp src/bootstrap.cpp src/hooks.cpp src/first_person_runtime.cpp src/stock_bridge.cpp src/stock_camera_feed.cpp src/bail_collision.cpp src/native_camera_interop.cpp src/bail_camera_trace.cpp src/head_attachment.cpp src/proven_camera.cpp src/comfort.cpp src/game_camera_ownership.cpp
     src/proven_debug.cpp src/proven_input.cpp src/stick_runtime.cpp src/stick_input_filter.cpp vendor/Extension/UI/Overlay/playstation_input.cpp
     vendor/Engine/Game/Build/image_identity.cpp src/embedded_runtime.cpp src/recording_input.cpp)
@@ -68,6 +68,9 @@ target_link_libraries(JishsFirstPersonMod PRIVATE mod_embedded_ui mod_hooks mod_
 set_target_properties(JishsFirstPersonMod PROPERTIES PREFIX "" OUTPUT_NAME "JishsFirstPersonMod")
 include(CTest)
 if(BUILD_TESTING)
+    add_executable(msc_presence_tests tests/msc_presence_tests.cpp)
+    target_include_directories(msc_presence_tests PRIVATE src)
+    add_test(NAME msc_presence_server_gating_and_heartbeat COMMAND msc_presence_tests)
     add_executable(native_head_look_settings_tests tests/native_head_look_settings_tests.cpp)
     target_link_libraries(native_head_look_settings_tests PRIVATE mod_settings)
     add_test(NAME native_head_option_settings_and_preset_persistence COMMAND native_head_look_settings_tests)
@@ -83,7 +86,7 @@ if(BUILD_TESTING)
     add_executable(updater_state_tests tests/updater_state_tests.cpp "${CMAKE_CURRENT_BINARY_DIR}/proxy_digest.h")
     target_include_directories(updater_state_tests PRIVATE src vendor vendor/External "${CMAKE_CURRENT_BINARY_DIR}")
     target_link_libraries(updater_state_tests PRIVATE mod_update_core shell32 winhttp)
-    add_test(NAME updater_background_cancel_decline_and_pending COMMAND updater_state_tests "${CMAKE_CURRENT_SOURCE_DIR}/../upstream/ReSkate-2.1.1.dll" "${CMAKE_CURRENT_SOURCE_DIR}/../Release/JishsFirstPersonMod-1.35.0-reskate-2.1.1.zip")
+    add_test(NAME updater_background_cancel_decline_and_pending COMMAND updater_state_tests "${CMAKE_CURRENT_SOURCE_DIR}/../upstream/ReSkate-2.1.2b.dll" "${CMAKE_CURRENT_SOURCE_DIR}/../Release/JishsFirstPersonMod-1.35.0-reskate-2.1.1.zip")
     add_executable(updater_core_tests tests/updater_core_tests.cpp)
     target_link_libraries(updater_core_tests PRIVATE mod_update_core)
     add_test(NAME updater_metadata_zip_transaction_and_preservation COMMAND updater_core_tests)
@@ -109,9 +112,9 @@ target_link_libraries(mod_menu_ui PUBLIC mod_settings mod_imgui mod_menu_input)
     target_link_libraries(embedded_menu_tests PRIVATE mod_embedded_ui user32)
     add_test(NAME embedded_ui_commands_presets_scopes_and_recording COMMAND embedded_menu_tests)
 
-    add_executable(compat211_tests tests/compat211_tests.cpp)
-    target_link_libraries(compat211_tests PRIVATE mod_compatibility)
-    add_test(NAME official_211_identity_abi_model_and_input COMMAND compat211_tests "${CMAKE_CURRENT_SOURCE_DIR}/../upstream/ReSkate-2.1.1.dll" "${CMAKE_CURRENT_SOURCE_DIR}/../upstream/ReSkate-2.1.0.dll")
+    add_executable(compat212_tests tests/compat212_tests.cpp)
+    target_link_libraries(compat212_tests PRIVATE mod_compatibility)
+    add_test(NAME official_212_identity_abi_model_and_input COMMAND compat212_tests "${CMAKE_CURRENT_SOURCE_DIR}/../upstream/ReSkate-2.1.2b.dll" "${CMAKE_CURRENT_SOURCE_DIR}/../upstream/ReSkate-2.1.0.dll")
     add_executable(user_data_tests tests/user_data_tests.cpp)
     target_include_directories(user_data_tests PRIVATE src)
     add_test(NAME scripts_data_migration_and_preservation COMMAND user_data_tests)

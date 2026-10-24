@@ -25,6 +25,12 @@ void test_board_input_adapters() {
     report[9]=0;report[3]=30;report[4]=240;
     filter_sony_report(3,41,dingosdk::PlayStationPad::dualsense,report,true,{0x100,{.5f,-.75f}});
     check(report[3]==30 && report[4]==240,"Sony held-axis release did not pass physical input verbatim");
+    // Spectator capture is valid while local First Person and local glances
+    // are inactive. It must still reach Sony and DirectInput adapters.
+    qa_spectator=true;qa_active=false;toggle_eligible=false;
+    report[9]=1;report[3]=210;report[4]=150;
+    filter_sony_report(3,42,dingosdk::PlayStationPad::dualsense,report);
+    check(report[3]==128 && report[4]==128,"spectator Sony modifier leaked native camera stick axes");
     std::array<void*,32> table{};table[5]=reinterpret_cast<void*>(&fake_direct_property);table[14]=reinterpret_cast<void*>(&fake_direct_object);
     table[9]=reinterpret_cast<void*>(&direct_state<0>);
     direct_hooks[di_state][0].original=reinterpret_cast<void*>(&fake_direct_state);
@@ -77,5 +83,5 @@ void test_board_input_adapters() {
     device.physical[device.l1]=0x80;direct_state<0>(&device,sizeof(DIJOYSTATE2),data.data());
     std::memcpy(&x,data.data()+offsetof(DIJOYSTATE,lZ),4);
     check(data[device.l1]==0 && x==32767,"independent menu leaked DirectInput buttons or axes");
-    qa_panel=false;qa_capture=false;qa_board_modifier=0;clear_glance_filter();direct_devices.clear();
+    qa_panel=false;qa_capture=false;qa_board_modifier=0;qa_active=true;qa_spectator=false;clear_glance_filter();direct_devices.clear();
 }

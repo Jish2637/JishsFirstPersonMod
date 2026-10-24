@@ -69,7 +69,7 @@ std::string own_proxy() {
  if(hash!=baseline_proxy && hash!=bundled_proxy_sha256)throw std::runtime_error("Unknown dinput8.dll loader; automatic replacement disabled");return hash;
 }
 void verify_runtime() {
- if(sha256(read_file(root/L"ReSkate.dll"))!="d79ff144768ce8b0a8e992c9f134c670a3ff85bb3b437a0eb915876973014301")throw std::runtime_error("Only the exact official ReSkate 2.1.1 runtime is supported");
+ if(sha256(read_file(root/L"ReSkate.dll"))!="96112d915c181b696b5cb8ed17b62a74d09ca2900c4383a4500c1fa88bf76e43")throw std::runtime_error("Only the exact official ReSkate 2.1.2 runtime is supported");
 }
 void save_preferences() {write_text(data_path/L"preferences.ini",snapshot().automatic?"automatic_check=1\n":"automatic_check=0\n");}
 void check_worker() {

@@ -123,7 +123,7 @@ bool start_menu() {
     if(owned_hook_prepare(target,reinterpret_cast<void*>(&draw_hook),&previous)!=HookOk) return false;
     original_draw=reinterpret_cast<Draw>(previous);
     if(hook_queue_enable(target)!=HookOk || apply_owned_hooks()!=HookOk) return false;
-    log("Verified official 2.1.1 Insert > Skater > First Person page replacement active; stock owns UI rendering and navigation.");
+    log("Verified official 2.1.2 Insert > Skater > First Person page replacement active; stock owns UI rendering and navigation.");
     return true;
 }
 }

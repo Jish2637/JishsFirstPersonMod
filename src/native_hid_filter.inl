@@ -122,8 +122,8 @@ void filter_native_sony_read(const StockHidRead& read,DWORD size) {
     // Sony completions through our API hooks, which take native_hid_mutex.
     // Query eligibility BEFORE taking that mutex, never from a locked report.
     const bool menu_capture=panel_gameplay_blocked();
-    if(!menu_capture && !live_glances()) {clear_glance_filter();return;}
     const auto policy=stick_input_policy();
+    if(!menu_capture && !policy.mask && !live_glances()) {clear_glance_filter();return;}
     NativeDiagnostics diagnostics;NativeHidInternal internal;std::lock_guard lock(native_hid_mutex);native_filter_read(read,size,diagnostics,policy,menu_capture);
 }
 void capture_stock_sony_read(const StockHidRead& read,DWORD size) {

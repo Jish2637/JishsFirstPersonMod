@@ -20,7 +20,7 @@ std::vector<std::string> fields(const std::string& text) {
 }
 int main() {
     using namespace jishsfirstpersonmod;using namespace dingosdk::first_person;
-    const auto path=data_directory()/"logs/bail-camera-trace-v11.csv";
+    const auto path=data_directory()/"logs/bail-camera-trace-v12.csv";
     std::filesystem::remove(path);
     const Matrix pose{1,0,0,0,0,1,0,0,0,0,1,0,1,2,3,1};
     ComfortSnapshot state;state.core=1; // invalid animation identity must not be dereferenced
@@ -79,11 +79,20 @@ int main() {
     check(row[column("attachment_status")]=="camera_ineligible","camera eligibility failure missing");
     state.suppressed=false;state.bailing=true;movement.hippy={};movement.mounting=false;
     movement.recovery_verified=movement.recovery_controllable=true;movement.recovery_flags=0x6000;
+    view.collision.obstruction_seconds=.1;view.collision.head_distance=.24f;
+    view.collision.escape_attempts=2;view.collision.escape_queries=6;
+    view.collision.query_valid=true;view.collision.initial_fraction=0;
+    view.collision.escape_result="nearby";view.collision.fallback_reason="time_limit";
     view.phase=2;view.target_rotation=from_rotation_vector({.2f,.3f,.4f});view.recovery_yaw=-20;view.recovery_pitch=10;
     capture(4);
     check(row[column("bail_view_phase")]=="controllable_recovery" && row[column("recovery_controllable")]=="1" &&
         row[column("recovery_flags")]=="24576" && row[column("recovery_look_yaw")]=="-20" &&
         row[column("recovery_look_pitch")]=="10","recovery evidence or head-relative look missing");
+    check(row[column("collision_obstruction_ms")]=="100" && row[column("collision_escape_queries")]=="6" &&
+        row[column("collision_escape_attempts")]=="2" && row[column("collision_fallback_reason")]=="time_limit" &&
+        row[column("collision_escape_result")]=="nearby" && row[column("collision_initial_fraction")]=="0" &&
+        row[column("collision_query_valid")]=="1" && std::abs(std::stof(row[column("collision_head_distance_m")])-.24f)<.00001f,
+        "collision escape evidence missing from trace");
     check(std::abs(std::stof(row[column("head_target_qw")])-view.target_rotation[3])<.00001f,"head target rotation missing");
     state.bailing=false;movement.recovery_verified=movement.recovery_controllable=false;view.phase=0;
     state.suppressed=false;config.look_only=true;capture(5);

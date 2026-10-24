@@ -214,3 +214,21 @@ Enable **Camera > Attachment and transitions > First-person spectator view** to 
 Head view uses ReSkate's first-person camera axes and eye midpoint, including its clearance ahead of the face. Your configured offsets, FOV, Spring and native stabilization settings apply. The rendered animation refines the camera in the same frame. A 250 ms moving-target blend handles view changes. The watched head is hidden only in the local render buffer. Missing, stale or unverified targets keep the follow camera; status explains the fallback. The option defaults off, is included in personal presets and requires the verified ReSkate 2.0.7 party spectator path. Remote camera settings and look input are not transmitted. Gameplay validation remains pending.
 
 On-foot right-stick smoothing has its own enable switch and four directional strengths. Button-glance smoothing can still follow camera Spring. Older settings migrate once using the previous on-foot smoothing behavior, including Disable Spring on foot when linked.
+
+### Bail head alignment
+
+During uncontrolled first-person falls, camera rotation follows the actual head axes instead of inheriting pre-bail look or stabilization. Collision changes position only. When the live head camera target has cleared a surface, a reverse sphere sweep verifies it before reattaching, so a trapped camera does not have to wait for movement control to return. Clear targets follow immediately without collision-release lag. Existing controlled recovery and stand-up camera smoothing are retained.
+
+### Bail collision escape
+
+Falls and stand-up now search for a clear position at the live head target, then 12 cm and 24 cm along each physical head axis in both directions. Each candidate needs three clear short sphere sweeps; escape adds at most six queries per frame. Moving contact does not restart the obstruction timer. If no usable escape is found within 100 ms, the camera returns to the head even if this briefly clips. Separation above 25 cm triggers this fallback after 50 ms of persistent obstruction. Collision radius and the existing toggle are unchanged.
+
+Collision diagnostics are written to `logs/bail-camera-trace-v12.csv`, including obstruction duration, head distance, search counts, primary query validity/fraction, escape result and fallback reason. Fallback text messages are limited to one every five seconds. The native query exposes hit fractions; live hard-impact testing is needed to confirm its initial-overlap behavior on different props.
+
+### MSC first-person tag
+
+On authenticated dedicated servers whose name begins `-MSC-Midnight Skate Club-` and whose matching Steam advertisement includes `jfp1`, the mod reports enabled First Person using the server's `/jish-fp` protocol. The `[FP]` tag follows your enabled setting, including temporary third-person bail views and spectating. Reports refresh every five seconds while enabled; disabling sends an off report. Dispatch rechecks the joined server/session, and reports do not enter local chat or console history. This optional companion bridge supports the verified ReSkate 2.1.2 client; it does not change the MSC server or add support for unverified merged client DLLs.
+
+### Board freelook while spectating
+
+First-person party/throwdown spectating now uses the existing On-board free look settings. Enable that option, hold its modifier and use the right stick to look around the watched head. Speeds, limits, inversion, smoothing and recenter choices are shared with normal board freelook. Modifier release and neutral-stick safeguards apply. Captured spectator stick input is neutralized for the native party camera; it never turns the watched character. Look resets on player changes, leaving first-person spectate, menu/focus interruptions and controller changes.

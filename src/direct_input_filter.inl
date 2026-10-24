@@ -176,7 +176,7 @@ template<unsigned Slot> HRESULT STDMETHODCALLTYPE direct_state(void* device,DWOR
     if(FAILED(result)) {if(result==DIERR_INPUTLOST || result==DIERR_NOTACQUIRED) direct_reset(device);SetLastError(error);return result;}
     if(data) {
         const auto policy=stick_input_policy();const bool menu_capture=panel_gameplay_blocked();
-        const bool live=menu_capture || live_glances();
+        const bool live=menu_capture || policy.mask || live_glances();
         if(!live) direct_reset(device);
         else {
             std::lock_guard lock(direct_mutex);auto& state=direct_devices[device];direct_sync(state);direct_identify(device,state);
@@ -210,7 +210,7 @@ template<unsigned Slot> HRESULT STDMETHODCALLTYPE direct_data(void* device,DWORD
     if(FAILED(result)) {if(result==DIERR_INPUTLOST || result==DIERR_NOTACQUIRED) direct_reset(device);SetLastError(error);return result;}
     const auto policy=stick_input_policy();const bool menu_capture=panel_gameplay_blocked();
     if(result==DI_BUFFEROVERFLOW) direct_reset(device);
-    if(!menu_capture && !live_glances()) direct_reset(device);
+    if(!menu_capture && !policy.mask && !live_glances()) direct_reset(device);
     else if(data && count && *count<=capacity && stride>=4*sizeof(DWORD) && stride<=sizeof(DIDEVICEOBJECTDATA)) {
         std::lock_guard lock(direct_mutex);auto& state=direct_devices[device];direct_sync(state);direct_identify(device,state);
         if(state.sony && !state.size) {

@@ -1,5 +1,6 @@
 #pragma once
 #include "head_attachment.h"
+#include "bail_collision.h"
 #include <cstdint>
 namespace jishsfirstpersonmod {
 using CameraMatrix=dingosdk::first_person::Matrix;
@@ -12,6 +13,7 @@ struct BailViewInfo {
     float getup_heading{};
     int getup_camera_phase{}; // 0 normal, 1 smoothed head follow, 2 blending, 3 reattached
     float getup_blend{};dingosdk::first_person::Vec3 head_target{};
+    BailCollisionInfo collision;
 };
 class BailView {
     using Quat=dingosdk::first_person::Quat;using Vec3=dingosdk::first_person::Vec3;
@@ -93,6 +95,8 @@ public:
                 where=add(position(head.head),rotate(orientation(head.head),offset_));
                 output=normalized(multiply(orientation(head.head),rotation_offset_));
             }
+            if(!getting_up_ && !controllable && head.valid)
+                output=head_camera_rotation(head);
             if(getting_up_ && !controllable && bail && head.valid && calibrated_) {
                 where=getup_position_;
                 const float decay=static_cast<float>(std::exp(-(now-getup_started_)/.12));

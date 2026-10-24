@@ -2,5 +2,5 @@
   "name": "Jish's First Person Mod",
   "author": "Jish",
   "version_number": "1.36.2",
-  "description": "Local ReSkate 2.1.1 test with Native head movement in the on-foot right-stick settings. Optional; changes camera feel."
+  "description": "First-person camera for ReSkate 2.1.2 with improved bail camera collision, MSC [FP] tags and throwdown spectator freelook."
 }
