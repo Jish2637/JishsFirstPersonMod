@@ -42,7 +42,8 @@ void hid(const StockHidRead& read,DWORD n){++hid_calls;if(qa_menu&&read.buffer&&
 #include "direct_input_adapter_tests.inl"
 #include "native_hid_adapter_tests.inl"
 #include "board_input_adapter_tests.inl"
-int main(){
+int main(int argc,char** argv) try {
+ std::cout<<std::unitbuf;
  emote_ready=true;originals[0]=input;original_hid=hid;
  dingosdk::FirstPersonLookControls bindings;for(unsigned i=0;i<4;++i)bindings[i].combo=0x100|(1u<<i);
  auto publish=[&](){publish_glance_filter(bindings,true,{1,2,3,4},1);};
@@ -207,7 +208,10 @@ int main(){
   if(bluetooth){const auto saved=report;sony_report_crc(report);check(saved==report,"native Sony toggle CRC changed");}
  }
  clear_glance_filter();
- test_board_input_adapters();test_direct_input_adapters();
+ check(dingosdk::hook_initialize()==dingosdk::HookOk,"Hook backend initialization failed");
+ test_board_input_adapters();test_direct_input_adapters(argc>1 && std::string_view(argv[1])=="--windows-drivers");
  test_native_hid_adapters();
  std::cout<<"Actual XInput/shared HID adapters, private reads, interruptions and duplicated reports passed\n";
 }
+
+catch(const std::exception& error) { std::cerr<<error.what()<<"\n";return 1; }

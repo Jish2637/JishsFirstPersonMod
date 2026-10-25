@@ -119,6 +119,12 @@ Config read_config(const std::filesystem::path& path) {
     cfg.stick.enabled=boolean("stick_look",false);
     cfg.stick.turn_character=boolean("stick_turn_character",false);
     cfg.stick.native_head_look=boolean("stick_native_head_look",false);
+    cfg.stick.native_emote_aim=boolean("stick_native_emote_aim",false);
+    cfg.stick.limit_angles=boolean("stick_limit_angles",false);
+    cfg.stick.limit_up=number("stick_limit_up",60);
+    cfg.stick.limit_down=number("stick_limit_down",60);
+    cfg.stick.limit_left=number("stick_limit_left",85);
+    cfg.stick.limit_right=number("stick_limit_right",85);
     cfg.stick.invert_y=boolean("stick_invert_y",false);
     cfg.stick.yaw_speed=number("stick_yaw_speed",120);
     cfg.stick.pitch_speed=number("stick_pitch_speed",90);
@@ -134,7 +140,7 @@ Config read_config(const std::filesystem::path& path) {
     cfg.stick.dismount_smoothing=number("dismount_smoothing",35);
     for(float strength:{cfg.stick.mount_smoothing,cfg.stick.dismount_smoothing})
         if(!std::isfinite(strength) || strength<0 || strength>100) throw std::runtime_error("Transition smoothing must be 0–100 percent.");
-    if(!std::isfinite(cfg.stick.yaw_speed) || cfg.stick.yaw_speed<1 || cfg.stick.yaw_speed>720 ||
+    if(!valid_stick_limits(cfg.stick) || !std::isfinite(cfg.stick.yaw_speed) || cfg.stick.yaw_speed<1 || cfg.stick.yaw_speed>720 ||
        !std::isfinite(cfg.stick.pitch_speed) || cfg.stick.pitch_speed<1 || cfg.stick.pitch_speed>720 ||
        !std::isfinite(cfg.stick.deadzone) || cfg.stick.deadzone<.01f || cfg.stick.deadzone>.5f)
         throw std::runtime_error("Stick look settings outside supported ranges");
@@ -171,7 +177,7 @@ void validate_config(const Config& cfg) {
     if(cfg.menu_key>255 || (cfg.menu_key && (cfg.menu_key<=VK_XBUTTON2 || cfg.menu_key==VK_ESCAPE || cfg.menu_key==VK_SHIFT || cfg.menu_key==VK_CONTROL || cfg.menu_key==VK_MENU || (cfg.menu_key>=VK_LSHIFT && cfg.menu_key<=VK_RMENU)))) throw std::runtime_error("Choose a keyboard key other than Escape or a modifier.");
     for(float strength:{cfg.stick.mount_smoothing,cfg.stick.dismount_smoothing})
         if(!std::isfinite(strength) || strength<0 || strength>100) throw std::runtime_error("Transition smoothing must be 0–100 percent.");
-    if(!std::isfinite(cfg.stick.yaw_speed) || cfg.stick.yaw_speed<1 || cfg.stick.yaw_speed>720 ||
+    if(!valid_stick_limits(cfg.stick) || !std::isfinite(cfg.stick.yaw_speed) || cfg.stick.yaw_speed<1 || cfg.stick.yaw_speed>720 ||
        !std::isfinite(cfg.stick.pitch_speed) || cfg.stick.pitch_speed<1 || cfg.stick.pitch_speed>720 ||
        !std::isfinite(cfg.stick.deadzone) || cfg.stick.deadzone<.01f || cfg.stick.deadzone>.5f)
         throw std::runtime_error("Stick look settings outside supported ranges.");
@@ -228,6 +234,10 @@ void write_config(const std::filesystem::path& path,const Config& cfg) {
             <<"\nstick_strength_left="<<stick_spring.left<<"\nstick_strength_right="<<stick_spring.right<<'\n';
         out<<"stick_look="<<cfg.stick.enabled<<"\nstick_turn_character="<<cfg.stick.turn_character
             <<"\nstick_native_head_look="<<cfg.stick.native_head_look
+            <<"\nstick_native_emote_aim="<<cfg.stick.native_emote_aim
+            <<"\nstick_limit_angles="<<cfg.stick.limit_angles
+            <<"\nstick_limit_up="<<cfg.stick.limit_up<<"\nstick_limit_down="<<cfg.stick.limit_down
+            <<"\nstick_limit_left="<<cfg.stick.limit_left<<"\nstick_limit_right="<<cfg.stick.limit_right
             <<"\nstick_invert_y="<<cfg.stick.invert_y<<"\nstick_yaw_speed="<<cfg.stick.yaw_speed
             <<"\nstick_pitch_speed="<<cfg.stick.pitch_speed<<"\nstick_deadzone="<<cfg.stick.deadzone<<'\n';
         out<<"smooth_transitions="<<cfg.stick.smooth_transitions<<"\nmount_smoothing="<<cfg.stick.mount_smoothing

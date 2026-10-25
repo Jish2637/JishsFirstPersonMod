@@ -1,3 +1,4 @@
+#include "emote_aim_runtime.h"
 #include "stick_runtime.h"
 #include "spectator_runtime.h"
 #include "native_head_look.h"
@@ -253,6 +254,14 @@ void note_camera_view(const dingosdk::first_person::Matrix& pose,dingosdk::first
     displayed_pitch=std::asin(std::clamp(-back[1],-1.f,1.f))*180/std::numbers::pi_v<float>;
     heading_time=now();
 }
+void note_emote_camera(const Matrix& pose) {
+    // Only the composed display callback publishes aim, never native heading seeds.
+    if(menu_snapshot().config.stick.native_emote_aim) {
+        const auto value=snapshot();
+        publish_emote_camera(pose,{value.owner.core,value.owner.entity,value.owner.context,value.owner.rig},
+            !value.board && !value.turn && !value.recovery && value.aim.active && live_foot(value));
+    }
+}
 void note_native_camera_heading(const dingosdk::first_person::Matrix& pose) { note_camera_view(pose,{0,0,0,1}); }
 StickAim stick_camera_aim() { const auto value=snapshot();return live_foot(value) ? value.aim:StickAim{}; }
 StickInputPolicy stick_input_policy(unsigned slot) {
@@ -322,7 +331,7 @@ void tick_stick_look(const Config& config,const GameplayInput& input,const Comfo
         }
         else look.rebase_facing(body_heading);
     }
-    auto stick=config.stick;if(recovery) stick.turn_character=false;
+    auto stick=config.stick;if(recovery) {stick.turn_character=false;stick.limit_angles=false;}
     auto aim=look.update(stick,{input.right_x,input.right_y},true,input.device,time,recovery ? 0:native_heading,
         recovery ? 0:body_heading,effective.stick_spring,recovery ? 0:displayed_pitch);
     request={owner,aim,turn,input.device,time,body_heading,head.valid,recovery,false,{},marker_reset.generation};
@@ -341,9 +350,11 @@ bool attach_stick_runtime(std::uintptr_t base) {
         if(status==HookOk) status=apply_owned_hooks();
     }
     if(status!=HookOk) { log("ERROR: native facing hook attach failed: "+std::to_string(status));return false; }
-    if(!install_stick_input_filter()) { log("ERROR: stick input filters unavailable; stick look remains disabled.");return false; }
+    // The optional XInput/Raw Input/DirectInput/HID filters are installed only
+    // after the main camera feed and Insert page are functional. Device probing
+    // can take a long time on some systems; it must never gate camera startup.
     ready=true;
-    log("On-foot stick look ready: native motion/facing chained; on-board stick input captured only while the configured modifier is held.");return true;
+    log("On-foot stick look ready: native motion/facing chained; optional controller filters install after the core and Insert page.");return true;
 }
 bool install_stick_runtime(std::uintptr_t base) {
     getup_verified=getup_contract::verified([](std::uintptr_t address,void* data,std::size_t size) {

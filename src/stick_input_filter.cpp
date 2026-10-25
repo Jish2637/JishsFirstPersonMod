@@ -250,6 +250,9 @@ bool glance_emote_active() {
 bool glance_emote_filter_ready() { return emote_ready.load(); }
 bool install_stick_input_filter() {
     using namespace dingosdk;
+    const auto start=GetTickCount64();
+    const auto elapsed=[&]() { return std::to_string(GetTickCount64()-start)+" ms"; };
+    log("Optional input filters: XInput hook discovery started.");
     const void* detours[]{reinterpret_cast<void*>(&filtered_state<0>),reinterpret_cast<void*>(&filtered_state<1>),
         reinterpret_cast<void*>(&filtered_state<2>),reinterpret_cast<void*>(&filtered_state<3>),
         reinterpret_cast<void*>(&filtered_state<4>),reinterpret_cast<void*>(&filtered_state<5>),
@@ -271,7 +274,8 @@ bool install_stick_input_filter() {
             originals[index]=reinterpret_cast<GetState>(forwarding);pending.push_back(target);++count;
         }
     }
-    if(!count) return false;
+    if(!count) { log("WARNING: optional input filters found no loaded XInput readers ("+elapsed()+").");return false; }
+    log("Optional input filters: XInput hook discovery finished ("+std::to_string(count)+" readers, "+elapsed()+").");
     const auto user32=GetModuleHandleW(L"user32.dll");
     const auto add=[&](const char* name,void* detour,void** original) {
         const auto entry=reinterpret_cast<std::uintptr_t>(GetProcAddress(user32,name));
@@ -283,6 +287,7 @@ bool install_stick_input_filter() {
     if(!add("GetRawInputData",reinterpret_cast<void*>(&filtered_data),&data) ||
        !add("GetRawInputBuffer",reinterpret_cast<void*>(&filtered_buffer),&buffer)) return false;
     original_data=reinterpret_cast<RawData>(data);original_buffer=reinterpret_cast<RawBuffer>(buffer);
+    log("Optional input filters: Raw Input adapters prepared ("+elapsed()+").");
     const auto stock=GetModuleHandleW(L"reskate.dll");const auto base=reinterpret_cast<std::uintptr_t>(stock);
     const bool hid_verified=stock && stock_contract::selected && std::string_view(stock_contract::selected->version)=="2.1.2" &&
         verified_stock_hid([](std::uintptr_t address,void* data,std::size_t size) { return memory::read_bytes(address,data,size); },base);
@@ -291,11 +296,27 @@ bool install_stick_input_filter() {
         if(owned_hook_prepare(target,reinterpret_cast<void*>(&filtered_stock_hid),&original)!=HookOk) return false;
         original_hid=reinterpret_cast<StockHid>(original);pending.push_back(target);
     } else log("Glance emote blocking unavailable: shared ReSkate 2.1.2 HID handler did not verify. Existing stick filters remain available.");
-    if(!prepare_direct_input(pending)) log("DirectInput gesture coverage incomplete: device adapters could not be prepared.");
-    if(!prepare_native_hid(pending)) return false;
-    for(auto* target:pending) if(hook_queue_enable(target)!=HookOk) return false;
-    const bool installed=apply_owned_hooks()==HookOk;emote_ready=installed && hid_verified;
+    if(!prepare_native_hid(pending)) {
+        log("WARNING: optional input filters stopped at native HID preparation ("+elapsed()+").");return false;
+    }
+    log("Optional input filters: all hook families prepared; attaching "+std::to_string(pending.size())+" hooks ("+elapsed()+").");
+    for(auto* target:pending) if(hook_queue_enable(target)!=HookOk) {
+        log("WARNING: optional input filters failed to queue a hook ("+elapsed()+").");return false;
+    }
+    const auto result=apply_owned_hooks();
+    const bool installed=result==HookOk;emote_ready=installed && hid_verified;
+    if(!installed) log("WARNING: optional input hook transaction failed: "+hook_failure_description(result)+" ("+elapsed()+").");
+    else log("Optional input filters: hooks attached successfully ("+elapsed()+").");
     if(emote_ready) log("Glance emote blocking ready: XInput/Raw Input and verified ReSkate HID handler. DirectInput coverage is reported separately per Sony device.");
+    if(installed) {
+        // Publish working XInput/Raw Input/HID adapters before entering drivers.
+        // DirectInput probing can take tens of seconds on some machines.
+        pending.clear();
+        log("Optional input filters: DirectInput discovery and device probing started ("+elapsed()+").");
+        if(!prepare_direct_input(pending)) log("DirectInput gesture coverage incomplete: device adapters could not be prepared.");
+        direct_enable(pending);
+        log("Optional input filters: DirectInput probing returned ("+elapsed()+").");
+    }
     return installed;
 }
 }

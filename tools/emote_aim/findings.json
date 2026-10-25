@@ -1,0 +1,57 @@
+{
+  "game_sha256": "fbce74d5e28ef525dbba2cb4adbebc13405bdbd88f31bc940bca45e4ae88b8f9",
+  "game_image_base": "0x140000000",
+  "addresses_are": "RVAs",
+  "functions": {
+    "gesturing_player_query": {
+      "rva": "0x8356b0",
+      "prefix": "405356574154415641574881ec980000004c8bf9ba89970fbfc5f829b4248000"
+    },
+    "gesture_active_getter": {
+      "rva": "0xf94c40",
+      "prefix": "83b950050000000f95c0c3"
+    },
+    "gesture_id_getter": {
+      "rva": "0xf90410",
+      "prefix": "8b8150050000c3"
+    },
+    "gesture_component_type_getter": {
+      "rva": "0xf906f0",
+      "prefix": "488d05e9fd2e06c3"
+    },
+    "gesture_component_constructor_type": {
+      "rva": "0xf8832e",
+      "prefix": "488d05ab971e05488903"
+    },
+    "gesture_id_initialization": {
+      "rva": "0xf883a2",
+      "prefix": "4489a350050000"
+    },
+    "camera_transform_native": {
+      "rva": "0x85eac0",
+      "prefix": "488bd14533c9488b0d7bd1d6064533c0488b0148ff6060"
+    },
+    "camera_transform_wrapper": {
+      "rva": "0x59aa230",
+      "prefix": "e98b48ebfa"
+    },
+    "gesture_query_wrapper": {
+      "rva": "0x5968ea0",
+      "prefix": "40534883ec20c5fa100a498bc1498bd84c8b4c24504c8bc0e8f3c7ecfa"
+    },
+    "gesture_pose_input_setter": {
+      "rva": "0xf9cf00",
+      "prefix": "c5fc1002c5fc118100050000c5fc104a20c5fc118920050000c5fa1191f4040000c681f004000001c5f877c3"
+    }
+  },
+  "data": {
+    "gesture_component_vtable": "0x6171ae0",
+    "gesture_component_type": "0x72804e0",
+    "gesture_id_offset": "0x550",
+    "gesture_query_record": "0x7f331e0",
+    "gesture_query_params": "0x6121c80",
+    "camera_transform_record": "0x7f52d10",
+    "camera_transform_params": "0x6132d10"
+  },
+  "status": "Investigation only; no production hook installed. Local emote gate and camera-to-emote consumer relationship still require verification."
+}

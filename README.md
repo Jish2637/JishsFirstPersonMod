@@ -1,31 +1,29 @@
-# Jish’s First Person Mod 1.36.3 — ReSkate 2.1.2
+# Jish's First Person Mod 1.36.5 - ReSkate 2.1.2
 
-This checkout now targets the supplied ReSkate 2.1.2 DLL (SHA256 `96112d915c181b696b5cb8ed17b62a74d09ca2900c4383a4500c1fa88bf76e43`). Native camera, input, spectator, menu and MSC bridge addresses and layouts have been remapped. See [2.1.2 validation](docs/reskate-2.1.2b-validation.md). Earlier release packaging and provenance below describe the original 2.1.1 release.
+First-person camera controls, native head movement, bail camera collision handling, MSC [FP] presence and first-person throwdown spectator freelook for the reviewed ReSkate 2.1.2 build.
 
-## What’s new
+## What's new
 
-- Improved bail camera rotation so the view follows the player’s head more consistently during falls.
-- Improved bail camera collision handling to reduce sticking in walls, floors and objects after hard impacts.
-- Added MSC server `[FP]` tag integration. The tag stays active whenever First Person is enabled, including temporary third-person bail views and spectating.
-- Added modifier-held right-stick freelook while spectating in first person during throwdowns.
-- Updated compatibility for the latest ReSkate 2.1.2 DLL.
+This release bundles a multi-mod dinput8 loader, restores updater compatibility with recognized multi-mod loaders, improves Insert-menu startup and isolates optional hook failures from gesture blocking. It adds optional on-foot camera angle limits and experimental native emote aiming. See [release notes](docs/release-1.36.5.md) and [settings](SETTINGS.md).
 
-**Validation:** Build and binary checks passed; all 48 regression tests passed. In-game verification remains outstanding.
+## Installation
 
-## Update from the mod menu
+Close Skate, back up your existing dinput8.dll, and extract JishsFirstPersonMod-1.36.5-reskate-2.1.2.zip beside Skate.exe, merging Mods and scripts. Install the whole ZIP, enable the mod in the launcher and restart. Open Insert > Skater > First Person.
 
-Open **Insert → Skater → First Person → Mod updates**, choose **Check for updates**, then **Download update**.
+Your personal settings, presets, other mods and scripts/Custom/dinput8_mods.txt are preserved. The bundled loader discovers DLLs in scripts/Custom and respects their order and disabled entries. See [installation details](LAUNCHER_INSTALL.md).
 
-When it’s ready, choose **Install after I close Skate**. Close Skate normally and wait for the completion message before starting ReSkate yourself.
+## Updates
 
-## Manual installation
+Install this release manually if an older updater rejects your loader or runtime. Version 1.36.5 recognizes the bundled multi-mod loader and the verified original UniversalModLoader v2. Future First Person updates preserve these loaders and your other mods. Unknown loader builds still require manual installation.
 
-Close Skate. Extract `JishsFirstPersonMod-1.36.3-reskate-2.1.2.zip` into your ReSkate folder beside `Skate.exe` and `ReSkateLauncher.exe`, merging **Mods** and **scripts** and replacing this mod’s existing files. Enable **Jish’s First Person Mod** in the launcher.
+Use Mod updates > Check for updates, then Download update and Install after I close Skate. Close Skate normally, wait for completion and restart yourself. Only newer published releases are offered.
 
-Existing settings and personal presets are preserved. Older presets leave **Native head movement** off; enable it again and save your preset if you want to keep it.
+## New camera options
 
-This rebuilt DLL requires the **reviewed ReSkate 2.1.2 DLL**. This updates the mod, not ReSkate itself.
+Advanced > On-foot right stick look contains Limit on-foot camera angles (off by default), with separate up/down/left/right limits. Native emote aiming is experimental and off by default. Stationary pointing follows the view; running can temporarily point forward until stopping.
 
-## Building from source
+## Build and validation
 
-Build with `./build.ps1` on Windows x64 with Visual Studio C++ tools, then package with `./package.ps1`. The public and internal build version is 1.36.3. See [runtime validation](docs/reskate-2.1.2b-validation.md) and [release notes](docs/release-1.36.3.md).
+Windows x64 with Visual Studio 2026 C++ tools: run ./build.ps1, then ./package.ps1. To omit the bundled loader, both commands accept -UniversalLoader. External integration fixtures and driver-test options are documented in [startup validation](docs/startup-buildfix.md).
+
+Release build and 51 automated tests pass. The user confirmed the multi-mod build in game; live install-after-exit updating remains unverified. Runtime support remains restricted to ReSkate 2.1.2 SHA256 96112d915c181b696b5cb8ed17b62a74d09ca2900c4383a4500c1fa88bf76e43. No game addresses changed in this release.

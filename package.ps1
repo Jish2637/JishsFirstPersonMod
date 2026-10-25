@@ -1,8 +1,10 @@
-param([string]$ModVersion = "1.36.3", [string]$ReSkateVersion = "2.1.2")
+param([string]$ModVersion = "1.36.5", [string]$ReSkateVersion = "2.1.2", [switch]$UniversalLoader)
 
 $ErrorActionPreference = 'Stop'
 
 $releaseName = "JishsFirstPersonMod-$ModVersion-reskate-$ReSkateVersion"
+
+if ($UniversalLoader) { $releaseName += "-universal-loader" }
 
 $releasePath = Join-Path $PSScriptRoot ($releaseName + '.zip')
 
@@ -11,7 +13,7 @@ Push-Location $PSScriptRoot
 try {
 
     if (!(Test-Path release/scripts/Custom/FirstPerson/updater/FirstPersonUpdater.exe) -or
-        !(Test-Path release/dinput8.dll) -or
+        (!$UniversalLoader -and !(Test-Path release/dinput8.dll)) -or
 
         !(Test-Path release/scripts/Custom/JishsFirstPersonMod.dll) -or
 
@@ -29,7 +31,9 @@ try {
 
     [IO.File]::WriteAllText((Join-Path $PSScriptRoot 'release/LICENSE.txt'),$licenseText,[Text.UTF8Encoding]::new($false))
 
-    Compress-Archive -Path release/Mods,release/scripts,release/dinput8.dll,release/LICENSE.txt -DestinationPath $releasePath -Force
+    $clientPaths = @('release/Mods','release/scripts','release/LICENSE.txt')
+    if (!$UniversalLoader) { $clientPaths += 'release/dinput8.dll' }
+    Compress-Archive -Path $clientPaths -DestinationPath $releasePath -Force
 
     Add-Type -AssemblyName System.IO.Compression.FileSystem
 
@@ -45,7 +49,7 @@ try {
 
             $relative = [IO.Path]::GetRelativePath($PSScriptRoot, $file.FullName).Replace('\','/')
 
-            if ($relative -match '^(build[^/]*|release|\.hook-tools|\.git)/|(^|/)__pycache__/|^(build-output|build|configure|tests)\.log$|\.zip$|\.pyc$') { continue }
+            if ($relative -match '^(build[^/]*|release|\.hook-tools|\.git)/|(^|/)__pycache__/|^[^/]*\.log$|\.zip$|\.pyc$') { continue }
 
             [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, $file.FullName, $relative, [IO.Compression.CompressionLevel]::Optimal) | Out-Null
 

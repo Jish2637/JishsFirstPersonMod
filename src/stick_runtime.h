@@ -14,6 +14,7 @@ MarkerReturnStatus marker_return_status();
 std::uint64_t observe_marker_return(const ComfortSnapshot&,std::uintptr_t previous_entity=0);
 bool accept_marker_native_view(const ComfortSnapshot&,const dingosdk::first_person::Matrix&,bool valid);
 void refresh_marker_native_view(const ComfortSnapshot&,const dingosdk::first_person::Matrix&,bool valid);
+void note_emote_camera(const dingosdk::first_person::Matrix&);
 void note_native_camera_heading(const dingosdk::first_person::Matrix& pose);
 void note_camera_view(const dingosdk::first_person::Matrix&,dingosdk::first_person::Quat glance);
 StickAim stick_camera_aim();

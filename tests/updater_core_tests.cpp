@@ -36,7 +36,7 @@ std::string metadata(const Release& r) {
 }
 int main(int argc,char** argv){try {
  const auto archive=zip(fixture());auto remote=release(archive);const auto json=metadata(remote);
- if(argc==2) {const auto b=read_file(fs::absolute(argv[1]));unpack(b,release(b));std::cout<<"Actual published client package verified\n";return 0;}
+ if(argc>=2) {const auto b=read_file(fs::absolute(argv[1]));auto r=release(b);if(argc==3)r.version=argv[2];unpack(b,r);std::cout<<"Actual published client package verified\n";return 0;}
  require(parse_release(json).version=="1.35.0","metadata parse");
  require(newer(remote,"1.34.0") && !newer(remote,"1.35.0") && !newer(remote,"1.36.0"),"new/equal/older releases");
  require(version("1.10.0")>version("1.9.9"),"numeric semantic order");
@@ -71,6 +71,18 @@ int main(int argc,char** argv){try {
  require(read_file(root/L"scripts/Custom/FirstPerson/settings.ini")==bytes("my settings") && read_file(root/L"scripts/Custom/FirstPerson/presets/Main.ini")==bytes("my preset"),"user data overwritten");
  require(read_file(root/L"Mods/mods.json")==bytes("my launcher settings"),"launcher enablement overwritten");
  require(!fs::exists(root/L"job/transaction.json") && fs::exists(root/L"job/backup/dinput8.dll"),"commit/backup state");
+ root=setup("multi-loader");hash=sha256(read_file(root/L"dinput8.dll"));
+ write_text(root/L"scripts/Custom/dinput8_mods.txt","# load order\nOther.dll\n# Disabled.dll\nJishsFirstPersonMod.dll\n");
+ write_text(root/L"scripts/Custom/Other.dll","other mod");write_text(root/L"dinput8_chain.dll","chained proxy");
+ install(root,root/L"job",remote,hash,static_cast<std::size_t>(-1),true);
+ require(sha256(read_file(root/L"dinput8.dll"))==hash,"multi-mod loader replaced by incoming proxy");
+ require(read_file(root/L"scripts/Custom/JishsFirstPersonMod.dll")==fixture().at("scripts/Custom/JishsFirstPersonMod.dll"),"First Person did not update with preserved loader");
+ require(read_file(root/L"scripts/Custom/dinput8_mods.txt")==bytes("# load order\nOther.dll\n# Disabled.dll\nJishsFirstPersonMod.dll\n") &&
+     read_file(root/L"scripts/Custom/Other.dll")==bytes("other mod") && read_file(root/L"dinput8_chain.dll")==bytes("chained proxy"),"multi-mod configuration/other mod changed");
+ require(!fs::exists(root/L"job/backup/dinput8.dll"),"preserved loader entered transaction");
+ root=setup("multi-rollback");hash=sha256(read_file(root/L"dinput8.dll"));
+ rejects([&]{install(root,root/L"job",remote,hash,2,true);},"preserved-loader rollback failure not injected");original(root);
+ rejects([&]{install(root,root/L"job",remote,std::string(64,'0'),static_cast<std::size_t>(-1),true);},"preserve mode bypassed loader ownership check");
  root=setup("rollback");hash=sha256(read_file(root/L"dinput8.dll"));rejects([&]{install(root,root/L"job",remote,hash,3);},"injected failure not raised");original(root);
  root=setup("locked");hash=sha256(read_file(root/L"dinput8.dll"));const auto h=CreateFileW((root/L"scripts/Custom/JishsFirstPersonMod.dll").c_str(),GENERIC_READ,0,nullptr,OPEN_EXISTING,0,nullptr);require(h!=INVALID_HANDLE_VALUE,"lock fixture");
  rejects([&]{install(root,root/L"job",remote,hash);},"locked DLL accepted");CloseHandle(h);original(root);

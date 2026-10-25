@@ -1,0 +1,11 @@
+{
+  "version": "1.36.5",
+  "runtime_sha256": "96112d915c181b696b5cb8ed17b62a74d09ca2900c4383a4500c1fa88bf76e43",
+  "client_zip": "JishsFirstPersonMod-1.36.5-reskate-2.1.2.zip",
+  "client_sha256": "20308bd3987263d812cb1664361e6bae86f9e45b9a0e1cfa7eeb67bbe54489ca",
+  "mod_sha256": "01b1cf484bdaef33a34bc53f30b0e4a4e5b097f7c3f6b82ad0aac4209a2c1bab",
+  "loader_sha256": "3117aad80316d4c8f3e9120b979d5a3bd26a6d47542f77d53fb16b0239d6ba1d",
+  "updater_sha256": "824608a4b2e9054d8ffd75aa0f8f8ab1874d635a49e65a4fc0b59075be3633b4",
+  "validation": "51/51 CTest checks, offline EXE audit, exact source comparison, updater ZIP validator and packaged binary checks passed",
+  "in_game_verification": "User confirmed multi-mod test build working; actual post-exit auto-update unverified"
+}

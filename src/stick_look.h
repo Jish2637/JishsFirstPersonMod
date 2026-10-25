@@ -6,6 +6,9 @@ namespace jishsfirstpersonmod {
 struct StickSettings {
     bool enabled{},turn_character{},invert_y{};
     bool native_head_look=false;
+    bool native_emote_aim=false;
+    bool limit_angles=false;
+    float limit_up=60,limit_down=60,limit_left=85,limit_right=85;
     float yaw_speed=120,pitch_speed=90,deadzone=.15f;
     bool smooth_transitions=true;
     bool lock_mount_jump=true;
@@ -13,6 +16,12 @@ struct StickSettings {
     bool look_during_parkour=false;
     float mount_smoothing=70,dismount_smoothing=35;
 };
+inline bool valid_stick_limits(const StickSettings& s) {
+    return std::isfinite(s.limit_up) && s.limit_up>=0 && s.limit_up<=85 &&
+        std::isfinite(s.limit_down) && s.limit_down>=0 && s.limit_down<=85 &&
+        std::isfinite(s.limit_left) && s.limit_left>=0 && s.limit_left<=180 &&
+        std::isfinite(s.limit_right) && s.limit_right>=0 && s.limit_right<=180;
+}
 struct StickAxes { float x{},y{}; };
 inline float normalize_axis(short value) { return value<0 ? value/32768.f:value/32767.f; }
 inline float wrap_heading(float heading) { return std::remainder(heading,360.f); }
@@ -59,6 +68,19 @@ public:
         // Match the proven glance conventions: +Y looks up, +X looks right.
         yaw_=wrap_heading(yaw_-input.x*settings.yaw_speed*dt);
         pitch_=std::clamp(pitch_+input.y*settings.pitch_speed*dt*(settings.invert_y ? -1.f:1.f),-85.f,85.f);
+        const auto limit=[&](float& yaw,float& pitch) {
+            if(!settings.limit_angles) return;
+            // Rig +Z faces backward; the camera centre faces away from it.
+            const float centre=wrap_heading(body_heading+180.f);
+            const float offset=wrap_heading(yaw-centre);
+            const float bounded=std::clamp(offset,-settings.limit_right,settings.limit_left);
+            if(offset!=bounded) yaw_velocity_=0;
+            yaw=wrap_heading(centre+bounded);
+            const float bounded_pitch=std::clamp(pitch,-settings.limit_down,settings.limit_up);
+            if(pitch!=bounded_pitch) pitch_velocity_=0;
+            pitch=bounded_pitch;
+        };
+        limit(yaw_,pitch_);
         if(!spring.enabled) { smooth_yaw_=yaw_;smooth_pitch_=pitch_;yaw_velocity_=pitch_velocity_=0; }
         else {
             float yaw_error=wrap_heading(smooth_yaw_-yaw_),pitch_error=smooth_pitch_-pitch_;
@@ -66,6 +88,7 @@ public:
             dingosdk::first_person::damp(pitch_error,pitch_velocity_,pitch_error>0 ? spring.down:spring.up,dt);
             smooth_yaw_=wrap_heading(yaw_+yaw_error);smooth_pitch_=pitch_+pitch_error;
         }
+        limit(smooth_yaw_,smooth_pitch_);
         return {true,true,smooth_yaw_,smooth_pitch_,wrap_heading(smooth_yaw_+body_bias_),input.x!=0 || input.y!=0};
     }
 };

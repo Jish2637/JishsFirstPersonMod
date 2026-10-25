@@ -165,11 +165,14 @@ void recover(const fs::path& root,const fs::path& job) {
  write_text(job/L"result.txt","Rolled back; original installation restored.\n");
  if(!DeleteFileW(journal.c_str()))bad("Could not finish recovery journal");
 }
-void install(const fs::path& root,const fs::path& job,const Release& release,const std::string& expected_proxy,std::size_t fail_after) {
+void install(const fs::path& root,const fs::path& job,const Release& release,const std::string& expected_proxy,std::size_t fail_after,bool preserve_proxy) {
  safe_path(root);safe_path(job);
  if(sha256(read_file(root/L"dinput8.dll"))!=expected_proxy)bad("Installed dinput8.dll changed; refusing to overwrite another loader");
  if(fs::exists(job/L"transaction.json"))recover(root,job);
- const auto package=unpack(read_file(job/L"archive.zip"),release);
+ auto package=unpack(read_file(job/L"archive.zip"),release);
+ // First Person updates cannot downgrade the multi-mod loader to a legacy
+ // single-mod proxy. Its exact installed digest was verified above.
+ if(preserve_proxy) package.erase("dinput8.dll");
  std::vector<HANDLE> locks;
  try {
   for(const auto& [name,data]:package) {

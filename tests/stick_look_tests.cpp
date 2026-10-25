@@ -31,6 +31,29 @@ int main() {
     auto dead=radial_stick({.1f,.1f},.15f);check(dead.x==0 && dead.y==0,"radial deadzone drift");
     auto diagonal=radial_stick({1,1},.15f);check(std::abs(std::hypot(diagonal.x,diagonal.y)-1)<.00001f,"diagonal faster than straight");
     StickSettings settings;settings.enabled=true;Settings spring;
+    {
+        StickSettings bounded=settings;bounded.limit_angles=true;
+        bounded.limit_left=30;bounded.limit_right=50;bounded.limit_up=20;bounded.limit_down=35;
+        StickLookState limited;limited.seed(bounded,1,0,0,0,180);
+        StickAim result;
+        for(int i=1;i<=30;++i) result=limited.update(bounded,{-1,1},true,1,i*.1,0,180,spring);
+        check(std::abs(result.heading-30)<.001 && std::abs(result.pitch-20)<.001,"left/up limits overrun");
+        for(int i=31;i<=60;++i) result=limited.update(bounded,{1,-1},true,1,i*.1,0,180,spring);
+        check(std::abs(result.heading+50)<.001 && std::abs(result.pitch+35)<.001,"right/down limits overrun");
+        result=limited.update(bounded,{-1,1},true,1,6.1,0,180,spring);
+        check(result.heading>-50 && result.pitch>-35,"limit accumulated hidden input at the stop");
+        // Turning the skater through the +/-180 seam moves the permitted view.
+        limited.seed(bounded,1,7,170,0,-10);
+        result=limited.update(bounded,{},true,1,7.1,170,20,spring);
+        check(std::abs(wrap_heading(result.heading-(-160)))<=50,"moving body seam broke bounds");
+        bounded.limit_left=bounded.limit_right=bounded.limit_up=bounded.limit_down=0;
+        auto damped=spring;damped.enabled=true;
+        result=limited.update(bounded,{1,-1},true,1,7.2,170,20,damped);
+        check(std::abs(wrap_heading(result.heading+160))<.001 && result.pitch==0,"smoothing escaped zero limits");
+        bounded.limit_angles=false;
+        result=limited.update(bounded,{-1,1},true,1,7.3,170,20,spring);
+        check(result.pitch>0,"disabled limits remained active");
+    }
     StickLookState state;
     auto coupled=settings;coupled.turn_character=true;
     StickLookState recentered;recentered.recenter_facing();

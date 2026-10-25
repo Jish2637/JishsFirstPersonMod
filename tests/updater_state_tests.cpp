@@ -17,6 +17,12 @@ void require(bool v,const char* message){if(!v)throw std::runtime_error(message)
 int main(int argc,char** argv){try {
  using namespace jishsfirstpersonmod;using namespace release_updates;using namespace updates;
  require(argc==3,"runtime and client fixtures required");
+ require(sha256(read_file(std::filesystem::absolute(argv[1])))==supported_update_runtime_sha256,"shared downloader/helper runtime identity differs from fixture");
+ require(supported_update_loader(bundled_proxy_sha256) && multi_mod_loader(bundled_proxy_sha256),"bundled multi-loader rejected");
+ require(supported_update_loader(legacy_proxy_sha256) && !multi_mod_loader(legacy_proxy_sha256),"legacy migration policy changed");
+ require(multi_mod_loader("438e671de5910e04e1af3ade92f3e72f14cbf12fb63df23676863794a43a0559"),"user's verified UniversalModLoader v2 rejected");
+ require(!supported_update_loader(std::string(64,'0')),"unknown loader accepted");
+ for(auto known:published_multi_loader_sha256) require(multi_mod_loader(known),"preserved multi-loader digest lost");
  wchar_t exe[32768]{};GetModuleFileNameW(nullptr,exe,32768);const auto install_root=std::filesystem::path(exe).parent_path();
  const auto isolated=install_root/(L"updater-state-"+std::to_wstring(GetTickCount64()));
  write_text(install_root/L"Mods/JishsFirstPersonMod/manifest.json","{\"version_number\":\"1.34.0\"}");

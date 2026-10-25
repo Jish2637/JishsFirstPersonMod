@@ -6,6 +6,7 @@
 #include <array>
 #include <cstdint>
 namespace jishsfirstpersonmod::updates {
+inline constexpr char supported_update_runtime_sha256[]="96112d915c181b696b5cb8ed17b62a74d09ca2900c4383a4500c1fa88bf76e43";
 using Bytes=std::vector<unsigned char>;
 inline constexpr std::size_t archive_limit=64*1024*1024,expanded_limit=128*1024*1024;
 struct HttpsRequest {std::wstring host,target;};
@@ -22,6 +23,6 @@ void write_atomic(const std::filesystem::path&,const Bytes&);
 void write_text(const std::filesystem::path&,const std::string&);
 std::map<std::string,Bytes> unpack(const Bytes&,const Release&);
 void install(const std::filesystem::path& root,const std::filesystem::path& job,const Release&,
-             const std::string& expected_proxy,std::size_t fail_after=static_cast<std::size_t>(-1));
+             const std::string& expected_proxy,std::size_t fail_after=static_cast<std::size_t>(-1), bool preserve_proxy=false);
 void recover(const std::filesystem::path& root,const std::filesystem::path& job);
 }

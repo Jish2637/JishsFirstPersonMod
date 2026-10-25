@@ -232,3 +232,25 @@ On authenticated dedicated servers whose name begins `-MSC-Midnight Skate Club-`
 ### Board freelook while spectating
 
 First-person party/throwdown spectating now uses the existing On-board free look settings. Enable that option, hold its modifier and use the right stick to look around the watched head. Speeds, limits, inversion, smoothing and recenter choices are shared with normal board freelook. Modifier release and neutral-stick safeguards apply. Captured spectator stick input is neutralized for the native party camera; it never turns the watched character. Look resets on player changes, leaving first-person spectate, menu/focus interruptions and controller changes.
+
+### Native emote aiming (experimental)
+
+Under **Advanced → On-foot right stick look**, this independent option tries to
+feed the displayed first-person camera direction into Skate's native emote aiming.
+It defaults off. It requires Camera only mode (or compatibility mode), right-stick
+look, a fresh local camera frame, normal on-foot gameplay and a nonzero native
+gesture identifier on the separate gesture component. Menus, focus loss, boarding,
+bails/recovery, camera changes and stale or replaced owners suspend the effect.
+Native head movement is unchanged and does not have to be enabled.
+
+Saved key: `stick_native_emote_aim`. Settings, personal presets and defaults use
+the existing stick-settings command. Local emote detection and the native
+animation response still need in-game validation. The log reports getter calls,
+gesture samples and applied overrides at most once every five seconds while the
+option is enabled. Zero counters do not demonstrate successful emote aiming.
+
+### Optional on-foot camera angle limits
+
+Under Advanced > On-foot right stick look, enable **Limit on-foot camera angles** for separate **Up limit**, **Down limit**, **Left limit** and **Right limit** angles. Off by default. Initial values: up/down 60 degrees, left/right 85 degrees. Vertical values support 0-85 degrees; horizontal values support 0-180 degrees. Limits follow your skater's forward direction and also constrain smoothing. Lower left/right to prevent turning back toward your body. Button glances, bail and spectator cameras keep existing behavior.
+
+Saved keys: `stick_limit_angles`, `stick_limit_up`, `stick_limit_down`, `stick_limit_left`, `stick_limit_right`. Settings and personal presets preserve all five values; older settings default to unrestricted look.

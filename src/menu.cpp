@@ -491,6 +491,10 @@ void draw_panel_frame(const PanelFrame& frame) {
         }
         help_marker("Camera only lets you look without turning your skater. Camera and character turns your skater too. Compatibility mode uses camera only.");
         ImGui::EndDisabled();
+        ImGui::BeginDisabled(config.stick.turn_character && !config.look_only);
+        if(readable_checkbox("Native emote aiming (experimental)",&config.stick.native_emote_aim)) stick_change();
+        help_marker("Experimental: lets native emotes such as pointing use your first-person camera direction. Only on foot with right-stick look in Camera only mode. Independent of Native head movement. Local emote detection and native animation response still need in-game testing.");
+        ImGui::EndDisabled();
         fit_control("Horizontal sensitivity");
         if(ImGui::SliderFloat("Horizontal sensitivity",&config.stick.yaw_speed,1,720,"%.0f deg/s",ImGuiSliderFlags_AlwaysClamp)) stick_change();
         fit_control("Vertical sensitivity");
@@ -501,6 +505,18 @@ void draw_panel_frame(const PanelFrame& frame) {
             config.stick.deadzone=deadzone*.01f;stick_change();
         }
         help_marker("Ignore small stick movements to prevent camera drift. Increase this if the camera moves by itself.");
+        if(readable_checkbox("Limit on-foot camera angles",&config.stick.limit_angles)) stick_change();
+        help_marker("Stops right-stick look at separate up/down/left/right limits relative to your skater's forward direction. Off by default. Does not limit bail or spectator cameras or button glances.");
+        ImGui::BeginDisabled(!config.stick.limit_angles);
+        fit_control("Up limit");
+        if(ImGui::SliderFloat("Up limit",&config.stick.limit_up,0,85,"%.0f degrees",ImGuiSliderFlags_AlwaysClamp)) stick_change();
+        fit_control("Down limit");
+        if(ImGui::SliderFloat("Down limit",&config.stick.limit_down,0,85,"%.0f degrees",ImGuiSliderFlags_AlwaysClamp)) stick_change();
+        fit_control("Left limit");
+        if(ImGui::SliderFloat("Left limit",&config.stick.limit_left,0,180,"%.0f degrees",ImGuiSliderFlags_AlwaysClamp)) stick_change();
+        fit_control("Right limit");
+        if(ImGui::SliderFloat("Right limit",&config.stick.limit_right,0,180,"%.0f degrees",ImGuiSliderFlags_AlwaysClamp)) stick_change();
+        ImGui::EndDisabled();
         if(readable_checkbox("Invert Y",&config.stick.invert_y)) stick_change();
         if(readable_checkbox("Allow looking during jumps and climbing",&config.stick.look_during_parkour)) stick_change();
         help_marker("Enables right-stick look and button glances during climbing and supported jumps. Leave this off to keep ReSkate's normal view during climbing and attached jumps. These actions turn only the camera. This does not change head attachment, and look still pauses while getting on the board.");

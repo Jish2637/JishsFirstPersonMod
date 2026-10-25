@@ -123,6 +123,7 @@ void transform_hook(std::uintptr_t camera,const Matrix* input) {
                     } else { smoothing.reset();stop_stick_look(); }
                 }
                 note_camera_view(matrix,glance);
+                note_emote_camera(matrix);
                 record_bail_camera(native,matrix,state,movement,config,{},look_pitch.load(),look_yaw.load(),{},read_animation_head(state),settings.revision);
                 original_transform(camera,&matrix);return;
             }
@@ -279,6 +280,7 @@ void transform_hook(std::uintptr_t camera,const Matrix* input) {
             }
             if(suspended) { suspend_custom_camera();look_pitch=0;look_yaw=0; }
             note_camera_view(matrix,glance);
+            note_emote_camera(matrix);
             record_bail_camera(native,matrix,state,movement,config,aim,pitch,yaw,view,head,settings.revision);
             original_transform(camera,changed ? &matrix:input);return;
         }

@@ -43,6 +43,11 @@ int main() {
         void* relay{};
         check(owned_hook_prepare(reinterpret_cast<void*>(&target),reinterpret_cast<void*>(&replacement),&relay)==HookOk,"prepare failed");
         original=reinterpret_cast<Function>(relay);
+        deny_forever=true;
+        check(enable_owned_hook(reinterpret_cast<void*>(&target))==HookProtectionFailed,"optional hook did not fail safely");
+        deny_forever=false;
+        check(apply_owned_hooks()==HookOk && invoke(5)==22 && hook_statistics().attached==0,
+            "failed optional hook leaked into an unrelated queued transaction");
         check(hook_queue_enable(reinterpret_cast<void*>(&target))==HookOk,"queue failed");
         deny_count=1;
         check(apply_owned_hooks()==HookOk && owned_hook_retries==1,"transient thread denial was not retried");

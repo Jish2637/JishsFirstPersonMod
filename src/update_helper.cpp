@@ -1,5 +1,5 @@
 #include "update_core.h"
-#include "proxy_digest.h"
+#include "loader_update_policy.h"
 #include <Windows.h>
 #include <shellapi.h>
 #include <tlhelp32.h>
@@ -40,7 +40,7 @@ int WINAPI wWinMain(HINSTANCE,HINSTANCE,PWSTR,int) {
   if(!QueryFullProcessImageNameW(game,0,image,&length) || fs::weakly_canonical(image)!=fs::weakly_canonical(root/L"Skate.exe"))throw std::runtime_error("Installer parent is not this Skate installation");
   const auto release=parse_release(text(job/L"release.json"));unpack(read_file(job/L"archive.zip"),release);
   const auto expected=text(job/L"expected-proxy.txt",256);
-  if(expected!="d77068ccd3d489a5649982c18de7d5e2fbd208fbb4f311382f05e81f1864e13d" && expected!=bundled_proxy_sha256)throw std::runtime_error("Unsupported DirectInput loader");
+  if(!supported_update_loader(expected))throw std::runtime_error("Unsupported DirectInput loader");
   write_text(job/L"waiting.txt","Waiting for Skate to close; no relaunch.\n");
   for(;;) {
    if(fs::exists(job/L"cancel.txt")){write_text(job/L"cancelled.txt","Cancelled; download retained.\n");CloseHandle(game);game=nullptr;return 0;}
@@ -52,11 +52,11 @@ int WINAPI wWinMain(HINSTANCE,HINSTANCE,PWSTR,int) {
   const std::wstring name=L"Local\\JishFirstPersonUpdater-"+std::wstring(id.begin(),id.end());
   mutex=CreateMutexW(nullptr,FALSE,name.c_str());if(!mutex)throw std::runtime_error("Cannot create installer lock");const auto locked=WaitForSingleObject(mutex,0);if(locked!=WAIT_OBJECT_0 && locked!=WAIT_ABANDONED)throw std::runtime_error("Another installer is already active");acquired=true;
   no_game(root);
-  if(sha256(read_file(root/L"ReSkate.dll"))!="d79ff144768ce8b0a8e992c9f134c670a3ff85bb3b437a0eb915876973014301" ||
+  if(sha256(read_file(root/L"ReSkate.dll"))!=supported_update_runtime_sha256 ||
      sha256(read_file(root/L"Skate.exe",256*1024*1024))!="fbce74d5e28ef525dbba2cb4adbebc13405bdbd88f31bc940bca45e4ae88b8f9")throw std::runtime_error("The installed game/ReSkate build changed; update refused");
   if(fs::exists(job/L"transaction.json"))recover(root,job);
   if(!newer(release,installed_version(root)))throw std::runtime_error("This update is no longer newer than the installed manifest");
-  install(root,job,release,expected);
+  install(root,job,release,expected,static_cast<std::size_t>(-1),multi_mod_loader(expected));
   ReleaseMutex(mutex);CloseHandle(mutex);mutex=nullptr;acquired=false;
   notify(L"First Person Mod "+std::wstring(release.version.begin(),release.version.end())+L" was installed successfully.\n\nYou can start ReSkate when ready.",false);return 0;
  }catch(const std::exception& error) {

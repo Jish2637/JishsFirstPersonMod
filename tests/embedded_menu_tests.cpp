@@ -58,7 +58,7 @@ int main() {try {
  ImGui::GetAllocatorFunctions(&old_a,&old_f,&old_u);
  auto* host=ImGui::CreateContext();ImGui::SetCurrentContext(previous);
  EmbeddedWidgets widgets{begin,end,field,note,toggle,[](int,bool,float){return true;},slider};
- for(const char* action:{"","Enable First Person","Native head movement","Right-stick look on foot","First person on board only","Horizontal sensitivity"}) {
+ for(const char* action:{"","Enable First Person","Native head movement","Native emote aiming (experimental)","Right-stick look on foot","First person on board only","Horizontal sensitivity"}) {
   ScopedHostImGui scope(host,allocate,release,nullptr);
   auto& io=ImGui::GetIO();io.IniFilename=nullptr;io.DisplaySize={1000,800};io.DeltaTime=1.f/60;
   unsigned char* pixels;int w,h;io.Fonts->GetTexDataAsRGBA32(&pixels,&w,&h);
@@ -86,11 +86,13 @@ int main() {try {
  require(ImGui::GetCurrentContext()==previous,"exception context restoration");
  require(toggles>20 && sliders>20,"advanced controls omitted");
  require(menu_snapshot().config.on_board_only,"comfort command route");
+ require(menu_snapshot().config.stick.native_emote_aim,"emote option command route");
  require(menu_snapshot().config.stick.native_head_look,"native head option command route");
  require(menu_snapshot().config.stick.yaw_speed==360.5f,"native slider command route");
  require(save_personal_preset("Embedded"),"INI preset save");
  require(personal_presets()==std::vector<std::string>{"Embedded"},"preset refresh");
  require(load_personal_preset("Embedded"),"INI preset load");
+ require(menu_snapshot().config.stick.native_emote_aim,"emote option lost through personal preset");
  require(menu_snapshot().config.stick.native_head_look,"native head option lost through personal preset");
  require(delete_personal_preset("Embedded") && personal_presets().empty(),"preset deletion");
  EmbeddedVisibility visible{true,false,true,true,3,1,100,90};

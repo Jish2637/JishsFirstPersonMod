@@ -180,7 +180,7 @@ void start_msc_presence(HMODULE stock) noexcept {
         if(dingosdk::owned_hook_prepare(reinterpret_cast<void*>(base+0xa1f4b0),reinterpret_cast<void*>(&command_hook),&original)!=dingosdk::HookOk)
             throw std::runtime_error("presence dispatch guard unavailable");
         original_command=reinterpret_cast<Command>(original);
-        if(dingosdk::hook_queue_enable(reinterpret_cast<void*>(base+0xa1f4b0))!=dingosdk::HookOk || dingosdk::apply_owned_hooks()!=dingosdk::HookOk)
+        if(dingosdk::enable_owned_hook(reinterpret_cast<void*>(base+0xa1f4b0))!=dingosdk::HookOk)
             throw std::runtime_error("presence dispatch hook failed");
         const auto thread=CreateThread(nullptr,0,worker,nullptr,0,nullptr);
         if(!thread)throw std::runtime_error("presence worker unavailable");CloseHandle(thread);

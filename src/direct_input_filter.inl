@@ -383,14 +383,22 @@ bool direct_install_device(void* device,std::vector<void*>& pending) {
 bool direct_install_owner(void* owner,std::vector<void*>& pending) {
     return direct_hook<di_device>((*reinterpret_cast<void***>(owner))[3],pending);
 }
-struct DirectProbe { void* owner{};std::vector<void*>* pending{};bool ready=true; };
+struct DirectProbe { void* owner{};std::vector<void*>* pending{};bool ready=true;unsigned devices{}; };
 BOOL CALLBACK direct_probe(const DIDEVICEINSTANCEW* instance,void* context) {
     auto& probe=*static_cast<DirectProbe*>(context);void* device{};
+    ++probe.devices;
+    const auto started=GetTickCount64();
+    // Log before entering the device driver: if CreateDevice never returns,
+    // the last log identifies the responsible stage instead of misleadingly
+    // suggesting a failed camera/Insert hook.
+    log("DirectInput: probing device #"+std::to_string(probe.devices)+" (CreateDevice).");
     auto** table=*reinterpret_cast<void***>(probe.owner);
     if(SUCCEEDED(reinterpret_cast<DirectDeviceCreate>(table[3])(probe.owner,instance->guidInstance,&device,nullptr))) {
         probe.ready=direct_install_device(device,*probe.pending)&&probe.ready;
         reinterpret_cast<DirectRelease>((*reinterpret_cast<void***>(device))[2])(device);
     } else probe.ready=false;
+    log("DirectInput: device #"+std::to_string(probe.devices)+" probe returned after "+
+        std::to_string(GetTickCount64()-started)+" ms.");
     return DIENUM_CONTINUE;
 }
 bool prepare_direct_input(std::vector<void*>& pending) {
@@ -406,22 +414,32 @@ bool prepare_direct_input(std::vector<void*>& pending) {
     const auto create=reinterpret_cast<DirectFactory>(GetProcAddress(module,"DirectInput8Create"));
     if(!create) return false;
     bool ready=direct_hook<di_factory>(reinterpret_cast<void*>(create),pending);
+    unsigned interface_number{};
     for(const auto& iid:{IID_IDirectInput8A,IID_IDirectInput8W}) {
+        ++interface_number;
+        const auto started=GetTickCount64();
+        log("DirectInput: creating interface #"+std::to_string(interface_number)+".");
         void* owner{};
-        if(FAILED(create(GetModuleHandleW(nullptr),DIRECTINPUT_VERSION,iid,&owner,nullptr))) {ready=false;continue;}
+        if(FAILED(create(GetModuleHandleW(nullptr),DIRECTINPUT_VERSION,iid,&owner,nullptr))) {
+            log("DirectInput: interface #"+std::to_string(interface_number)+" creation failed.");ready=false;continue;
+        }
         ready=direct_install_owner(owner,pending)&&ready;
         DirectProbe probe{owner,&pending};
         auto** table=*reinterpret_cast<void***>(owner);
         using Enumerate=HRESULT(STDMETHODCALLTYPE*)(void*,DWORD,LPDIENUMDEVICESCALLBACKW,void*,DWORD);
         // The A/W instance records share GUID offsets. The callback reads only
         // guidInstance, so one callback safely probes both interface versions.
+        log("DirectInput: enumerating attached game controllers for interface #"+std::to_string(interface_number)+".");
         if(FAILED(reinterpret_cast<Enumerate>(table[4])(owner,DI8DEVCLASS_GAMECTRL,direct_probe,&probe,DIEDFL_ATTACHEDONLY))) ready=false;
+        log("DirectInput: controller enumeration returned for interface #"+std::to_string(interface_number)+".");
         ready=probe.ready&&ready;
         for(const auto& guid:{GUID_SysMouse,GUID_SysKeyboard}) {
             DIDEVICEINSTANCEW instance{};instance.guidInstance=guid;direct_probe(&instance,&probe);
         }
         ready=probe.ready&&ready;
         reinterpret_cast<DirectRelease>(table[2])(owner);
+        log("DirectInput: interface #"+std::to_string(interface_number)+" completed after "+
+            std::to_string(GetTickCount64()-started)+" ms ("+std::to_string(probe.devices)+" devices probed).");
     }
     log(ready ? "DirectInput gesture adapters prepared; live Sony mapping/filtering is reported on device reads."
         : "DirectInput gesture adapters partially prepared; some device paths remain uncovered.");

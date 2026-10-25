@@ -1,6 +1,6 @@
 #include "release_updates.h"
 #include "update_core.h"
-#include "proxy_digest.h"
+#include "loader_update_policy.h"
 #include "mod.h"
 #include <Windows.h>
 #include <winhttp.h>
@@ -17,7 +17,7 @@ namespace {
 std::mutex mutex;Snapshot state;
 fs::path root,data_path,job_path;std::string metadata;Release remote;
 std::atomic<bool> stop{},usable{};bool started{};
-constexpr char baseline_proxy[]="d77068ccd3d489a5649982c18de7d5e2fbd208fbb4f311382f05e81f1864e13d";
+
 void status(const std::string& text) {std::lock_guard lock(mutex);state.status=text;}
 std::wstring wide(const std::string& s) {
  const int count=MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,s.data(),static_cast<int>(s.size()),nullptr,0);
@@ -66,10 +66,10 @@ Bytes fetch(std::wstring url,std::size_t limit,bool asset) {
 
 std::string own_proxy() {
  const auto hash=sha256(read_file(root/L"dinput8.dll"));
- if(hash!=baseline_proxy && hash!=bundled_proxy_sha256)throw std::runtime_error("Unknown dinput8.dll loader; automatic replacement disabled");return hash;
+ if(!supported_update_loader(hash))throw std::runtime_error("Unknown dinput8.dll loader; automatic replacement disabled");return hash;
 }
 void verify_runtime() {
- if(sha256(read_file(root/L"ReSkate.dll"))!="96112d915c181b696b5cb8ed17b62a74d09ca2900c4383a4500c1fa88bf76e43")throw std::runtime_error("Only the exact official ReSkate 2.1.2 runtime is supported");
+ if(sha256(read_file(root/L"ReSkate.dll"))!=supported_update_runtime_sha256)throw std::runtime_error("Only the exact official ReSkate 2.1.2 runtime is supported");
 }
 void save_preferences() {write_text(data_path/L"preferences.ini",snapshot().automatic?"automatic_check=1\n":"automatic_check=0\n");}
 void check_worker() {

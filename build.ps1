@@ -1,3 +1,5 @@
+param([switch]$UniversalLoader)
+
 $ErrorActionPreference = 'Stop'
 
 Push-Location $PSScriptRoot
@@ -14,7 +16,8 @@ try {
 
     $ctest = Join-Path (Split-Path $cmake) 'ctest.exe'
 
-    & $cmake -S . -B build -G 'Visual Studio 18 2026' -A x64
+    $bundleProxy = if ($UniversalLoader) { 'OFF' } else { 'ON' }
+    & $cmake -S . -B build -G 'Visual Studio 18 2026' -A x64 "-DJISH_BUNDLE_PROXY=$bundleProxy"
 
     if ($LASTEXITCODE) { throw 'Configure failed.' }
 
@@ -29,6 +32,12 @@ try {
     & $cmake --install build --config Release --prefix release
 
     if ($LASTEXITCODE) { throw 'Install staging failed.' }
+    if ($UniversalLoader) {
+        # Remove only an older staged proxy inside this source checkout.
+        $stagedProxy = Join-Path $PSScriptRoot 'release/dinput8.dll'
+        if (Test-Path -LiteralPath $stagedProxy) { Remove-Item -LiteralPath $stagedProxy }
+        Write-Host 'Universal loader package: keep your existing game-folder dinput8.dll.'
+    }
     $oldPreset = Join-Path $PSScriptRoot 'release/scripts/Custom/presets/recommended.ini'
     if (Test-Path -LiteralPath $oldPreset) { Remove-Item -LiteralPath $oldPreset }
     New-Item -ItemType Directory -Force release/scripts/Custom/FirstPerson/logs | Out-Null

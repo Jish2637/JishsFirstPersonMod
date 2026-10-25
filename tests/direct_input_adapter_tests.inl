@@ -52,7 +52,7 @@ HRESULT STDMETHODCALLTYPE fake_direct_format(void*,const DIDATAFORMAT*) {SetLast
 HRESULT STDMETHODCALLTYPE fake_direct_acquire(void*) {SetLastError(77);return DI_OK;}
 ULONG STDMETHODCALLTYPE fake_direct_release(void* pointer) {return --static_cast<FakeDirect*>(pointer)->references;}
 
-void test_direct_input_adapters() {
+void test_direct_input_adapters(bool windows_drivers) {
     std::array<void*,32> table{};
     table[5]=reinterpret_cast<void*>(&fake_direct_property);
     table[9]=reinterpret_cast<void*>(&direct_state<0>);
@@ -184,9 +184,10 @@ void test_direct_input_adapters() {
     qa_now+=10;event(buffered_only,buffered_only.pov,0,static_cast<DWORD>(qa_now),1);
     check(buffered(buffered_only)[0].dwData==0xffffffffu,"Buffered-only pre-existing Sony device was missed");
     reset();
+    std::cout<<"DirectInput synthetic adapter checks passed\n";
+    if(!windows_drivers) return;
     // Exercise discovery and shared A/W hook preparation against Windows' real
     // DirectInput objects. No acquisition or controller input is required.
-    check(dingosdk::hook_initialize()==dingosdk::HookOk,"Hook backend initialization failed");
     direct_hooks={};std::vector<void*> pending;
     check(prepare_direct_input(pending) && !pending.empty(),"Windows DirectInput adapter discovery failed");
     const auto count=pending.size();check(prepare_direct_input(pending) && pending.size()==count,"A/W shared hook addresses were not deduplicated");

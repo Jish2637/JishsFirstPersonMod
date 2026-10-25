@@ -40,6 +40,7 @@ if(std::strcmp(label,"Lock head during on-board body flips")==0) return "Detects
 if(std::strcmp(label,"Attach head position during mounting / jumping")==0) return "Follows your head position while getting on the board and during on-foot jumps. Disable Spring on foot can make the difference less noticeable. ReSkate stabilization and Follow flips pause while the mod follows your head; your settings are kept.";
 if(std::strcmp(label,"Attach head position during hippy jumps")==0) return "Follows your head position during hippy jumps. Ollies and other board jumps are unchanged. Disable Spring on foot can make the difference less noticeable.";
 if(std::strcmp(label,"Smooth foot/board transitions")==0) return "Adjusts getting on and off the board separately. These settings are separate from camera Spring and button-glance smoothing.";
+if(std::strcmp(label,"Native emote aiming (experimental)")==0) return "Experimental: lets native emotes such as pointing use your first-person camera direction. Only on foot with right-stick look in Camera only mode. Independent of Native head movement. Local emote detection and native animation response still need in-game testing.";
 if(std::strcmp(label,"Native head movement")==0) return "Lets Skate move your character's head when you use right-stick look on foot in Camera only mode, so other players can see you looking around. This changes how the camera feels. Turn it off to keep the previous camera feel. Does not apply to Camera and character or on-board look.";
 if(std::strcmp(label,"Right-stick look on foot")==0) return "Move the right stick to look around while walking in first person. Looking pauses while getting on the board.";
 if(std::strcmp(label,"Allow looking during jumps and climbing")==0) return "Enables right-stick look and button glances during climbing and supported jumps. Leave this off to keep ReSkate's normal view during climbing and attached jumps. These actions turn only the camera. This does not change head attachment, and look still pauses while getting on the board.";
@@ -405,6 +406,8 @@ if(ImGui::TreeNodeEx("On-foot right stick look",ImGuiTreeNodeFlags_None)) {
         help_marker("Camera only lets you look without turning your skater. Camera and character turns your skater too. Compatibility mode uses camera only.");
         ImGui::EndDisabled();
         ImGui::BeginDisabled(config.stick.turn_character && !config.look_only);
+        if(readable_checkbox("Native emote aiming (experimental)",&config.stick.native_emote_aim)) stick_change();
+        help_marker("Experimental: lets native emotes such as pointing use your first-person camera direction. Only on foot with right-stick look in Camera only mode. Independent of Native head movement. Local emote detection and native animation response still need in-game testing.");
         if(readable_checkbox("Native head movement",&config.stick.native_head_look)) stick_change();
         help_marker("Lets Skate move your character's head when you use right-stick look on foot in Camera only mode, so other players can see you looking around. This changes how the camera feels. Turn it off to keep the previous camera feel. Does not apply to Camera and character or on-board look.");
         ImGui::EndDisabled();
@@ -418,6 +421,18 @@ if(ImGui::TreeNodeEx("On-foot right stick look",ImGuiTreeNodeFlags_None)) {
             config.stick.deadzone=deadzone*.01f;stick_change();
         }
         help_marker("Ignore small stick movements to prevent camera drift. Increase this if the camera moves by itself.");
+        if(readable_checkbox("Limit on-foot camera angles",&config.stick.limit_angles)) stick_change();
+        help_marker("Stops right-stick look at separate up/down/left/right limits relative to your skater's forward direction. Off by default. Does not limit bail or spectator cameras or button glances.");
+        ImGui::BeginDisabled(!config.stick.limit_angles);
+        fit_control("Up limit");
+        if(widget_slider("Up limit",&config.stick.limit_up,0,85,"%.0f degrees",ImGuiSliderFlags_AlwaysClamp)) stick_change();
+        fit_control("Down limit");
+        if(widget_slider("Down limit",&config.stick.limit_down,0,85,"%.0f degrees",ImGuiSliderFlags_AlwaysClamp)) stick_change();
+        fit_control("Left limit");
+        if(widget_slider("Left limit",&config.stick.limit_left,0,180,"%.0f degrees",ImGuiSliderFlags_AlwaysClamp)) stick_change();
+        fit_control("Right limit");
+        if(widget_slider("Right limit",&config.stick.limit_right,0,180,"%.0f degrees",ImGuiSliderFlags_AlwaysClamp)) stick_change();
+        ImGui::EndDisabled();
         if(readable_checkbox("Invert Y",&config.stick.invert_y)) stick_change();
         if(readable_checkbox("Allow looking during jumps and climbing",&config.stick.look_during_parkour)) stick_change();
         help_marker("Enables right-stick look and button glances during climbing and supported jumps. Leave this off to keep ReSkate's normal view during climbing and attached jumps. These actions turn only the camera. This does not change head attachment, and look still pauses while getting on the board.");

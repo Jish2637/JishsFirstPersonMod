@@ -1,3 +1,4 @@
+#include "emote_aim_runtime.h"
 #include "msc_presence_bridge.h"
 #include "release_updates.h"
 #include "mod.h"
@@ -5,6 +6,7 @@
 #include "Extension/UI/Overlay/overlay.h"
 #include "settings.h"
 #include "stock_bridge.h"
+#include "stick_runtime.h"
 #include "bridge_resolver.h"
 #include "owned_hooks.h"
 #include "launcher_mod.h"
@@ -87,14 +89,21 @@ DWORD WINAPI worker(void*) noexcept {
         if(!jishsfirstpersonmod::launcher_mod_enabled(data_root/L"Mods")) {
             jishsfirstpersonmod::log("Disabled in the ReSkate launcher; no hooks installed.");status=3;return 0;
         }
-        const auto reskate = GetModuleHandleW(L"reskate.dll");
-        if (!reskate) { jishsfirstpersonmod::log("ERROR: reskate.dll is not loaded; no hooks installed"); status = 3; return 0; }
-        if(GetModuleHandleW(L"MyMod.dll")) { jishsfirstpersonmod::log("ERROR: previous MyMod.dll is loaded; remove its Lua bootstrap and restart."); status=3; return 0; }
-        if (protected_module_present()) { jishsfirstpersonmod::log("ERROR: protected module detected; no hooks installed"); status = 3; return 0; }
         const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
         if (!dingosdk::supported_build::running_image_matches(base)) {
             jishsfirstpersonmod::log("ERROR: Skate.exe differs from supported build 25414733 (20260929); no hooks installed"); status = 3; return 0;
         }
+        // Universal loaders may load us before ReSkate. Wait outside DllMain,
+        // just as the bundled proxy does, instead of permanently failing early.
+        auto reskate = GetModuleHandleW(L"reskate.dll");
+        if (!reskate) jishsfirstpersonmod::log("Waiting for ReSkate.dll after early loader startup.");
+        for(unsigned attempt=0; !reskate && attempt<6000; ++attempt) {
+            Sleep(100);
+            reskate=GetModuleHandleW(L"reskate.dll");
+        }
+        if (!reskate) { jishsfirstpersonmod::log("ERROR: reskate.dll is not loaded; no hooks installed"); status = 3; return 0; }
+        if(GetModuleHandleW(L"MyMod.dll")) { jishsfirstpersonmod::log("ERROR: previous MyMod.dll is loaded; remove its Lua bootstrap and restart."); status=3; return 0; }
+        if (protected_module_present()) { jishsfirstpersonmod::log("ERROR: protected module detected; no hooks installed"); status = 3; return 0; }
         if(!jishsfirstpersonmod::compatibility::initialize(reskate)) { status=3;return 0; }
         overlay_status = reinterpret_cast<GetOverlayStatus>(GetProcAddress(reskate, "DingoSDKOverlayGetStatus"));
         if (!overlay_status) { jishsfirstpersonmod::log("ERROR: stock overlay status export unavailable; no hooks installed"); status = 3; return 0; }
@@ -138,11 +147,31 @@ DWORD WINAPI worker(void*) noexcept {
             jishsfirstpersonmod::publish_runtime(false,false,"Camera hooks failed. See JishsFirstPersonMod.log."); status = 3; return 0;
         }
         if(!jishsfirstpersonmod::start_menu()) { status=3;return 0; }
-        jishsfirstpersonmod::release_updates::start(jishsfirstpersonmod::module_directory(),jishsfirstpersonmod::data_directory());
+        // Commit the essential camera + Insert menu hooks before probing any
+        // controller devices. A slow DirectInput driver must not leave both
+        // core gameplay changes and the page invisible during this session.
         jishsfirstpersonmod::compatibility::enable();rollback.committed=true;
-        jishsfirstpersonmod::start_msc_presence(reskate);
         status = 2;
+        jishsfirstpersonmod::log("Core initialized: camera feed and Insert > Skater > First Person are ready; optional adapters will now start.");
         jishsfirstpersonmod::log("initialised once; controller requests feed the existing native ReSkate camera");
+        // Experimental emote aiming and presence/updater services are optional.
+        // They must not change an already-successful startup into a failure.
+        try { jishsfirstpersonmod::install_emote_aim(base); }
+        catch(...) { jishsfirstpersonmod::log("WARNING: optional emote aim setup failed; camera and Insert page remain active."); }
+        try { jishsfirstpersonmod::start_msc_presence(reskate); }
+        catch(...) { jishsfirstpersonmod::log("WARNING: optional MSC presence setup failed; camera and Insert page remain active."); }
+        try { jishsfirstpersonmod::release_updates::start(jishsfirstpersonmod::module_directory(),jishsfirstpersonmod::data_directory()); }
+        catch(...) { jishsfirstpersonmod::log("WARNING: optional update setup failed; camera and Insert page remain active."); }
+        const auto filters_since=GetTickCount64();
+        jishsfirstpersonmod::log("Optional controller input filters: beginning setup after core initialization.");
+        try {
+            if(!jishsfirstpersonmod::install_stick_input_filter())
+                jishsfirstpersonmod::log("WARNING: optional controller filters could not fully attach; camera and Insert settings remain active.");
+        } catch(...) {
+            jishsfirstpersonmod::log("WARNING: optional controller filter setup threw an exception; camera and Insert settings remain active.");
+        }
+        jishsfirstpersonmod::log("Optional controller input filters: setup returned after "+
+            std::to_string(GetTickCount64()-filters_since)+" ms; core startup remains independent.");
     } catch (const std::exception& e) { jishsfirstpersonmod::log(std::string("ERROR: initialisation failed: ") + e.what()); status = 3; }
       catch (...) { jishsfirstpersonmod::log("ERROR: initialisation failed with unknown exception"); status = 3; }
     return 0;

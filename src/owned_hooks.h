@@ -29,10 +29,10 @@ inline HookStatus owned_hook_prepare(void* target,void* replacement,void** origi
 // The backend aborts failed transactions before returning. Only retry thread
 // collection/enlistment races; never omit an inaccessible live thread.
 inline thread_local unsigned owned_hook_retries{};
-inline HookStatus apply_owned_hooks() {
+template<class Apply> inline HookStatus retry_owned_hooks(Apply apply) {
     owned_hook_retries=0;
     for(unsigned attempt=0;;++attempt) {
-        const auto result=hook_apply_queued();
+        const auto result=apply();
         const auto detail=hook_last_failure();
         const std::string_view operation(detail.operation);
         const bool thread_failure=operation=="open thread" || operation=="query thread owner" ||
@@ -43,6 +43,9 @@ inline HookStatus apply_owned_hooks() {
         Sleep(50); // No transaction is active and no thread remains suspended.
     }
 }
+inline HookStatus apply_owned_hooks() { return retry_owned_hooks([] {return hook_apply_queued();}); }
+// Optional hooks must not leave a failed target queued for unrelated adapters.
+inline HookStatus enable_owned_hook(void* target) { return retry_owned_hooks([&] {return hook_enable(target);}); }
 inline std::string hook_failure_description(HookStatus result) {
     const auto detail=hook_last_failure();
     return std::to_string(result)+" ("+hook_status_string(result)+
