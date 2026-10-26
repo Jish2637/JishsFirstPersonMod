@@ -1,0 +1,11 @@
+{
+  "version": "1.36.6",
+  "runtime_sha256": "96112d915c181b696b5cb8ed17b62a74d09ca2900c4383a4500c1fa88bf76e43",
+  "client_zip": "JishsFirstPersonMod-1.36.6-reskate-2.1.2.zip",
+  "client_sha256": "4375aa419fd3fa4db356f4bd1948e1e0c2bbfce45ae3209ebf905661d87ba149",
+  "mod_sha256": "c77278cc7cef4a0491f09d9d1184ddb2caaefa162aca1b202f61b1c4735f8b14",
+  "loader_sha256": "3117aad80316d4c8f3e9120b979d5a3bd26a6d47542f77d53fb16b0239d6ba1d",
+  "updater_sha256": "824608a4b2e9054d8ffd75aa0f8f8ab1874d635a49e65a4fc0b59075be3633b4",
+  "validation": "52/52 CTest checks, exact source comparison, updater ZIP validation and packaged binary checks passed",
+  "in_game_verification": "User confirmed controller binding capture fix working in game"
+}

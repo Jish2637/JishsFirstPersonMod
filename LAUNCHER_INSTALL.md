@@ -1,4 +1,4 @@
-# Installation - 1.36.5 multi-mod loader release for ReSkate 2.1.2
+# Installation - 1.36.6 multi-mod loader release for ReSkate 2.1.2
 
 Close Skate. Back up your existing dinput8.dll outside the game folder (or as dinput8.dll.bak), then extract the full client ZIP beside Skate.exe, merging Mods and scripts and replacing dinput8.dll. Existing personal settings, other DLL mods and scripts/Custom/dinput8_mods.txt are preserved.
 

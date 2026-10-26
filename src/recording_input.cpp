@@ -2,6 +2,7 @@
 #include "menu.h"
 #include "native_recording.h"
 #include "native_211.h"
+#include "stock_gamepad.h"
 #include "spectator_contract.h"
 #include "owned_hooks.h"
 #include "stock_contract.h"
@@ -13,8 +14,6 @@
 namespace jishsfirstpersonmod {
 namespace {
 NativeRecordingReader original_reader{};
-struct StockGamepad { bool valid{},playstation{};float axes[6]{};unsigned buttons{}; };
-static_assert(sizeof(StockGamepad)==32);
 using ReadGamepad=StockGamepad*(*)(StockGamepad*);
 ReadGamepad original_gamepad{};
 native211::RecordingCapture reader_capture,gamepad_capture;
@@ -27,10 +26,7 @@ void captured_reader(NativeRecordingInput* output,bool allow_menu) {
 }
 StockGamepad* captured_gamepad(StockGamepad* output) {
     auto* result=original_gamepad(output);
-    if(output) {
-        const bool held=output->buttons || std::any_of(std::begin(output->axes),std::end(output->axes),[](float value){return std::abs(value)>.25f;});
-        if(gamepad_capture.consume(raw_controller_read,panel_recording_active(),held)) *output={};
-    }
+    if(output) filter_recording_gamepad(*output,gamepad_capture,raw_controller_read,panel_recording_active());
     return result;
 }
 NativeRecordingReader native_reader() {

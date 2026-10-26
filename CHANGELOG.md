@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.36.6 - ReSkate 2.1.2
+
+- Fixed a crash when recording controller buttons for custom bindings. Confirmed working in game.
+
 ## 1.36.5 - ReSkate 2.1.2
 
 - Added a bundled multi-mod dinput8 loader based on UniversalModLoader v2. It discovers DLL mods in scripts/Custom and preserves load order, comments and disabled entries in dinput8_mods.txt.
