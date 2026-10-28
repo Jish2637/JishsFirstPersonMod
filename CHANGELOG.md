@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.36.7 - ReSkate 2.1.3
+
+- Re-derived all private ReSkate function/global addresses, mutex calls, camera callbacks, controller/HID entry points, embedded UI allocation and spectator/MSC bridges against the official v2.1.3 DLL and tagged source.
+- Updated overlay context, callback, model and menu offsets, each moved by 1,024 bytes.
+- Updated the exact runtime hash used by initialization and the updater; older runtimes are refused.
+- Added DS4 Bluetooth support for padded 547-byte reads, with the CRC still at byte 74 and padding preserved.
+- Added an offline audit covering 32 function prefixes, globals/call relationships and 65 MSVC layout fields, plus runtime mutex/camera-reference tamper tests and a padded DS4 input regression test.
+
+The user confirmed the candidate working in game before approving publication.
+
 ## 1.36.6 - ReSkate 2.1.2
 
 - Fixed a crash when recording controller buttons for custom bindings. Confirmed working in game.

@@ -1,5 +1,5 @@
 #include <Windows.h>
-#define DIRECTINPUT_VERSION 0x0800
+#define DIRECTINPUT_VERSION 0x800
 #include <dinput.h>
 #include <iostream>
 #include <stdexcept>

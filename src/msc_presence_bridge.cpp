@@ -15,7 +15,7 @@
 #include <stdexcept>
 namespace jishsfirstpersonmod {
 namespace {
-// Exact official v2.1.2 only. Offsets reproduced from the pinned upstream
+// Exact official v2.1.3 only. Offsets reproduced from the pinned upstream
 // Session layout; native chat() independently confirms mutex and chat_view.
 std::uintptr_t base{};
 using NativeMutex=int(*)(void*);
@@ -54,7 +54,7 @@ std::string view_text(const View* address) {
 // No native STL object is copied, constructed or freed by the companion.
 // Only bounded POD/string-byte reads under the stock session's own mutex.
 msc_presence::Session sample() {
-    const auto session=read<std::uintptr_t>(base+0x1ab3e50);
+    const auto session=read<std::uintptr_t>(base+0x1ba0010);
     if(!session) {std::lock_guard lock(guard);gate.reset();return {};}
     auto* mutex=reinterpret_cast<void*>(session+783584);
     if(native_lock(mutex)!=0)throw std::runtime_error("MSC session mutex unavailable");
@@ -107,7 +107,7 @@ void* command_hook(void* result,const View* action,const View* argument,const Vi
     // Use ReSkate's existing send_chat_command implementation, including its
     // normal packet builder, routing and rate limits. Skip the higher-level
     // command() wrapper which would display failures in chat.
-    const auto session=read<std::uintptr_t>(base+0x1ab3e50);
+    const auto session=read<std::uintptr_t>(base+0x1ba0010);
     const auto returned=native_send(result,session,argument);
     try {
         if(text(reinterpret_cast<std::uintptr_t>(returned)).empty()) {
@@ -145,7 +145,7 @@ DWORD WINAPI worker(void*) noexcept {
             }
             if(!command.empty()) {
                 char response[256]{};
-                if(!reinterpret_cast<Queue>(base+0x988810)("chat",command.c_str(),"",response,sizeof(response))) {
+                if(!reinterpret_cast<Queue>(base+0x9895b0)("chat",command.c_str(),"",response,sizeof(response))) {
                     std::lock_guard lock(guard);if(pending.command==command)pending={};next_attempt=now+5000;
                 }
             }
@@ -165,22 +165,22 @@ void start_msc_presence(HMODULE stock) noexcept {
         if(file!=INVALID_HANDLE_VALUE)CloseHandle(file);
         base=reinterpret_cast<std::uintptr_t>(stock);
         const auto* profile=stock_contract::find_contract(hash,reinterpret_cast<std::uintptr_t>(GetProcAddress(stock,"DingoSDKOverlayGetStatus"))-base);
-        if(!hashed || !profile || std::string_view(profile->version)!="2.1.2")throw std::runtime_error("exact official 2.1.2 required");
+        if(!hashed || !profile || std::string_view(profile->version)!="2.1.3")throw std::runtime_error("exact official 2.1.3 required");
         // Official binary + pinned Session layout. Verify entry prefixes and
         // the session getter's RIP-relative pointer before using private ABI.
-        if(!bytes(base+0xa1f4b0,std::array<unsigned char,16>{0x40,0x53,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,0xb8,0xf0,0x12,0x0}) ||
-           !bytes(base+0x988810,std::array<unsigned char,16>{0x48,0x8b,0xc4,0x53,0x41,0x57,0x48,0x83,0xec,0x58,0x48,0x89,0x68,0x8,0x4d,0x8b}) ||
-           !bytes(base+0x9fbd00,std::array<unsigned char,16>{0x48,0x89,0x5c,0x24,0x20,0x55,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57}) ||
-           !bytes(base+0x9d5e37,std::array<unsigned char,7>{0x48,0x8b,0x5,0x12,0xe0,0xd,0x1}))
+        if(!bytes(base+0xa205f0,std::array<unsigned char,16>{0x40,0x53,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,0xb8,0xf0,0x12,0x0}) ||
+           !bytes(base+0x9895b0,std::array<unsigned char,16>{0x48,0x8b,0xc4,0x53,0x41,0x57,0x48,0x83,0xec,0x58,0x48,0x89,0x68,0x8,0x4d,0x8b}) ||
+           !bytes(base+0x9fce20,std::array<unsigned char,16>{0x48,0x89,0x5c,0x24,0x20,0x55,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57}) ||
+           !bytes(base+0x9d6e57,std::array<unsigned char,7>{0x48,0x8b,0x5,0xb2,0x91,0x1c,0x1}))
             throw std::runtime_error("native presence contracts differ");
-        native_send=reinterpret_cast<SendCommand>(base+0x9fbd00);
+        native_send=reinterpret_cast<SendCommand>(base+0x9fce20);
         native_lock=reinterpret_cast<NativeMutex>(base+profile->mutex_lock_rva);
         native_unlock=reinterpret_cast<NativeMutex>(base+profile->mutex_unlock_rva);
         void* original{};
-        if(dingosdk::owned_hook_prepare(reinterpret_cast<void*>(base+0xa1f4b0),reinterpret_cast<void*>(&command_hook),&original)!=dingosdk::HookOk)
+        if(dingosdk::owned_hook_prepare(reinterpret_cast<void*>(base+0xa205f0),reinterpret_cast<void*>(&command_hook),&original)!=dingosdk::HookOk)
             throw std::runtime_error("presence dispatch guard unavailable");
         original_command=reinterpret_cast<Command>(original);
-        if(dingosdk::enable_owned_hook(reinterpret_cast<void*>(base+0xa1f4b0))!=dingosdk::HookOk)
+        if(dingosdk::enable_owned_hook(reinterpret_cast<void*>(base+0xa205f0))!=dingosdk::HookOk)
             throw std::runtime_error("presence dispatch hook failed");
         const auto thread=CreateThread(nullptr,0,worker,nullptr,0,nullptr);
         if(!thread)throw std::runtime_error("presence worker unavailable");CloseHandle(thread);

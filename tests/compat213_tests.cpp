@@ -4,24 +4,29 @@
 #include "native_211.h"
 int main(int argc,char** argv) {
     try {
-        check(argc==3,"official 2.1.2 and previous 2.1.0 fixture paths required");
+        check(argc==3,"official 2.1.3 and previous 2.1.2 fixture paths required");
         auto image=load(argv[1]);const auto& profile=stock_contract::contracts[14];
         const auto digest=hash_of(profile.sha256);
         const auto good=resolve(image,digest);
-        check(bool(good),good.error.c_str());check(good.known,"2.1.2 not recognized");
+        check(bool(good),good.error.c_str());check(good.known,"2.1.3 not recognized");
         check(good.read_callback==native211::read.rva && good.queue_callback==native211::queue.rva,"callback mappings changed");
         for(const auto& entry:native211::entries) {
             auto damaged=image;damaged.bytes[entry.rva]^=1;
             check(!resolve(damaged,digest,true),entry.role);
         }
+        for(const auto at:{native211::status.rva+0x21,native211::status.rva+0x96,
+                           native211::source_init.rva+0x60,native211::source_init.rva+0x81,native211::source_init.rva+0x88}) {
+            auto damaged=image;damaged.bytes[at+3]^=1;
+            check(!resolve(damaged,digest,true),"changed mutex/camera reference accepted");
+        }
         auto wrong=digest;wrong[0]^=1;
-        check(!resolve(image,wrong,true),"force detection accepted an unreviewed 2.1.2 image");
+        check(!resolve(image,wrong,true),"force detection accepted an unreviewed 2.1.3 image");
         auto bad=image;bad.status++;
         check(!resolve(bad,digest,true),"wrong status export accepted");
         auto previous=load(argv[2]);
-        const auto previous_hash=hash_of("310def046836772ef0dea92cfede10e524f4b7fe30255b470e85f2dcbab8c520");
-        check(!stock_contract::find_contract(previous_hash,previous.status),"2.1.0 identity accepted by dedicated 2.1.2 profile");
-        check(!resolve(previous,previous_hash,true),"forced resolution accepted previous 2.1.0 DLL");
+        const auto previous_hash=hash_of("96112d915c181b696b5cb8ed17b62a74d09ca2900c4383a4500c1fa88bf76e43");
+        check(!stock_contract::find_contract(previous_hash,previous.status),"2.1.2 identity accepted by dedicated 2.1.3 profile");
+        check(!resolve(previous,previous_hash,true),"forced resolution accepted previous 2.1.2 DLL");
         // Native partial reads preserve debug when the revision is unchanged.
         // Ensure our displayed master/offset values cannot feed back into it.
         std::vector<std::byte> model(26128,std::byte{0x5a});
@@ -49,6 +54,6 @@ int main(int argc,char** argv) {
         check(capture.consume(false,false,true),"cancelled chord leaked into stock menu before release");
         check(!capture.consume(false,false,false),"neutral release did not restore stock navigation");
         check(!capture.consume(false,false,true),"next stock press was suppressed");
-        std::cout<<"2.1.2 identity, all native entry tamper guards, partial-model refresh and controller ownership passed.\n";
+        std::cout<<"2.1.3 identity, all native entry tamper guards, partial-model refresh and controller ownership passed.\n";
     } catch(const std::exception& e) {std::cerr<<e.what()<<'\n';return 1;}
 }

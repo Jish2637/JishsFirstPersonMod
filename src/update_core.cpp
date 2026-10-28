@@ -82,8 +82,8 @@ Release parse_release(const std::string& json) {
  if(json.size()>1024*1024)bad("Release response is too large");rapidjson::Document d;d.Parse(json.data(),json.size());
  if(d.HasParseError() || !d.IsObject() || !d.HasMember("draft") || !d["draft"].IsBool() || d["draft"].GetBool() ||
     !d.HasMember("prerelease") || !d["prerelease"].IsBool() || d["prerelease"].GetBool())bad("Not a stable published release");
- Release r;r.tag=field(d,"tag_name");const std::string suffix="-reskate-2.1.2";
- if(!r.tag.ends_with(suffix))bad("Latest release is not for ReSkate 2.1.2");r.version=r.tag.substr(0,r.tag.size()-suffix.size());version(r.version);
+ Release r;r.tag=field(d,"tag_name");const std::string suffix="-reskate-2.1.3";
+ if(!r.tag.ends_with(suffix))bad("Latest release is not for ReSkate 2.1.3");r.version=r.tag.substr(0,r.tag.size()-suffix.size());version(r.version);
  if(!d.HasMember("assets") || !d["assets"].IsArray())bad("Release assets are missing");
  const std::string name="JishsFirstPersonMod-"+r.tag+".zip";unsigned matches{};
  for(const auto& a:d["assets"].GetArray()) {

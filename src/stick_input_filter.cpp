@@ -15,7 +15,7 @@
 #include <set>
 #include <map>
 #include <mutex>
-#define DIRECTINPUT_VERSION 0x0800
+#define DIRECTINPUT_VERSION 0x800
 #include <dinput.h>
 #include <deque>
 #include <hidsdi.h>
@@ -121,7 +121,7 @@ void filtered_stock_hid(const StockHidRead& read,DWORD size) {
     capture_stock_sony_read(read,size); // Keep menu capture, using the device's report boundaries.
     if(diagnostic_file_io) {SetLastError(error);return;}
     bool private_read{};{ std::lock_guard lock(glance_mutex);private_read=private_handles.contains(read.file); }
-    if(!diagnostic_file_io && !private_read && read.buffer && size<=read.capacity && size>=10 && size<=512)
+    if(!diagnostic_file_io && !private_read && read.buffer && size<=read.capacity && size>=10 && size<=547)
         filter_native_sony_read(read,size);
     SetLastError(error);
 }
@@ -289,13 +289,13 @@ bool install_stick_input_filter() {
     original_data=reinterpret_cast<RawData>(data);original_buffer=reinterpret_cast<RawBuffer>(buffer);
     log("Optional input filters: Raw Input adapters prepared ("+elapsed()+").");
     const auto stock=GetModuleHandleW(L"reskate.dll");const auto base=reinterpret_cast<std::uintptr_t>(stock);
-    const bool hid_verified=stock && stock_contract::selected && std::string_view(stock_contract::selected->version)=="2.1.2" &&
+    const bool hid_verified=stock && stock_contract::selected && std::string_view(stock_contract::selected->version)=="2.1.3" &&
         verified_stock_hid([](std::uintptr_t address,void* data,std::size_t size) { return memory::read_bytes(address,data,size); },base);
     if(hid_verified) {
         void* original{};auto* target=reinterpret_cast<void*>(base+stock_hid_rva);
         if(owned_hook_prepare(target,reinterpret_cast<void*>(&filtered_stock_hid),&original)!=HookOk) return false;
         original_hid=reinterpret_cast<StockHid>(original);pending.push_back(target);
-    } else log("Glance emote blocking unavailable: shared ReSkate 2.1.2 HID handler did not verify. Existing stick filters remain available.");
+    } else log("Glance emote blocking unavailable: shared ReSkate 2.1.3 HID handler did not verify. Existing stick filters remain available.");
     if(!prepare_native_hid(pending)) {
         log("WARNING: optional input filters stopped at native HID preparation ("+elapsed()+").");return false;
     }

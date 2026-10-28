@@ -57,8 +57,11 @@ int main(int argc,char** argv) try {
   if(interruption==0)qa_menu=true;if(interruption==1)qa_focus=false;if(interruption==2)qa_active=false;if(interruption==3)qa_spectator=true;
   qa_now+=10;check(poll(0x101)==0x101,"interrupted gameplay filtered");qa_menu=false;qa_focus=qa_active=true;qa_spectator=false;qa_now+=10;check(poll(0x101)==0x100&&!glance_emote_active(),"interruption retained tap");}
  clear_glance_filter();publish();raw_controller_read=true;check(poll(0x101)==0x101,"mod sampler was filtered");raw_controller_read=false;
- for(auto kind:{dingosdk::PlayStationPad::dualshock4,dingosdk::PlayStationPad::dualsense})for(bool bluetooth:{false,true}){
-  clear_glance_filter();std::vector<std::uint8_t> report(bluetooth?78:64,0);const unsigned start=bluetooth?(kind==dingosdk::PlayStationPad::dualsense?2:3):1;
+ for(auto kind:{dingosdk::PlayStationPad::dualshock4,dingosdk::PlayStationPad::dualsense})for(unsigned length:{64u,78u,547u}){
+  if(length==547 && kind!=dingosdk::PlayStationPad::dualshock4) continue;
+  const bool bluetooth=length>64;
+  clear_glance_filter();std::vector<std::uint8_t> report(length,0);const unsigned start=bluetooth?(kind==dingosdk::PlayStationPad::dualsense?2:3):1;
+  if(length==547) std::fill(report.begin()+78,report.end(),0xa5);
   const unsigned button=start+(kind==dingosdk::PlayStationPad::dualsense?7:4);report[0]=bluetooth?(kind==dingosdk::PlayStationPad::dualsense?0x31:0x11):1;
   for(unsigned i=0;i<4;++i)report[start+i]=128;report[button+1]=1; // L1
   StockHidRead read{reinterpret_cast<void*>(10),report.data(),static_cast<unsigned>(report.size()),kind};
@@ -68,8 +71,9 @@ int main(int argc,char** argv) try {
   submit(0,1);check((report[button]&15)==8&&(report[button]&0xf0)==0x20&&report[button+1]==1,"Sony first tap damaged other buttons");
   if(bluetooth) {
     std::uint32_t checksum{};std::memcpy(&checksum,report.data()+74,4);
-    // Independent expected values computed with Python zlib.crc32 over 0xA1 + payload.
+    // Independent expected values computed with Python zlib.crc32 over 0xa1 + payload.
     check(checksum==(kind==dingosdk::PlayStationPad::dualsense ? 0x350f57b5u:0x797b0b63u),"Bluetooth first-press checksum invalid");
+    if(length==547)check(std::all_of(report.begin()+78,report.end(),[](auto v){return v==0xa5;}),"DS4 Windows padding changed");
   }
   const auto edited=report;filtered_stock_hid(read,static_cast<DWORD>(report.size()));check(report==edited&&!glance_emote_active(),"duplicate shared completion became tap");
   submit(8,2);submit(0,3);check((report[button]&15)==0&&glance_emote_active(),"Sony double tap blocked");submit(0,4);check((report[button]&15)==0,"Sony second hold blocked");submit(8,5);check(!glance_emote_active(),"Sony release stuck");

@@ -1,6 +1,6 @@
 {
   "name": "Jish's First Person Mod",
   "author": "Jish",
-  "version_number": "1.36.6",
-  "description": "First-person camera for ReSkate 2.1.2 with multi-mod loader and updater support, optional on-foot angle limits, experimental emote aiming, bail collision improvements, MSC [FP] tags and spectator freelook."
+  "version_number": "1.36.7",
+  "description": "First-person camera for ReSkate 2.1.3 with multi-mod loader and updater support, optional on-foot angle limits, experimental emote aiming, bail collision improvements, MSC [FP] tags and spectator freelook."
 }

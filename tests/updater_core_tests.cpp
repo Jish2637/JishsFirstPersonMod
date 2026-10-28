@@ -30,7 +30,7 @@ Bytes zip(const std::map<std::string,Bytes>& contents) {
  }
  return result;
 }
-Release release(const Bytes& b) {Release r;r.version="1.35.0";r.tag=r.version+"-reskate-2.1.2";r.size=b.size();r.digest="sha256:"+sha256(b);r.url="https://github.com/Jish2637/JishsFirstPersonMod/releases/download/"+r.tag+"/JishsFirstPersonMod-"+r.tag+".zip";return r;}
+Release release(const Bytes& b) {Release r;r.version="1.35.0";r.tag=r.version+"-reskate-2.1.3";r.size=b.size();r.digest="sha256:"+sha256(b);r.url="https://github.com/Jish2637/JishsFirstPersonMod/releases/download/"+r.tag+"/JishsFirstPersonMod-"+r.tag+".zip";return r;}
 std::string metadata(const Release& r) {
  return "{\"tag_name\":\""+r.tag+"\",\"draft\":false,\"prerelease\":false,\"assets\":[{\"name\":\"JishsFirstPersonMod-"+r.tag+".zip\",\"browser_download_url\":\""+r.url+"\",\"digest\":\""+r.digest+"\",\"size\":"+std::to_string(r.size)+"}]}";
 }
@@ -42,7 +42,7 @@ int main(int argc,char** argv){try {
  require(version("1.10.0")>version("1.9.9"),"numeric semantic order");
  for(const char* s:{"","1.35","1.35.0-test","01.35.0","v1.35.0","1.-1.0","1.9999999.0"})rejects([&]{version(s);},"invalid version accepted");
  auto change=[&](std::string a,std::string b){auto text=json;const auto at=text.find(a);require(at!=text.npos,"fixture replacement");text.replace(at,a.size(),b);return text;};
- for(const auto& text:{std::string("[]"),change("\"draft\":false","\"draft\":true"),change("\"prerelease\":false","\"prerelease\":true"),change("2.1.2","2.1.0"),change("2.1.2","2.1.1"),change("https://github.com/","https://evil.example/"),change("sha256:","sha512:"),change(".zip\"","-source.zip\"")})rejects([&]{parse_release(text);},"unsafe metadata accepted");
+ for(const auto& text:{std::string("[]"),change("\"draft\":false","\"draft\":true"),change("\"prerelease\":false","\"prerelease\":true"),change("2.1.3","2.1.0"),change("2.1.3","2.1.1"),change("https://github.com/","https://evil.example/"),change("sha256:","sha512:"),change(".zip\"","-source.zip\"")})rejects([&]{parse_release(text);},"unsafe metadata accepted");
  const auto signed_url=https_request(L"https://release-assets.githubusercontent.com/asset.zip?sig=abc%2B123&expires=10");
  require(signed_url.target==L"/asset.zip?sig=abc%2B123&expires=10","signed redirect query lost");
  for(const wchar_t* url:{L"http://github.com/a",L"https://github.com.evil.example/a",L"https://user:password@github.com/a",L"https://github.com:444/a",L"https://evil.example/a",L"https://github.com/a#fragment"})rejects([&]{https_request(url);},"unsafe redirect accepted");

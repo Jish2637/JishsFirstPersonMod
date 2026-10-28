@@ -208,7 +208,7 @@ void read_hook(void* user,void* model) {
     // A concurrent poll must never wait for this lock while holding stock's mutex.
     std::unique_lock spring_lock(spring_mutex,std::try_to_lock);
     auto* debug=reinterpret_cast<DebugPrefix*>(static_cast<std::byte*>(model)+model_debug_offset);
-    observe_stock_camera_owner(debug->free_camera || (!uses_v212_layout(selected) && debug->drone_follow));
+    observe_stock_camera_owner(debug->free_camera || (!uses_v213_layout(selected) && debug->drone_follow));
     // No STL object crosses DLL ownership. Only the verified POD prefix is read
     // and updated in the stock-owned model, after its normal callback returns.
     publish_native_controls(read_native_controls(model));
@@ -317,8 +317,8 @@ bool start_stock_bridge(HMODULE module) {
     }
     if(is_v2()) {
         constexpr std::array<unsigned char,28> console_prefix{
-            0x48,0x89,0x5c,0x24,0x08,0x55,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,
-            0x48,0x8d,0x6c,0x24,0xd9,0x48,0x81,0xec,0xd0,0x00,0x00,0x00};
+            0x48,0x89,0x5c,0x24,0x8,0x55,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,
+            0x48,0x8d,0x6c,0x24,0xd9,0x48,0x81,0xec,0xd0,0x0,0x0,0x0};
         std::array<unsigned char,28> live{};
         if(callbacks[5]!=base+stock_contract::console_queue_rva() || !owned_code(callbacks[5],module) ||
            !memory::read(callbacks[5],live) || live!=console_prefix) {

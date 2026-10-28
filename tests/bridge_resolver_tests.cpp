@@ -76,7 +76,7 @@ int main(int argc,char** argv) {
             std::memcpy(bad.bytes.data()+duplicate+0x15,&call_offset,4);
             check(!resolve(bad,hash,true),"duplicate FOV candidate accepted");
             // The game setter's displacement is a required constant, not a relocation wildcard.
-            bad=image;const unsigned char setter[]{0x48,0x8d,0x87,0x90,0xfa,0xf8,0x02};
+            bad=image;const unsigned char setter[]{0x48,0x8d,0x87,0x90,0xfa,0xf8,0x2};
             auto located=std::search(bad.bytes.begin(),bad.bytes.end(),std::begin(setter),std::end(setter));
             check(located!=bad.bytes.end(),"fixture initializer missing");located[3]^=0x10;
             check(!resolve(bad,hash,true),"changed native camera setter accepted");

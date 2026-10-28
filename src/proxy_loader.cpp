@@ -7,7 +7,7 @@
 // existing single-mod installs (for example JishMSCBroadcast.dll) keep loading. Each mod still applies
 // its own launcher on/off switch. Based on the single-DLL proxy in Jish's First Person Mod / JishMSCBroadcast.
 #include <Windows.h>
-#define DIRECTINPUT_VERSION 0x0800
+#define DIRECTINPUT_VERSION 0x800
 #include <dinput.h>
 #include "Engine/Game/Build/image_identity.h"
 #include "rotating_log.h"

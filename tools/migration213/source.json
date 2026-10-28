@@ -1,0 +1,11 @@
+{
+  "baseline_mod_revision": "106a506",
+  "official_runtime_tag": "v2.1.3",
+  "official_source_revision": "9506a39",
+  "archives": {
+    "ReSkate-2.1.3-source.zip": "ace20326de15182dd08dba69f8a5c66528b2872f68ee84ae62c74f8351ef45cf",
+    "Jish-current-main.zip": "7c83e69b16d946bceb9935e287e262330715bdb622040c08b6b1e606322e59df"
+  },
+  "runtime_sha256": "139e932ad6328b898b2ff8c2aac3e0cd5ced6545c2f041aa8534239f97e59f9b",
+  "report_helper_override": "Engine/Game/Input/playstation_report.h"
+}

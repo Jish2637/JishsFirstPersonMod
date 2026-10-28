@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 namespace jishsfirstpersonmod {
-// ReSkate 2.1.2 copies 16 bytes plus one 32-bit word into the caller's buffer.
+// ReSkate 2.1.3 copies 16 bytes plus one 32-bit word into the caller's buffer.
 struct StockGamepad {
     std::uint16_t buttons{};
     std::uint8_t left_trigger{},right_trigger{};

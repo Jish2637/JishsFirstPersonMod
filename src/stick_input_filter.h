@@ -6,13 +6,9 @@
 #include <array>
 namespace jishsfirstpersonmod {
 inline void sony_report_crc(std::span<std::uint8_t> report) {
-    const auto id=report[0];
-    if((id==0x31 || id==0x11) && report.size()==78) {
-        std::uint32_t crc=0xffffffff;
-        const auto feed=[&](std::uint8_t byte) { crc^=byte;for(unsigned i=0;i<8;++i) crc=(crc>>1)^((crc&1) ? 0xedb88320:0); };
-        feed(0xa1);for(std::size_t i=0;i<report.size()-4;++i) feed(report[i]);
-        crc=~crc;for(unsigned i=0;i<4;++i) report[report.size()-4+i]=static_cast<std::uint8_t>(crc>>(8*i));
-    }
+    // 2.1.3 also accepts Windows-padded 547-byte DS4 Bluetooth reads. Their
+    // CRC stays at byte 74; bytes 78 onward are padding, not checksum input.
+    dingosdk::refresh_playstation_bluetooth_crc(report.data(),report.size());
 }
 inline bool filter_sony_dpad(dingosdk::PlayStationPad kind,std::span<std::uint8_t> report,std::uint32_t consume) {
     const auto parsed=dingosdk::parse_playstation_report(kind,report.size()>64,report.data(),report.size());

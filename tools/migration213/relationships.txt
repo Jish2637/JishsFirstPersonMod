@@ -1,0 +1,99 @@
+remote_getter 0xade6e0
+party_getter 0xb03ab0
+msc_session 0x9d6e30
+hid 31 function signature 0xf2c110: expected one match, found 0:
+hid 26 function signature 0xf2c110: expected one match, found 0:
+hid 24 function signature 0xf2c110: expected one match, found 0:
+hid 23 function signature 0xf2c110: expected one match, found 0:
+caller failed 0xf292ae function signature 0xf2929e: expected one match, found 0:
+caller failed 0xf29bcb function signature 0xf29bbb: expected one match, found 0:
+state 0x1cf3ca0
+party 0x1ba0968
+remote 0x1ba0810
+session 0x1ba0010
+alloc 0x1b63d20
+userdata 0x1d8d2e0
+context 0x1d8d2d8
+free 0x1b63d28
+source_initialized 0x1b59dd0
+source_base 0x1b5a0e8
+source_transform 0x1b5a0f8
+party_transform_return 0xd7454f
+party_fov_return 0xd7456f
+hid_callers []
+DISASM party_getter
+0xb03ab0 sub rsp, 0x28
+0xb03ab4 mov ecx, dword ptr [rip + 0x128ff76]
+0xb03aba mov rax, qword ptr gs:[0x58]
+0xb03ac3 mov edx, 0x10180
+0xb03ac8 mov rax, qword ptr [rax + rcx*8]
+0xb03acc mov eax, dword ptr [rdx + rax]
+0xb03acf cmp dword ptr [rip + 0x109ce9b], eax
+0xb03ad5 jg 0xb03b02
+0xb03ad7 mov rax, qword ptr [rip + 0x109ce8a]
+0xb03ade add rsp, 0x28
+0xb03ae2 ret
+0xb03ae3 mov qword ptr [rip + 0x109ce7e], rax
+0xb03aea lea rcx, [rip + 0x109ce7f]
+0xb03af1 call 0x149521c
+0xb03af6 mov rax, qword ptr [rip + 0x109ce6b]
+0xb03afd add rsp, 0x28
+0xb03b01 ret
+0xb03b02 lea rcx, [rip + 0x109ce67]
+0xb03b09 call 0x1495288
+0xb03b0e cmp dword ptr [rip + 0x109ce5b], -1
+0xb03b15 jne 0xb03ad7
+0xb03b17 mov ecx, 0xbe00
+0xb03b1c call 0x1494b8c
+0xb03b21 mov qword ptr [rsp + 0x30], rax
+DISASM remote_getter
+0xade6e0 mov qword ptr [rsp + 0x10], rbx
+0xade6e5 push rdi
+0xade6e6 sub rsp, 0x20
+0xade6ea mov ecx, dword ptr [rip + 0x12b5340]
+0xade6f0 mov rax, qword ptr gs:[0x58]
+0xade6f9 mov rdi, qword ptr [rax + rcx*8]
+0xade6fd mov eax, 0x10180
+0xade702 mov eax, dword ptr [rax + rdi]
+0xade705 cmp dword ptr [rip + 0x10c210d], eax
+0xade70b jg 0xade741
+0xade70d mov eax, 0x10
+0xade712 imul rax, qword ptr [rax + rdi], 0x378
+0xade71a add rax, qword ptr [rip + 0x10c20ef]
+0xade721 mov rbx, qword ptr [rsp + 0x38]
+0xade726 add rsp, 0x20
+0xade72a pop rdi
+0xade72b ret
+0xade72c mov qword ptr [rip + 0x10c20dd], rbx
+0xade733 lea rcx, [rip + 0x10c20de]
+0xade73a call 0x149521c
+0xade73f jmp 0xade70d
+0xade741 lea rcx, [rip + 0x10c20d0]
+0xade748 call 0x1495288
+0xade74d cmp dword ptr [rip + 0x10c20c4], -1
+0xade754 jne 0xade70d
+DISASM msc_session
+0x9d6e30 sub rsp, 0x28
+0x9d6e34 mov ecx, dword ptr [rip + 0x13bcbf6]
+0x9d6e3a mov rax, qword ptr gs:[0x58]
+0x9d6e43 mov edx, 0x10180
+0x9d6e48 mov rax, qword ptr [rax + rcx*8]
+0x9d6e4c mov eax, dword ptr [rdx + rax]
+0x9d6e4f cmp dword ptr [rip + 0x11c91c3], eax
+0x9d6e55 jg 0x9d6e82
+0x9d6e57 mov rax, qword ptr [rip + 0x11c91b2]
+0x9d6e5e add rsp, 0x28
+0x9d6e62 ret
+0x9d6e63 mov qword ptr [rip + 0x11c91a6], rax
+0x9d6e6a lea rcx, [rip + 0x11c91a7]
+0x9d6e71 call 0x149521c
+0x9d6e76 mov rax, qword ptr [rip + 0x11c9193]
+0x9d6e7d add rsp, 0x28
+0x9d6e81 ret
+0x9d6e82 lea rcx, [rip + 0x11c918f]
+0x9d6e89 call 0x1495288
+0x9d6e8e cmp dword ptr [rip + 0x11c9183], -1
+0x9d6e95 jne 0x9d6e57
+0x9d6e97 mov ecx, 0xbf530
+0x9d6e9c call 0x1494b8c
+0x9d6ea1 mov qword ptr [rsp + 0x30], rax
