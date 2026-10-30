@@ -124,6 +124,7 @@ void launch(void(*function)()) {
 }
 Snapshot snapshot(){std::lock_guard lock(mutex);return state;}
 void start(const fs::path& companion,const fs::path& data) {
+ {std::lock_guard lock(mutex);state.automatic=false;state.installed="1.36.7-studio-test1";state.status="Animator Studio test profile: install compatibility updates manually.";} return;
  try {
   {std::lock_guard lock(mutex);if(started)return;started=true;}
   wchar_t exe[32768]{};if(!GetModuleFileNameW(nullptr,exe,32768))throw std::runtime_error("Game folder unavailable");

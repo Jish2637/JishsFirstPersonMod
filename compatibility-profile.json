@@ -1,0 +1,19 @@
+{
+  "profile": "animator-studio-1.0.101",
+  "mod_version": "1.36.7-studio-test1",
+  "selection": "build-time: this source tree targets Studio only",
+  "release_url": "https://github.com/FourthStudio/ReSkate-Animator-Studio/releases/tag/1.0.101",
+  "runtime_sha256": "ed8f07863bcc3de1d83371de0f90b368ca55602d793d1bd84dbbff44b6d76801",
+  "runtime_source_revision": "ce058bfd5b7a3d28094676e70bb05454276a77f3",
+  "baseline": "published First Person 1.36.7 / official ReSkate 2.1.3",
+  "offline_audit": "tools/animator_studio/audit-report.json",
+  "automated_tests": {
+    "passed": 51,
+    "failed": 0
+  },
+  "gameplay_validation": "User confirmed test 1 working and selected its exact client ZIP for publication.",
+  "disabled_features": [
+    "MSC presence announcements",
+    "automatic updates"
+  ]
+}

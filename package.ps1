@@ -1,4 +1,4 @@
-param([string]$ModVersion = "1.36.7", [string]$ReSkateVersion = "2.1.3", [switch]$UniversalLoader)
+param([string]$ModVersion = "1.36.7-studio-test1", [string]$ReSkateVersion = "2.1.3-animator-studio-1.0.101", [switch]$UniversalLoader)
 
 $ErrorActionPreference = 'Stop'
 
@@ -31,7 +31,7 @@ try {
 
     [IO.File]::WriteAllText((Join-Path $PSScriptRoot 'release/LICENSE.txt'),$licenseText,[Text.UTF8Encoding]::new($false))
 
-    $clientPaths = @('release/Mods','release/scripts','release/LICENSE.txt')
+    $clientPaths = @('release/Mods','release/scripts','release/LICENSE.txt','release/README.md')
     if (!$UniversalLoader) { $clientPaths += 'release/dinput8.dll' }
     Compress-Archive -Path $clientPaths -DestinationPath $releasePath -Force
 

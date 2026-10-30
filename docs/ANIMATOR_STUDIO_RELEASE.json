@@ -1,0 +1,11 @@
+{
+  "branch": "animator-studio",
+  "tag": "1.36.7-animator-studio-1.0.101",
+  "client_asset": "JishsFirstPersonMod-1.36.7-studio-test1-reskate-2.1.3-animator-studio-1.0.101.zip",
+  "client_sha256": "093b5f27eb2727077879eecef739671c16220329157f1e98fe057d889790b087",
+  "client_dll_sha256": "00b153947d63dd1789c85727813720707bfb9e90faa3179552c59e359ca6a30d",
+  "original_source_archive_sha256": "ca17aa7f3d5cc389353d41acd0dcbf41a7c31e615a48474722611d0e906efb34",
+  "source_basis": "Exact test 1 source ZIP; src, tests and vendor files preserved byte-for-byte. Release documentation/provenance updated only.",
+  "excluded": "Test 2 MSC presence changes are not included.",
+  "validation": "51 automated tests and offline audit passed for test 1; user confirmed gameplay."
+}

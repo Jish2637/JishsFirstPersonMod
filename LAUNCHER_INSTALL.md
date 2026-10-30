@@ -1,4 +1,4 @@
-# Installation - 1.36.7 multi-mod loader release for ReSkate 2.1.3
+# Installation - Animator Studio compatibility test 1
 
 Close Skate. Back up your existing dinput8.dll outside the game folder (or as dinput8.dll.bak), then extract the full client ZIP beside Skate.exe, merging Mods and scripts and replacing dinput8.dll. Existing personal settings, other DLL mods and scripts/Custom/dinput8_mods.txt are preserved.
 
@@ -6,9 +6,7 @@ The bundled dinput8 now supports multiple mods using UniversalModLoader v2 behav
 
 On restart, check Insert > Skater > First Person. Loader diagnostics are in scripts/Custom/UniversalLoader/loader.log; First Person diagnostics remain in scripts/Custom/FirstPerson/logs/JishsFirstPersonMod.log.
 
-First Person updates recognize the bundled multi-mod loader and the verified original UniversalModLoader v2 build (SHA256 438e671de5910e04e1af3ade92f3e72f14cbf12fb63df23676863794a43a0559). Updates preserve these loaders, their mod list, chained proxy, other mods, personal settings and presets. Unknown loader builds still require manual installation. Future releases retain the known loader digests.
-
-For updates, use Mod updates > Check for updates, then Download update and Install after I close Skate. Close Skate normally and restart it yourself when installation completes. Only newer published GitHub releases are offered. Older updater builds may require this release to be installed manually.
+This profile requires the exact Animator Studio release 1.0.101 DLL. Automatic First Person updates and MSC [FP] announcements are disabled in this test build. Install compatible updates manually. See README.md for Studio installation, runtime identity and gameplay checks.
 
 Optional proxy chaining: an existing dinput8_chain.dll beside Skate.exe receives DirectInput forwarding. Otherwise forwarding uses the Windows system DLL. Do not rename the old universal loader to dinput8_chain.dll just to back it up.
 

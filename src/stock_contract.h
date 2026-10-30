@@ -40,8 +40,8 @@ inline constexpr NativeContract contracts[]{
  0xc18c70,0x1505860,0xf2f894,0xf2f8c0,0xa45010,0x1430e70,0x1431110,0x1431120},
     {"2.1.1","d79ff144768ce8b0a8e992c9f134c670a3ff85bb3b437a0eb915876973014301",
      0xde5250,0x1864198,0x1157774,0x11577a0,0xbe1900,0x17672c0,0x17681f8,0x1768208}
-    ,{"2.1.3","139e932ad6328b898b2ff8c2aac3e0cd5ced6545c2f041aa8534239f97e59f9b",
-     0xf8be60,0x1cf3ca0,0x148a6f4,0x148a720,0xd7f510,0x1b59dd0,0x1b5a0e8,0x1b5a0f8}
+    ,{"2.1.3","ed8f07863bcc3de1d83371de0f90b368ca55602d793d1bd84dbbff44b6d76801",
+     0x108def0,0x1f47000,0x1684524,0x168454c,0xda5de0,0x1da0e20,0x1da1188,0x1da1198}
 };
 inline const NativeContract* selected=nullptr;
 inline const NativeContract& contract() { if(!selected) throw std::logic_error("ReSkate contract not validated");return *selected; }
@@ -67,10 +67,10 @@ inline bool uses_v2_layout(const NativeContract* profile) {
     return version=="2.0.0" || version=="2.0.1" || version=="2.0.2" || version=="2.0.3" || version=="2.0.4" || version=="2.0.5" || version=="2.0.6" || version=="2.0.7" || version=="2.0.8" || uses_v211_layout(profile);
 }
 inline bool uses_v203_layout(const NativeContract* profile) { return profile && (std::string_view(profile->version)=="2.0.3" || std::string_view(profile->version)=="2.0.4" || std::string_view(profile->version)=="2.0.5"); }
-inline std::size_t profile_callbacks_offset(const NativeContract* profile) { return uses_v213_layout(profile) ? 0xac0:uses_v211_layout(profile) ? 0x5b0:uses_v206_layout(profile) ? 0x590:uses_v203_layout(profile) ? 0x4d0:uses_v2_layout(profile) ? 0x4b8:0x4b0; }
-inline std::size_t profile_model_offset(const NativeContract* profile) { return uses_v213_layout(profile) ? 0xaf0:uses_v211_layout(profile) ? 0x5e0:uses_v206_layout(profile) ? 0x5c0:uses_v203_layout(profile) ? 0x500:uses_v2_layout(profile) ? 0x4e8:0x4e0; }
-inline std::uintptr_t native_sampler_rva() { return uses_v213_layout(selected) ? 0xd80cc0:uses_v211_layout(selected) ? 0xbe3090:std::string_view(contract().version)=="2.0.8" ? 0xa467a0:std::string_view(contract().version)=="2.0.7" ? 0x22bb20:uses_v206_layout(selected) ? 0x21ec50:(std::string_view(contract().version)=="2.0.4" || std::string_view(contract().version)=="2.0.5") ? 0x2196c0:uses_v203_layout(selected) ? 0x210080:std::string_view(contract().version)=="2.0.2" ? 0x273020:0x26f810; }
-inline std::uintptr_t console_queue_rva() { return uses_v213_layout(selected) ? 0x989080:uses_v211_layout(selected) ? 0x979980:std::string_view(contract().version)=="2.0.8" ? 0x811900:std::string_view(contract().version)=="2.0.7" ? 0x42210:uses_v206_layout(selected) ? 0x41d90:(std::string_view(contract().version)=="2.0.4" || std::string_view(contract().version)=="2.0.5") ? 0x411b0:uses_v203_layout(selected) ? 0x40e30:std::string_view(contract().version)=="2.0.2" ? 0x3ec00:0x3ea30; }
+inline std::size_t profile_callbacks_offset(const NativeContract* profile) { return uses_v213_layout(profile) ? 0xb68:uses_v211_layout(profile) ? 0x5b0:uses_v206_layout(profile) ? 0x590:uses_v203_layout(profile) ? 0x4d0:uses_v2_layout(profile) ? 0x4b8:0x4b0; }
+inline std::size_t profile_model_offset(const NativeContract* profile) { return uses_v213_layout(profile) ? 0xb98:uses_v211_layout(profile) ? 0x5e0:uses_v206_layout(profile) ? 0x5c0:uses_v203_layout(profile) ? 0x500:uses_v2_layout(profile) ? 0x4e8:0x4e0; }
+inline std::uintptr_t native_sampler_rva() { return uses_v213_layout(selected) ? 0xda75e0:uses_v211_layout(selected) ? 0xbe3090:std::string_view(contract().version)=="2.0.8" ? 0xa467a0:std::string_view(contract().version)=="2.0.7" ? 0x22bb20:uses_v206_layout(selected) ? 0x21ec50:(std::string_view(contract().version)=="2.0.4" || std::string_view(contract().version)=="2.0.5") ? 0x2196c0:uses_v203_layout(selected) ? 0x210080:std::string_view(contract().version)=="2.0.2" ? 0x273020:0x26f810; }
+inline std::uintptr_t console_queue_rva() { return uses_v213_layout(selected) ? 0x981730:uses_v211_layout(selected) ? 0x979980:std::string_view(contract().version)=="2.0.8" ? 0x811900:std::string_view(contract().version)=="2.0.7" ? 0x42210:uses_v206_layout(selected) ? 0x41d90:(std::string_view(contract().version)=="2.0.4" || std::string_view(contract().version)=="2.0.5") ? 0x411b0:uses_v203_layout(selected) ? 0x40e30:std::string_view(contract().version)=="2.0.2" ? 0x3ec00:0x3ea30; }
 inline std::size_t bindings_model_offset() { return uses_v213_layout(selected) ? 0x5fc8:uses_v211_layout(selected) ? 0x5fe0:std::string_view(contract().version)=="2.0.8" ? 0x5f88:uses_v206_layout(selected) ? 0x5f78:0x5f50; }
 inline bool is_v2() { return uses_v2_layout(selected); }
 inline std::size_t callbacks_offset() { return profile_callbacks_offset(selected); }

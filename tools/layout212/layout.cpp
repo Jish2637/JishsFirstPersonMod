@@ -6,6 +6,9 @@
 #include "Extension/Skater/client_source_spawn_internal.h"
 #include <iostream>
 #define FIELD(T,F) std::cout<<#T "." #F "="<<offsetof(T,F)<<"\n"
+static_assert(sizeof(dingosdk::first_person::Settings)==64);
+static_assert(offsetof(dingosdk::first_person::Settings,stabilize)==44);
+static_assert(offsetof(dingosdk::first_person::Settings,smoothing)==48);
 int main(){
 using namespace dingosdk;using namespace dingosdk::multiplayer::session_detail;
 using O=dingosdk::overlay::detail::State;using M=dingosdk::overlay::Model;using D=dingosdk::overlay::DebugModel;

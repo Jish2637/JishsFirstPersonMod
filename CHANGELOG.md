@@ -1,3 +1,7 @@
+# Animator Studio compatibility test 1
+
+Pinned Studio release 1.0.101 (Studio 1.0.11 / ReSkate 2.1.3) profile. Re-derived native camera/menu/input addresses, overlay layout and spectator return sites. Requires exact Studio DLL hash; unknown DLLs remain inactive. MSC presence and automatic updates are disabled. Release build, 51 automated tests and offline binary/layout audits pass; gameplay testing is pending. This is a separate Studio build, not a dual-runtime DLL.
+
 # Changelog
 
 ## 1.36.7 - ReSkate 2.1.3

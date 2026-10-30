@@ -139,11 +139,11 @@ Resolution resolve(const Image& image,const std::array<unsigned char,32>& hash,b
             if(relative(image,native211::getter.rva+0x27,3,7)!=reviewed->state_pointer_rva) throw std::runtime_error("2.1.3 state accessor reference differs");
             if(relative(image,native211::status.rva+0x16,1,5)!=native211::getter.rva ||
                relative(image,native211::status.rva+0x21,1,5)!=reviewed->mutex_lock_rva ||
-               relative(image,native211::status.rva+0x96,1,5)!=reviewed->mutex_unlock_rva)
+               relative(image,native211::status.rva+0x97,1,5)!=reviewed->mutex_unlock_rva)
                 throw std::runtime_error("2.1.3 status/mutex relationship differs");
-            if(relative(image,native211::source_init.rva+0x60,3,7)!=reviewed->source_initialized_rva ||
-               relative(image,native211::source_init.rva+0x81,3,7)!=reviewed->source_transform_rva ||
-               relative(image,native211::source_init.rva+0x88,3,7)!=reviewed->source_base_rva)
+            if(relative(image,native211::source_init.rva+0x5a,3,7)!=reviewed->source_initialized_rva ||
+               relative(image,native211::source_init.rva+0x7b,3,7)!=reviewed->source_transform_rva ||
+               relative(image,native211::source_init.rva+0x82,3,7)!=reviewed->source_base_rva)
                 throw std::runtime_error("2.1.3 source camera references differ");
             result.contract=*reviewed;result.known=true;result.read_callback=native211::read.rva;result.queue_callback=native211::queue.rva;
             return result;
@@ -213,7 +213,7 @@ bool initialize(HMODULE module) {
             offset+=count;
         }
         std::string error;if(!image.parse(error)) throw std::runtime_error(error);
-        if(!stock_contract::uses_v213_layout(stock_contract::find_contract(hash,image.status))) throw std::runtime_error("This compatibility build requires the exact official ReSkate 2.1.3 DLL; private hooks remain inactive.");
+        if(!stock_contract::uses_v213_layout(stock_contract::find_contract(hash,image.status))) throw std::runtime_error("This compatibility build requires the Animator Studio 1.0.101 release DLL (Studio 1.0.11 / ReSkate 2.1.3); private hooks remain inactive.");
         wchar_t force[2]{};
         const bool forced=GetEnvironmentVariableW(L"JISHS_FP_FORCE_DETECTION",force,2)==1 && force[0]==L'1';
         selected=resolve(image,hash,forced);if(!selected) throw std::runtime_error(selected.error);
