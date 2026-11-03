@@ -53,7 +53,7 @@ HookFailure hook_last_failure() noexcept { return {}; }
 const char* WINAPI hook_status_string(HookStatus) { return "mock"; }
 }
 int main() { try {
-    std::vector<unsigned char> image(spectator::party_pointer+0x1000),party(0xc000),published(8+250*152),remotes(249*888),
+    std::vector<unsigned char> image(spectator::party_pointer+0x1000),party(0xc000),published(8+250*152),remotes(249*896),
         entity(0x700),component(0x200),collection(0x100),holder(0x200),rig(0x100),definition(0x200),
         vtable(0x100),resource(0x100),header(0x100+395*0x30),table(0x100),render_data(0x100),world(0x100);
     auto address=[](auto& v){return reinterpret_cast<std::uintptr_t>(v.data());};
@@ -76,7 +76,7 @@ int main() { try {
     put(address(party)+spectator::published_offset,address(published));put(address(party)+spectator::selected_offset,std::uint64_t{42});put(address(party)+spectator::epoch_offset,std::uint64_t{7});
     const auto record=address(published)+8+152*3;
     put(record,std::uint64_t{42});put(record+8,std::uint64_t{7});put(record+50,static_cast<unsigned char>(1));put(record+56,std::size_t{2});put(record+88,std::uint64_t{88});
-    const auto remote=address(remotes)+2*888,position=address(party)+192+2*56;
+    const auto remote=address(remotes)+2*896,position=address(party)+192+2*56;
     put(position,static_cast<unsigned char>(1));put(remote,actor);put(remote+8,animation);put(remote+24,context);put(remote+256,buffer);put(remote+264,std::uint64_t{1});
     put(actor,game+dingosdk::addr::engine::skater_entity_vtable);put(actor+0x20,context);put(actor+0x70,address(collection));
     put(animation,game+dingosdk::addr::engine::skater_component_vtable);put(animation+0x18,address(collection));put(animation+0xa0,holder_address);put(address(collection),actor);

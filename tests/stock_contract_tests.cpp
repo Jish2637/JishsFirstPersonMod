@@ -30,11 +30,11 @@ int main() {
     }
     for(const auto& profile:contracts) {
         selected=&profile;
-        if(uses_v213_layout(&profile)) {
-            require(native_sampler_rva()==0xd80cc0 && console_queue_rva()==0x989080,"2.1.3 function mapping");
-            require(callbacks_offset()==0xac0 && model_offset()==0xaf0 && bindings_model_offset()==0x5fc8,"2.1.3 model mapping");
-            require(debug_status_offset()==496 && camera_issue_offset()==160,"2.1.3 debug strings mapping");
-            require(to_native({first_person,true,0}).action==13 && to_native({reset,false,0}).action==34,"2.1.3 action mapping");
+        if(uses_v214_layout(&profile)) {
+            require(native_sampler_rva()==0xd9d800 && console_queue_rva()==0x999ac0,"2.1.4 function mapping");
+            require(callbacks_offset()==0xac8 && model_offset()==0xaf8 && bindings_model_offset()==0x5fc8,"2.1.4 model mapping");
+            require(debug_status_offset()==496 && camera_issue_offset()==160,"2.1.4 debug strings mapping");
+            require(to_native({first_person,true,0}).action==13 && to_native({reset,false,0}).action==34,"2.1.4 action mapping");
             selected=nullptr;continue;
         }
         if(uses_v211_layout(&profile)) {

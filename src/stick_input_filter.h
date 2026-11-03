@@ -6,7 +6,7 @@
 #include <array>
 namespace jishsfirstpersonmod {
 inline void sony_report_crc(std::span<std::uint8_t> report) {
-    // 2.1.3 also accepts Windows-padded 547-byte DS4 Bluetooth reads. Their
+    // 2.1.4 also accepts Windows-padded 547-byte DS4 Bluetooth reads. Their
     // CRC stays at byte 74; bytes 78 onward are padding, not checksum input.
     dingosdk::refresh_playstation_bluetooth_crc(report.data(),report.size());
 }

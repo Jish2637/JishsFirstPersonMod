@@ -1,0 +1,20 @@
+{
+  "state": 31016352,
+  "party": 29232744,
+  "session": 29230192,
+  "alloc": 28983152,
+  "userdata": 31644704,
+  "context": 31644696,
+  "free": 28983160,
+  "source_initialized": 28942272,
+  "source_base": 28943064,
+  "source_transform": 28943080,
+  "party_transform_return": 14225551,
+  "party_fov_return": 14225583,
+  "hid_callers": [
+    16540265,
+    16540288,
+    16542615
+  ],
+  "remote": 29232240
+}

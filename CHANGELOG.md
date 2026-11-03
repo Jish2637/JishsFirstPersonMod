@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.36.8 - ReSkate 2.1.4
+
+- Re-derived all private function/global addresses, including native mutex lock/unlock and the underlying lock implementation.
+- Corrected five overlay offsets, each moved by 8 bytes, and the spectator Remote stride, now 896 bytes.
+- Updated controller/HID entry points, all three HID callers, embedded menu/ImGui and spectator/MSC bridges.
+- Updated exact runtime identity checks in startup and the updater; 2.1.3 and unreviewed DLLs are refused.
+- Updated the PlayStation report helper from the pinned 2.1.4 tag.
+- Release build and all 51 tests pass; 33 native entry guards and 68 source layout fields/sizes audited. The user confirmed the candidate working in game before publication.
+
+
 ## 1.36.7 - ReSkate 2.1.3
 
 - Re-derived all private ReSkate function/global addresses, mutex calls, camera callbacks, controller/HID entry points, embedded UI allocation and spectator/MSC bridges against the official v2.1.3 DLL and tagged source.
@@ -29,16 +39,16 @@ Existing bail camera, collision improvements, MSC [FP] tags, native head movemen
 Validation: release build and 51 automated regression/integration tests pass. The user confirmed the multi-mod build works in game. Actual install-after-exit auto-updating has not been exercised against the live game installation.
 
 
-## 1.36.4 — ReSkate 2.1.2 (startup ordering fix)
+## 1.36.4 â€” ReSkate 2.1.2 (startup ordering fix)
 
 - Core camera hooks and the native Insert > Skater > First Person settings page now initialize before optional XInput, Raw Input, DirectInput and HID filters.
 - Slow or failing optional controller setup no longer blocks successful core startup; detailed per-stage logging identifies driver enumeration stalls.
 - No game or ReSkate hook RVAs/signatures were changed. The same verified 2.1.2 binaries are supported.
 - In-game behaviour and Windows build/testing still need verification.
 
-## 1.36.3 — ReSkate 2.1.2
+## 1.36.3 â€” ReSkate 2.1.2
 
-- Improved bail camera rotation so the view follows the player’s head more consistently during falls.
+- Improved bail camera rotation so the view follows the playerâ€™s head more consistently during falls.
 - Improved bail camera collision handling to reduce sticking in walls, floors and objects after hard impacts.
 - Added MSC server `[FP]` tag integration. The tag stays active whenever First Person is enabled, including temporary third-person bail views and spectating.
 - Added modifier-held right-stick freelook while spectating in first person during throwdowns.

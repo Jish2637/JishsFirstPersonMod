@@ -1,0 +1,11 @@
+{
+  "baseline_mod_commit": "e159963be11b9127363c5301841f814c43290c6b",
+  "official_tag": "v2.1.4",
+  "source_revision": "919b04e",
+  "source_archive_sha256": "57a7ab402dea6bb0480058174034f6cf832bf59740d71e1cce35198a170b2258",
+  "installed_dll": "C:\\Games\\ReSkate\\ReSkate.dll",
+  "dll_sha256": "39195d824d775e5046480d66cb62dae0d709648f145414cb952ed2aa8afb99b3",
+  "mod_version": "1.36.8",
+  "tested_candidate": "test1",
+  "user_gameplay_validation": "Confirmed working and approved for publication, 2026-11-03"
+}

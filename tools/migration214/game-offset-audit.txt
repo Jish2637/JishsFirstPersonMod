@@ -1,0 +1,46 @@
+PASS: caller_prefix at 0x47da1cf
+PASS: animation_request_prefix at 0x47da8d7
+PASS: animation_bail_prefix at 0x47da965
+PASS: recovery_prefix at 0x47da984
+PASS: offboard_owner_prefix at 0x47bf916
+PASS: offboard_constructor_prefix at 0x48108e9
+PASS: request_prefix at 0x4832e8f
+PASS: animation_prefix at 0x4833228
+PASS: animation_update_prefix at 0xf96b80
+PASS: selection_prefix at 0x481833b
+PASS: ground_input_prefix at 0x4831a87
+PASS: ground_source_prefix at 0x48319f5
+PASS: trajectory_constructor_prefix at 0x48109db
+PASS: ragdoll_constructor_prefix at 0x4810b4a
+PASS: trajectory_update_prefix at 0x4833a00
+PASS: ragdoll_update_prefix at 0x48332f0
+PASS: trajectory update vtable slot
+PASS: simulated_ragdoll update vtable slot
+PASS: pre-remap selector call destination
+PASS: normal foot substate 0x60
+PASS: normal foot substate 0x1c0
+PASS: normal foot substate 0x5b0
+PASS: camera_mode_prefix at 0x2f2c360
+PASS: camera_transform_prefix at 0x2f8fa90
+PASS: physics_update_prefix at 0x47ddca0
+PASS: skater_motion_prefix at 0x4776a80
+PASS: client_tick_prefix at 0x2e77190
+PASS: spectator_prefix at 0x7572a0
+PASS: camera_controller_vtable slot 0xb8
+PASS: free_camera_vtable slot 0xd0
+PASS: view manager slot 0x0
+PASS: view manager slot 0x8
+PASS: view manager slot 0x28
+PASS: view manager slot 0x98
+PASS: skater animation virtual callback slot +0x140
+PASS: engine address in image: board_render_pose
+PASS: engine address in image: camera_vtable
+PASS: engine address in image: client_vtable
+PASS: engine address in image: context_player_manager_offset
+PASS: engine address in image: context_type_offset
+PASS: engine address in image: local_player_manager_vtable
+PASS: engine address in image: local_player_vtable
+PASS: engine address in image: skater_component_vtable
+PASS: engine address in image: skater_entity_vtable
+PASS: engine address in image: tls_index
+45 game code/vtable checks passed; SHA-256 fbce74d5e28ef525dbba2cb4adbebc13405bdbd88f31bc940bca45e4ae88b8f9

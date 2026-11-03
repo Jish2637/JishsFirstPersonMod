@@ -1,0 +1,28 @@
+{
+  "revision": "919b04e",
+  "dll_sha256": "39195d824d775e5046480d66cb62dae0d709648f145414cb952ed2aa8afb99b3",
+  "function_prefixes": 33,
+  "layout_fields": 68,
+  "changed_overlay_offsets": {
+    "O.context": "2752",
+    "O.menu": "28944",
+    "O.window": "728",
+    "O.callbacks": "2760",
+    "O.model": "2808",
+    "Remote.size": "896"
+  },
+  "source_sha256": {
+    "Engine/Game/Input/playstation_report.h": "ef48c7ae5564009fdcb578f4d488de12e5409473ff3c6ce815a8d80daddd88a7",
+    "Extension/UI/Overlay/overlay_internal.h": "466fb0f6c6ad9bdf0a9952c4d08fe1ae18b9a638bd62a02f37feb59404b67927",
+    "Extension/UI/Overlay/overlay.h": "41d9ad45fd351772b3728510c86d18240ec99ef16d4693b5048d64d1fbaa3e59",
+    "Extension/UI/Overlay/input_capture.cpp": "1ecdfbca6b28403efc13fcc2038af1202d4cf87db6502b9affab9143cf1f686e",
+    "Extension/UI/Overlay/overlay_input.cpp": "f391042fcfb2cbad10df541cc7d58b25b85a6c8f5d587fbd9011f1c1c4e188b8",
+    "Extension/Multiplayer/Session/session_internal.h": "4024fcd82651c38fc720ebc5d9276592f97472db8f0f05835024df3c51a65d64",
+    "Extension/Multiplayer/Hud/native_party_internal.h": "edf8060f1fd226e3dda60697464935c47d25a8614b9989e3d2dd0dd873419476",
+    "Extension/Multiplayer/Remote/native_skater_internal.h": "2a745ec9650f36aee6b23dab751144fcdacb687a7589eb773cc69782baf9d250",
+    "External/imgui/imgui.h": "2d0180859ff85e7fe66ed9999b0f05f2fc45176773046a8f86b3b6bd190b0765",
+    "External/imgui/imgui_internal.h": "1363c617a743957f367afe1c6c88345870b7aa25ee339809fb915466e4fb9575",
+    "External/imgui/imconfig.h": "0884061cc43e27e1d346fe18dcd1425792eb2532d3d16610a82eb5ac751f7594"
+  },
+  "relationships": "PASS"
+}

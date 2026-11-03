@@ -1,29 +1,15 @@
-# Jish's First Person Mod 1.36.7 - ReSkate 2.1.3
+# Jish's First Person Mod 1.36.8 — ReSkate 2.1.4
 
-First-person camera controls, native head movement, bail camera collision handling, MSC [FP] presence and first-person throwdown spectator freelook for the reviewed ReSkate 2.1.3 build.
+Compatibility update based on the published 1.36.7 release. All private ReSkate addresses and globals have been re-derived for the official 2.1.4 DLL. This includes mutex thunks and their implementation, camera callbacks, controller/HID capture, embedded menu and ImGui allocation, spectator records and the MSC session bridge.
 
-## What's new
+Five overlay fields moved by 8 bytes, and the remote-player stride grew from 888 to 896 bytes. Both are corrected. Existing camera settings and features are retained. The exact runtime identity is shared by startup, private bridges and the updater.
 
-Updates the published 1.36.6 mod for the exact official ReSkate 2.1.3 DLL. All private function addresses, mutex calls and globals have been re-derived. The overlay context, callbacks, model and menu moved by 1,024 bytes. DS4 Bluetooth now accepts Windows-padded 547-byte reads and refreshes the CRC at byte 74 while preserving padding. See [the audit](docs/MIGRATION_213.md) and [testing instructions](docs/TEST_213.md).
+Close Skate and back up your current mod and dinput8.dll. Extract the complete release ZIP beside Skate.exe, merge Mods and scripts, enable the mod in the launcher and restart. Existing personal settings, presets, other mods and dinput8_mods.txt are retained. The ZIP contains the standard multi-mod loader; the ReSkate runtime itself is not bundled.
 
-## Installation
+Required ReSkate.dll SHA-256: `39195d824d775e5046480d66cb62dae0d709648f145414cb952ed2aa8afb99b3`. Runtime support is pinned to this exact official release.
 
-Close Skate, back up your existing dinput8.dll, and extract JishsFirstPersonMod-1.36.7-reskate-2.1.3.zip beside Skate.exe, merging Mods and scripts. Install the whole ZIP, enable the mod in the launcher and restart. Open Insert > Skater > First Person.
+Release build and all 51 automated tests pass. The offline audit verifies 33 native function entries, 68 compiled layout fields/sizes, globals and call relationships; separate game code/vtable, collision and emote checks also pass. The user confirmed the candidate working in game on 3 November 2026 and approved this release. The release client files are identical to that tested candidate.
 
-Your personal settings, presets, other mods and scripts/Custom/dinput8_mods.txt are preserved. The bundled loader discovers DLLs in scripts/Custom and respects their order and disabled entries. See [installation details](LAUNCHER_INSTALL.md).
+See [audit details](docs/MIGRATION_214.md) and [installation/testing](docs/VALIDATION_214.md). Historical documents retain their original version pins.
 
-## Updates
-
-Install this release manually if an older updater rejects your loader or runtime. Version 1.36.7 recognizes the bundled multi-mod loader and the verified original UniversalModLoader v2. Future First Person updates preserve these loaders and your other mods. Unknown loader builds still require manual installation.
-
-Use Mod updates > Check for updates, then Download update and Install after I close Skate. Close Skate normally, wait for completion and restart yourself. Only newer published releases are offered.
-
-## New camera options
-
-Advanced > On-foot right stick look contains Limit on-foot camera angles (off by default), with separate up/down/left/right limits. Native emote aiming is experimental and off by default. Stationary pointing follows the view; running can temporarily point forward until stopping.
-
-## Build and validation
-
-Windows x64 with Visual Studio 2026 C++ tools: run ./build.ps1, then ./package.ps1. To omit the bundled loader, both commands accept -UniversalLoader. External integration fixtures and driver-test options are documented in [startup validation](docs/startup-buildfix.md).
-
-The user confirmed the 1.36.7 candidate working in game before approving publication. All 51 automated tests passed. Runtime support is restricted to ReSkate 2.1.3 SHA256 139e932ad6328b898b2ff8c2aac3e0cd5ced6545c2f041aa8534239f97e59f9b. The supported game executable and its addresses are unchanged and were audited separately. Historical tools and documents retain their original version pins.
+Build on Windows x64 using Visual Studio 2026 C++ tools: ./build.ps1, then ./package.ps1. The offline tools use the pinned dependencies in tools/requirements.txt and the official tagged source. Compile tools/layout214 against that source, then run tools/audit_214.py with the DLL and --upstream source folder. The historical 2.1.3 DLL at ../upstream/ReSkate-2.1.3.dll is used for the independent mutex implementation comparison.
