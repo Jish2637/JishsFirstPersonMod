@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.36.9 - ReSkate 2.1.4-2
+
+- Re-derived every private native function/global address, including mutex thunks and implementation, camera callbacks, embedded UI/ImGui, controller/HID, spectator and MSC bridges.
+- Corrected debug revision offset 26128 and menu offset 28968 for the expanded model.
+- Corrected multiplayer Session mutex 783624, view 781368 and connected-field offset 826.
+- Updated startup and updater runtime identity to the exact official 2.1.4-2 DLL. Previous 2.1.4 and unreviewed images are refused.
+- Release build and all 51 automated tests pass. Publication authorized on 4 November 2026.
+
+
 ## 1.36.8 - ReSkate 2.1.4
 
 - Re-derived all private function/global addresses, including native mutex lock/unlock and the underlying lock implementation.

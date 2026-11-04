@@ -1,0 +1,11 @@
+{
+  "baseline_mod_commit": "f66581dbc9a527649713d39aa0d8b5efd6b0fb18",
+  "mod_version": "1.36.9",
+  "official_tag": "v2.1.4-2",
+  "source_revision": "88540f2",
+  "source_archive_sha256": "3105d95ccd253b57d388ae76d28a52657e3d49d6f9888abee175d508d360f8b1",
+  "runtime_sha256": "f7b1562667892187356b8617a3964ceaefea04324bfa7850c05d340da01c09cd",
+  "installed_runtime_matches_official": true,
+  "gameplay_validation": "pending",
+  "publication_authorized": "2026-11-04"
+}
