@@ -24,19 +24,19 @@ int main(int argc,char** argv) {
         check(!resolve(previous,previous_hash,true),"forced resolution accepted previous 2.1.0 DLL");
         // Native partial reads preserve debug when the revision is unchanged.
         // Ensure our displayed master/offset values cannot feed back into it.
-        std::vector<std::byte> model(26152,std::byte{0x5a});
+        std::vector<std::byte> model(26248,std::byte{0x5a});
         const auto before=model;
         native211::refresh_debug(model.data());
         for(std::size_t i=0;i<model.size();++i)
-            check(model[i]==(i>=26128 && i<26136 ? std::byte{}:before[i]),"refresh damaged another model section/revision");
-        std::uint64_t revision{};std::memcpy(&revision,model.data()+26128,8);
+            check(model[i]==(i>=26224 && i<26232 ? std::byte{}:before[i]),"refresh damaged another model section/revision");
+        std::uint64_t revision{};std::memcpy(&revision,model.data()+26224,8);
         bool shown_master=true,native_active=false;
         unsigned copies{};
         for(unsigned i=0;i<5;++i) {
-            native211::refresh_debug(model.data());std::memcpy(&revision,model.data()+26128,8);
+            native211::refresh_debug(model.data());std::memcpy(&revision,model.data()+26224,8);
             if(revision!=7) {shown_master=native_active;++copies;}
             check(!shown_master,"partial update reused display-only checkbox as native activation");
-            revision=7;std::memcpy(model.data()+26128,&revision,8);shown_master=true;
+            revision=7;std::memcpy(model.data()+26224,&revision,8);shown_master=true;
         }
         check(copies==5,"unchanged native revision skipped refresh");
         check(!native211::panel_controller_navigation,"companion controller navigation enabled");

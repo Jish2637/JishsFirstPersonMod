@@ -15,7 +15,7 @@
 #include <stdexcept>
 namespace jishsfirstpersonmod {
 namespace {
-// Exact official v2.1.4-2 only. Offsets reproduced from the pinned upstream
+// Exact official v2.1.4-4 only. Offsets reproduced from the pinned upstream
 // Session layout; native chat() independently confirms mutex and chat_view.
 std::uintptr_t base{};
 using NativeMutex=int(*)(void*);
@@ -54,20 +54,20 @@ std::string view_text(const View* address) {
 // No native STL object is copied, constructed or freed by the companion.
 // Only bounded POD/string-byte reads under the stock session's own mutex.
 msc_presence::Session sample() {
-    const auto session=read<std::uintptr_t>(base+0x1bf4730);
+    const auto session=read<std::uintptr_t>(base+0x1c57950);
     if(!session) {std::lock_guard lock(guard);gate.reset();return {};}
-    auto* mutex=reinterpret_cast<void*>(session+783624);
+    auto* mutex=reinterpret_cast<void*>(session+787688);
     if(native_lock(mutex)!=0)throw std::runtime_error("MSC session mutex unavailable");
     struct Unlock {void* mutex;~Unlock(){native_unlock(mutex);}} unlock{mutex};
-    const auto mode=read<unsigned>(session+780680);
-    msc_presence::Session key{read<std::uint64_t>(session+780736),read<std::uint64_t>(session+780720),read<std::uint64_t>(session+780712)};
+    const auto mode=read<unsigned>(session+784664);
+    msc_presence::Session key{read<std::uint64_t>(session+784720),read<std::uint64_t>(session+784704),read<std::uint64_t>(session+784696)};
     bool authenticated=false;
-    const auto name=text(session+781368+592);
-    const auto slots=read<std::size_t>(session+779680);
+    const auto name=text(session+785352+648);
+    const auto slots=read<std::size_t>(session+783664);
     if(slots>249)throw std::runtime_error("MSC peer count rejected");
-    if(mode==2 && key.host && read<std::uint8_t>(session+781368+324)==1 && read<std::uint8_t>(session+781368+826)==1) {
+    if(mode==2 && key.host && read<std::uint8_t>(session+785352+380)==1 && read<std::uint8_t>(session+785352+882)==1) {
         for(std::size_t i=0;i<slots;++i) {
-            const auto peer=session+2800+i*3120;
+            const auto peer=session+2800+i*3136;
             if(read<std::uint64_t>(peer+552)==key.host) {
                 key.host_epoch=read<std::uint64_t>(peer+560);
                 authenticated=read<std::uint8_t>(peer+728)==1;
@@ -75,8 +75,8 @@ msc_presence::Session sample() {
             }
         }
     } else key={};
-    if(read<unsigned>(session+780680)!=mode || read<std::uint64_t>(session+780736)!=key.host ||
-       read<std::uint64_t>(session+780720)!=key.epoch)key={};
+    if(read<unsigned>(session+784664)!=mode || read<std::uint64_t>(session+784720)!=key.host ||
+       read<std::uint64_t>(session+784704)!=key.epoch)key={};
     std::lock_guard lock(guard);
     gate.observe(key,authenticated && key.host_epoch!=0,name);
     return key;
@@ -107,7 +107,7 @@ void* command_hook(void* result,const View* action,const View* argument,const Vi
     // Use ReSkate's existing send_chat_command implementation, including its
     // normal packet builder, routing and rate limits. Skip the higher-level
     // command() wrapper which would display failures in chat.
-    const auto session=read<std::uintptr_t>(base+0x1bf4730);
+    const auto session=read<std::uintptr_t>(base+0x1c57950);
     const auto returned=native_send(result,session,argument);
     try {
         if(text(reinterpret_cast<std::uintptr_t>(returned)).empty()) {
@@ -145,7 +145,7 @@ DWORD WINAPI worker(void*) noexcept {
             }
             if(!command.empty()) {
                 char response[256]{};
-                if(!reinterpret_cast<Queue>(base+0x99a0d0)("chat",command.c_str(),"",response,sizeof(response))) {
+                if(!reinterpret_cast<Queue>(base+0x99b210)("chat",command.c_str(),"",response,sizeof(response))) {
                     std::lock_guard lock(guard);if(pending.command==command)pending={};next_attempt=now+5000;
                 }
             }
@@ -165,22 +165,22 @@ void start_msc_presence(HMODULE stock) noexcept {
         if(file!=INVALID_HANDLE_VALUE)CloseHandle(file);
         base=reinterpret_cast<std::uintptr_t>(stock);
         const auto* profile=stock_contract::find_contract(hash,reinterpret_cast<std::uintptr_t>(GetProcAddress(stock,"DingoSDKOverlayGetStatus"))-base);
-        if(!hashed || !profile || std::string_view(profile->version)!="2.1.4-2")throw std::runtime_error("exact official 2.1.4-2 required");
+        if(!hashed || !profile || std::string_view(profile->version)!="2.1.4-4")throw std::runtime_error("exact official 2.1.4-4 required");
         // Official binary + pinned Session layout. Verify entry prefixes and
         // the session getter's RIP-relative pointer before using private ABI.
-        if(!bytes(base+0xa31900,std::array<unsigned char,16>{0x40,0x53,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,0xb8,0x30,0x14,0x0}) ||
-           !bytes(base+0x99a0d0,std::array<unsigned char,16>{0x48,0x8b,0xc4,0x53,0x41,0x57,0x48,0x83,0xec,0x58,0x48,0x89,0x68,0x8,0x4d,0x8b}) ||
-           !bytes(base+0xa0e4e0,std::array<unsigned char,16>{0x48,0x89,0x5c,0x24,0x20,0x55,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57}) ||
-           !bytes(base+0x9e6897,std::array<unsigned char,7>{0x48,0x8b,0x5,0x92,0xde,0x20,0x1}))
+        if(!bytes(base+0xa26330,std::array<unsigned char,16>{0x40,0x53,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,0xb8,0x30,0x14,0x0}) ||
+           !bytes(base+0x99b210,std::array<unsigned char,16>{0x48,0x8b,0xc4,0x53,0x41,0x57,0x48,0x83,0xec,0x58,0x48,0x89,0x68,0x8,0x4d,0x8b}) ||
+           !bytes(base+0xa02e70,std::array<unsigned char,16>{0x48,0x89,0x5c,0x24,0x20,0x55,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57}) ||
+           !bytes(base+0x9da4e7,std::array<unsigned char,7>{0x48,0x8b,0x5,0x62,0xd4,0x27,0x1}))
             throw std::runtime_error("native presence contracts differ");
-        native_send=reinterpret_cast<SendCommand>(base+0xa0e4e0);
+        native_send=reinterpret_cast<SendCommand>(base+0xa02e70);
         native_lock=reinterpret_cast<NativeMutex>(base+profile->mutex_lock_rva);
         native_unlock=reinterpret_cast<NativeMutex>(base+profile->mutex_unlock_rva);
         void* original{};
-        if(dingosdk::owned_hook_prepare(reinterpret_cast<void*>(base+0xa31900),reinterpret_cast<void*>(&command_hook),&original)!=dingosdk::HookOk)
+        if(dingosdk::owned_hook_prepare(reinterpret_cast<void*>(base+0xa26330),reinterpret_cast<void*>(&command_hook),&original)!=dingosdk::HookOk)
             throw std::runtime_error("presence dispatch guard unavailable");
         original_command=reinterpret_cast<Command>(original);
-        if(dingosdk::enable_owned_hook(reinterpret_cast<void*>(base+0xa31900))!=dingosdk::HookOk)
+        if(dingosdk::enable_owned_hook(reinterpret_cast<void*>(base+0xa26330))!=dingosdk::HookOk)
             throw std::runtime_error("presence dispatch hook failed");
         const auto thread=CreateThread(nullptr,0,worker,nullptr,0,nullptr);
         if(!thread)throw std::runtime_error("presence worker unavailable");CloseHandle(thread);

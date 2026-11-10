@@ -1,0 +1,107 @@
+Test project G:/CodexCustom/ReSkateFirstPersonMod/local-reskate-2.1.4-4-source/build
+      Start  1: recording_gamepad_20_byte_buffer_and_release
+ 1/51 Test  #1: recording_gamepad_20_byte_buffer_and_release .............   Passed    0.01 sec
+      Start  2: experimental_emote_aim_scope_lifecycle_and_orientation
+ 2/51 Test  #2: experimental_emote_aim_scope_lifecycle_and_orientation ...   Passed    0.01 sec
+      Start  3: msc_presence_server_gating_and_heartbeat
+ 3/51 Test  #3: msc_presence_server_gating_and_heartbeat .................   Passed    0.01 sec
+      Start  4: native_head_option_settings_and_preset_persistence
+ 4/51 Test  #4: native_head_option_settings_and_preset_persistence .......   Passed    0.03 sec
+      Start  5: native_head_look_default_off_and_scoped_passthrough
+ 5/51 Test  #5: native_head_look_default_off_and_scoped_passthrough ......   Passed    0.02 sec
+      Start  6: marker_native_spring_tick_render_and_active_glance
+ 6/51 Test  #6: marker_native_spring_tick_render_and_active_glance .......   Passed    0.01 sec
+      Start  7: marker_return_fresh_heading_and_request_generation
+ 7/51 Test  #7: marker_return_fresh_heading_and_request_generation .......   Passed    0.01 sec
+      Start  8: updater_background_cancel_decline_and_pending
+ 8/51 Test  #8: updater_background_cancel_decline_and_pending ............   Passed    0.54 sec
+      Start  9: updater_metadata_zip_transaction_and_preservation
+ 9/51 Test  #9: updater_metadata_zip_transaction_and_preservation ........   Passed    0.78 sec
+      Start 10: updater_accepts_published_client_layout
+10/51 Test #10: updater_accepts_published_client_layout ..................   Passed    0.03 sec
+      Start 11: embedded_hook_worker_rejection_and_input_ownership
+11/51 Test #11: embedded_hook_worker_rejection_and_input_ownership .......   Passed    0.03 sec
+      Start 12: embedded_ui_commands_presets_scopes_and_recording
+12/51 Test #12: embedded_ui_commands_presets_scopes_and_recording ........   Passed    0.03 sec
+      Start 13: official_214_4_identity_abi_model_and_input
+13/51 Test #13: official_214_4_identity_abi_model_and_input ..............   Passed    0.51 sec
+      Start 14: scripts_data_migration_and_preservation
+14/51 Test #14: scripts_data_migration_and_preservation ..................   Passed    0.04 sec
+      Start 15: independent_menu_shortcut_navigation_and_persistence
+15/51 Test #15: independent_menu_shortcut_navigation_and_persistence .....   Passed    0.02 sec
+      Start 16: on_board_modifier_centering_and_persistence
+16/51 Test #16: on_board_modifier_centering_and_persistence ..............   Passed    0.02 sec
+      Start 17: spectator_identity_view_visibility_and_persistence
+17/51 Test #17: spectator_identity_view_visibility_and_persistence .......   Passed    0.03 sec
+      Start 18: spectator_mocked_camera_render_and_restoration
+18/51 Test #18: spectator_mocked_camera_render_and_restoration ...........   Passed    2.49 sec
+      Start 19: body_flip_detection_handoffs_and_persistence
+19/51 Test #19: body_flip_detection_handoffs_and_persistence .............   Passed    0.02 sec
+      Start 20: menu_layout_dpi
+20/51 Test #20: menu_layout_dpi ..........................................   Passed    0.12 sec
+      Start 21: bail_collision_sweeps_recovery_and_persistence
+21/51 Test #21: bail_collision_sweeps_recovery_and_persistence ...........   Passed    0.02 sec
+      Start 22: glance_emote_taps_holds_and_contract
+22/51 Test #22: glance_emote_taps_holds_and_contract .....................   Passed    0.01 sec
+      Start 23: existing_game_filters_and_shared_hid
+23/51 Test #23: existing_game_filters_and_shared_hid .....................   Passed    1.00 sec
+      Start 24: launcher_mod_startup_switch
+24/51 Test #24: launcher_mod_startup_switch ..............................   Passed    0.03 sec
+      Start 25: legacy_pose_and_native_sample_policy
+25/51 Test #25: legacy_pose_and_native_sample_policy .....................   Passed    0.02 sec
+      Start 26: per_action_conflicts_preserve_analog_and_other_glances
+26/51 Test #26: per_action_conflicts_preserve_analog_and_other_glances ...   Passed    0.03 sec
+      Start 27: game_camera_ownership_and_existing_restrictions
+27/51 Test #27: game_camera_ownership_and_existing_restrictions ..........   Passed    0.02 sec
+      Start 28: bridge_structure_and_rejection
+28/51 Test #28: bridge_structure_and_rejection ...........................   Passed    0.02 sec
+      Start 29: optional_parkour_look_and_facing
+29/51 Test #29: optional_parkour_look_and_facing .........................   Passed    0.01 sec
+      Start 30: held_bail_view_and_head_attachment
+30/51 Test #30: held_bail_view_and_head_attachment .......................   Passed    0.01 sec
+      Start 31: hippy_jump_confirmation_and_exclusions
+31/51 Test #31: hippy_jump_confirmation_and_exclusions ...................   Passed    0.01 sec
+      Start 32: verified_jump_episode_attachment_and_lifecycle
+32/51 Test #32: verified_jump_episode_attachment_and_lifecycle ...........   Passed    0.02 sec
+      Start 33: glance_toggle_replacement_resets_and_persistence
+33/51 Test #33: glance_toggle_replacement_resets_and_persistence .........   Passed    0.03 sec
+      Start 34: bounded_bail_camera_trace
+34/51 Test #34: bounded_bail_camera_trace ................................   Passed    0.16 sec
+      Start 35: on_foot_spring_switch_and_persistence
+35/51 Test #35: on_foot_spring_switch_and_persistence ....................   Passed    0.02 sec
+      Start 36: non_bail_camera_transitions
+36/51 Test #36: non_bail_camera_transitions ..............................   Passed    0.01 sec
+      Start 37: on_foot_stick_look_math_handoff_and_persistence
+37/51 Test #37: on_foot_stick_look_math_handoff_and_persistence ..........   Passed    0.04 sec
+      Start 38: independent_smoothing_and_comfort_policy
+38/51 Test #38: independent_smoothing_and_comfort_policy .................   Passed    0.03 sec
+      Start 39: native_relative_look_smoothing
+39/51 Test #39: native_relative_look_smoothing ...........................   Passed    0.01 sec
+      Start 40: custom2_camera_math_and_latches
+40/51 Test #40: custom2_camera_math_and_latches ..........................   Passed    0.01 sec
+      Start 41: standalone_config_validation
+41/51 Test #41: standalone_config_validation .............................   Passed    0.05 sec
+      Start 42: reject_non_skate_host
+42/51 Test #42: reject_non_skate_host ....................................   Passed    0.03 sec
+      Start 43: reject_skate_without_reskate
+43/51 Test #43: reject_skate_without_reskate .............................   Passed    0.05 sec
+      Start 44: transient_thread_access_retry_and_safe_refusal
+44/51 Test #44: transient_thread_access_retry_and_safe_refusal ...........   Passed    4.96 sec
+      Start 45: stock_detour_tail_chain
+45/51 Test #45: stock_detour_tail_chain ..................................   Passed    0.02 sec
+      Start 46: menu_recording_persistence_migration_and_routing
+46/51 Test #46: menu_recording_persistence_migration_and_routing .........   Passed    0.07 sec
+      Start 47: shared_stock_camera_settings_contract
+47/51 Test #47: shared_stock_camera_settings_contract ....................   Passed    0.05 sec
+      Start 48: companion_toggle_calls_native_queue_without_tick
+48/51 Test #48: companion_toggle_calls_native_queue_without_tick .........   Passed    0.01 sec
+      Start 49: multi_mod_list_sync_order_disable_and_duplicates
+49/51 Test #49: multi_mod_list_sync_order_disable_and_duplicates .........   Passed    0.01 sec
+      Start 50: proxy_exports_forwarding_and_unrelated_host
+50/51 Test #50: proxy_exports_forwarding_and_unrelated_host ..............   Passed    0.30 sec
+      Start 51: rotating_logs_retention_and_recovery
+51/51 Test #51: rotating_logs_retention_and_recovery .....................   Passed    0.04 sec
+
+100% tests passed, 0 tests failed out of 51
+
+Total Test time (real) =  11.94 sec

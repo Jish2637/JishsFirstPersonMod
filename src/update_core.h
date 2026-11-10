@@ -6,7 +6,7 @@
 #include <array>
 #include <cstdint>
 namespace jishsfirstpersonmod::updates {
-inline constexpr char supported_update_runtime_sha256[]="f7b1562667892187356b8617a3964ceaefea04324bfa7850c05d340da01c09cd";
+inline constexpr char supported_update_runtime_sha256[]="1bcd400b6c487f497ab0110263444864c0269a6309f7143d22b5bc04863d544e";
 using Bytes=std::vector<unsigned char>;
 inline constexpr std::size_t archive_limit=64*1024*1024,expanded_limit=128*1024*1024;
 struct HttpsRequest {std::wstring host,target;};

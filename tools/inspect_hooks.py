@@ -37,7 +37,8 @@ def profiles(path):
 class Image:
     def __init__(self, path):
         self.digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        self.pe = pefile.PE(str(path))
+        self.pe = pefile.PE(str(path), fast_load=True)
+        self.pe.parse_data_directories(directories=[pefile.DIRECTORY_ENTRY["IMAGE_DIRECTORY_ENTRY_EXCEPTION"], pefile.DIRECTORY_ENTRY["IMAGE_DIRECTORY_ENTRY_EXPORT"]])
         if self.pe.FILE_HEADER.Machine != 0x8664:
             raise InspectionError('Expected a Windows x64 DLL')
         self.md = Cs(CS_ARCH_X86, CS_MODE_64)

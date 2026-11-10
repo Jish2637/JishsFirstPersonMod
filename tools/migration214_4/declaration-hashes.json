@@ -1,0 +1,50 @@
+[
+  {
+    "file": "Extension/UI/Overlay/overlay.h",
+    "kind": "struct",
+    "name": "DebugModel",
+    "sha256": "57209cbe57b71a3ce1cce6bd46ab23b9533da97e09cb19aacb4b7e5c6af2e429"
+  },
+  {
+    "file": "Extension/UI/Overlay/overlay.h",
+    "kind": "struct",
+    "name": "DebugRequest",
+    "sha256": "8dc179f332b9f5edcdbc64cdf095628d277a88c88c59da9e3b23c7d4e27d64b2"
+  },
+  {
+    "file": "Extension/UI/Overlay/overlay.h",
+    "kind": "struct",
+    "name": "CallbacksV3",
+    "sha256": "bfa9bb427bbff37b872437268c82b6e05ef354d599605caf073646d24c00581f"
+  },
+  {
+    "file": "Extension/UI/Overlay/overlay.h",
+    "kind": "struct",
+    "name": "Status",
+    "sha256": "0007d6cdadc2d31a46cbf7ed548a14570f22deb15dd6f4a16f527ce08bad4907"
+  },
+  {
+    "file": "Extension/UI/Overlay/overlay.h",
+    "kind": "struct",
+    "name": "Gamepad",
+    "sha256": "f751f718564ccb755b11896e6374ef5ad7edfa0f7bb1c98be5f39fbf43c0fa7a"
+  },
+  {
+    "file": "Extension/UI/Overlay/overlay.h",
+    "kind": "enum class",
+    "name": "DebugAction",
+    "sha256": "e50e1beee9d92875742a381af120dbe9e6f24b9fe4d9626ecb91971c479e3f1f"
+  },
+  {
+    "file": "Engine/Game/Skater/first_person_spring.h",
+    "kind": "struct",
+    "name": "Settings",
+    "sha256": "c7ed9853e2327191cc3e87144574361136bcf45354f23102662eaf6396cb364e"
+  },
+  {
+    "file": "Engine/Game/Input/controller_bindings.h",
+    "kind": "struct",
+    "name": "ControllerInput",
+    "sha256": "4876d0051173ea388f5683113a05b1bd09e66751e8de11556a979dc8007a926a"
+  }
+]

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.36.10 - ReSkate 2.1.4-4
+
+- Re-derived and guarded all 33 native function entries and runtime globals for the exact official DLL.
+- Updated overlay menu/bindings/revisions, spectator remote stride, multiplayer session mutex/view/fields and peer stride from a compiled source layout probe.
+- Verified both 80-byte MSVC mutex representations, overlay mutex offset 0 and remote mutex offset 72.
+- Updated the rewritten native First Person page and shared widget addresses using page strings and the native call graph.
+- Updated startup and updater runtime identity; previous 2.1.4-2 and unknown images are refused.
+- Gameplay validation is pending.
+
 ## 1.36.9 - ReSkate 2.1.4-2
 
 - Re-derived every private native function/global address, including mutex thunks and implementation, camera callbacks, embedded UI/ImGui, controller/HID, spectator and MSC bridges.
