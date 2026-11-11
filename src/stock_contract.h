@@ -40,7 +40,7 @@ inline constexpr NativeContract contracts[]{
  0xc18c70,0x1505860,0xf2f894,0xf2f8c0,0xa45010,0x1430e70,0x1431110,0x1431120},
     {"2.1.1","d79ff144768ce8b0a8e992c9f134c670a3ff85bb3b437a0eb915876973014301",
      0xde5250,0x1864198,0x1157774,0x11577a0,0xbe1900,0x17672c0,0x17681f8,0x1768208}
-    ,{"2.1.4-4","1bcd400b6c487f497ab0110263444864c0269a6309f7143d22b5bc04863d544e",
+    ,{"2.1.4-5","0820fa71c1cb716f4222eb9027130933aa9e3db4ce20b46ef555760be997dbde",
      0xfed180,0x1e6bf80,0x1517e44,0x1517e70,0xda53f0,0x1c05270,0x1c05588,0x1c05598}
 };
 inline const NativeContract* selected=nullptr;
@@ -58,8 +58,8 @@ inline const NativeContract* find_contract(const std::array<unsigned char,32>& h
 }
 inline constexpr std::size_t model_debug_offset=128;
 // Layout is a property of a reviewed profile, not of its movable export RVA.
-inline bool uses_v214_4_layout(const NativeContract* profile) { return profile && std::string_view(profile->version)=="2.1.4-4"; }
-inline bool uses_v211_layout(const NativeContract* profile) { return profile && (std::string_view(profile->version)=="2.1.1" || uses_v214_4_layout(profile)); }
+inline bool uses_v214_5_layout(const NativeContract* profile) { return profile && std::string_view(profile->version)=="2.1.4-5"; }
+inline bool uses_v211_layout(const NativeContract* profile) { return profile && (std::string_view(profile->version)=="2.1.1" || uses_v214_5_layout(profile)); }
 inline bool uses_v206_layout(const NativeContract* profile) { return profile && (std::string_view(profile->version)=="2.0.6" || std::string_view(profile->version)=="2.0.7" || std::string_view(profile->version)=="2.0.8" || uses_v211_layout(profile)); }
 inline bool uses_v2_layout(const NativeContract* profile) {
     if(!profile) return false;
@@ -67,15 +67,15 @@ inline bool uses_v2_layout(const NativeContract* profile) {
     return version=="2.0.0" || version=="2.0.1" || version=="2.0.2" || version=="2.0.3" || version=="2.0.4" || version=="2.0.5" || version=="2.0.6" || version=="2.0.7" || version=="2.0.8" || uses_v211_layout(profile);
 }
 inline bool uses_v203_layout(const NativeContract* profile) { return profile && (std::string_view(profile->version)=="2.0.3" || std::string_view(profile->version)=="2.0.4" || std::string_view(profile->version)=="2.0.5"); }
-inline std::size_t profile_callbacks_offset(const NativeContract* profile) { return uses_v214_4_layout(profile) ? 0xac8:uses_v211_layout(profile) ? 0x5b0:uses_v206_layout(profile) ? 0x590:uses_v203_layout(profile) ? 0x4d0:uses_v2_layout(profile) ? 0x4b8:0x4b0; }
-inline std::size_t profile_model_offset(const NativeContract* profile) { return uses_v214_4_layout(profile) ? 0xaf8:uses_v211_layout(profile) ? 0x5e0:uses_v206_layout(profile) ? 0x5c0:uses_v203_layout(profile) ? 0x500:uses_v2_layout(profile) ? 0x4e8:0x4e0; }
-inline std::uintptr_t native_sampler_rva() { return uses_v214_4_layout(selected) ? 0xda6ba0:uses_v211_layout(selected) ? 0xbe3090:std::string_view(contract().version)=="2.0.8" ? 0xa467a0:std::string_view(contract().version)=="2.0.7" ? 0x22bb20:uses_v206_layout(selected) ? 0x21ec50:(std::string_view(contract().version)=="2.0.4" || std::string_view(contract().version)=="2.0.5") ? 0x2196c0:uses_v203_layout(selected) ? 0x210080:std::string_view(contract().version)=="2.0.2" ? 0x273020:0x26f810; }
-inline std::uintptr_t console_queue_rva() { return uses_v214_4_layout(selected) ? 0x99ace0:uses_v211_layout(selected) ? 0x979980:std::string_view(contract().version)=="2.0.8" ? 0x811900:std::string_view(contract().version)=="2.0.7" ? 0x42210:uses_v206_layout(selected) ? 0x41d90:(std::string_view(contract().version)=="2.0.4" || std::string_view(contract().version)=="2.0.5") ? 0x411b0:uses_v203_layout(selected) ? 0x40e30:std::string_view(contract().version)=="2.0.2" ? 0x3ec00:0x3ea30; }
-inline std::size_t bindings_model_offset() { return uses_v214_4_layout(selected) ? 0x5fd8:uses_v211_layout(selected) ? 0x5fe0:std::string_view(contract().version)=="2.0.8" ? 0x5f88:uses_v206_layout(selected) ? 0x5f78:0x5f50; }
+inline std::size_t profile_callbacks_offset(const NativeContract* profile) { return uses_v214_5_layout(profile) ? 0xac8:uses_v211_layout(profile) ? 0x5b0:uses_v206_layout(profile) ? 0x590:uses_v203_layout(profile) ? 0x4d0:uses_v2_layout(profile) ? 0x4b8:0x4b0; }
+inline std::size_t profile_model_offset(const NativeContract* profile) { return uses_v214_5_layout(profile) ? 0xaf8:uses_v211_layout(profile) ? 0x5e0:uses_v206_layout(profile) ? 0x5c0:uses_v203_layout(profile) ? 0x500:uses_v2_layout(profile) ? 0x4e8:0x4e0; }
+inline std::uintptr_t native_sampler_rva() { return uses_v214_5_layout(selected) ? 0xda6ba0:uses_v211_layout(selected) ? 0xbe3090:std::string_view(contract().version)=="2.0.8" ? 0xa467a0:std::string_view(contract().version)=="2.0.7" ? 0x22bb20:uses_v206_layout(selected) ? 0x21ec50:(std::string_view(contract().version)=="2.0.4" || std::string_view(contract().version)=="2.0.5") ? 0x2196c0:uses_v203_layout(selected) ? 0x210080:std::string_view(contract().version)=="2.0.2" ? 0x273020:0x26f810; }
+inline std::uintptr_t console_queue_rva() { return uses_v214_5_layout(selected) ? 0x99ace0:uses_v211_layout(selected) ? 0x979980:std::string_view(contract().version)=="2.0.8" ? 0x811900:std::string_view(contract().version)=="2.0.7" ? 0x42210:uses_v206_layout(selected) ? 0x41d90:(std::string_view(contract().version)=="2.0.4" || std::string_view(contract().version)=="2.0.5") ? 0x411b0:uses_v203_layout(selected) ? 0x40e30:std::string_view(contract().version)=="2.0.2" ? 0x3ec00:0x3ea30; }
+inline std::size_t bindings_model_offset() { return uses_v214_5_layout(selected) ? 0x5fd8:uses_v211_layout(selected) ? 0x5fe0:std::string_view(contract().version)=="2.0.8" ? 0x5f88:uses_v206_layout(selected) ? 0x5f78:0x5f50; }
 inline bool is_v2() { return uses_v2_layout(selected); }
 inline std::size_t callbacks_offset() { return profile_callbacks_offset(selected); }
 inline std::size_t model_offset() { return profile_model_offset(selected); }
-inline std::size_t debug_status_offset() { return uses_v214_4_layout(selected) ? 0x1f0:is_v2() ? 0x1a8:0x168; }
+inline std::size_t debug_status_offset() { return uses_v214_5_layout(selected) ? 0x1f0:is_v2() ? 0x1a8:0x168; }
 inline std::size_t camera_issue_offset() { return is_v2() ? 0xa0:0x88; }
 enum Action:int { first_person=11, fov, spring, offset_x, offset_y, offset_z,
     pitch,yaw,roll,up,down,left,right,reset };

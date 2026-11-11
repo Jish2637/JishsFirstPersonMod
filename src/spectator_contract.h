@@ -7,7 +7,7 @@
 #include <string>
 #include <string_view>
 namespace jishsfirstpersonmod::spectator {
-// ReSkate 2.1.4-4 only. Official MSVC /MT release layout, checked against the
+// ReSkate 2.1.4-5 only. Official MSVC /MT release layout, checked against the
 // shipped image by tools/audit_spectator_bridge.py. Never invoke its STL ABI.
 inline constexpr std::uintptr_t party_getter=0xb0f8e0,party_pointer=0x1c58448;
 inline constexpr std::uintptr_t remote_getter=0xae5200,remote_pointer=0x1c58250;

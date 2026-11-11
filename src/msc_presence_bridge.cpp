@@ -15,7 +15,7 @@
 #include <stdexcept>
 namespace jishsfirstpersonmod {
 namespace {
-// Exact official v2.1.4-4 only. Offsets reproduced from the pinned upstream
+// Exact official v2.1.4-5 only. Offsets reproduced from the pinned upstream
 // Session layout; native chat() independently confirms mutex and chat_view.
 std::uintptr_t base{};
 using NativeMutex=int(*)(void*);
@@ -165,7 +165,7 @@ void start_msc_presence(HMODULE stock) noexcept {
         if(file!=INVALID_HANDLE_VALUE)CloseHandle(file);
         base=reinterpret_cast<std::uintptr_t>(stock);
         const auto* profile=stock_contract::find_contract(hash,reinterpret_cast<std::uintptr_t>(GetProcAddress(stock,"DingoSDKOverlayGetStatus"))-base);
-        if(!hashed || !profile || std::string_view(profile->version)!="2.1.4-4")throw std::runtime_error("exact official 2.1.4-4 required");
+        if(!hashed || !profile || std::string_view(profile->version)!="2.1.4-5")throw std::runtime_error("exact official 2.1.4-5 required");
         // Official binary + pinned Session layout. Verify entry prefixes and
         // the session getter's RIP-relative pointer before using private ABI.
         if(!bytes(base+0xa26330,std::array<unsigned char,16>{0x40,0x53,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,0xb8,0x30,0x14,0x0}) ||

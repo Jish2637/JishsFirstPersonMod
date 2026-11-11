@@ -289,13 +289,13 @@ bool install_stick_input_filter() {
     original_data=reinterpret_cast<RawData>(data);original_buffer=reinterpret_cast<RawBuffer>(buffer);
     log("Optional input filters: Raw Input adapters prepared ("+elapsed()+").");
     const auto stock=GetModuleHandleW(L"reskate.dll");const auto base=reinterpret_cast<std::uintptr_t>(stock);
-    const bool hid_verified=stock && stock_contract::selected && std::string_view(stock_contract::selected->version)=="2.1.4-4" &&
+    const bool hid_verified=stock && stock_contract::selected && std::string_view(stock_contract::selected->version)=="2.1.4-5" &&
         verified_stock_hid([](std::uintptr_t address,void* data,std::size_t size) { return memory::read_bytes(address,data,size); },base);
     if(hid_verified) {
         void* original{};auto* target=reinterpret_cast<void*>(base+stock_hid_rva);
         if(owned_hook_prepare(target,reinterpret_cast<void*>(&filtered_stock_hid),&original)!=HookOk) return false;
         original_hid=reinterpret_cast<StockHid>(original);pending.push_back(target);
-    } else log("Glance emote blocking unavailable: shared ReSkate 2.1.4-4 HID handler did not verify. Existing stick filters remain available.");
+    } else log("Glance emote blocking unavailable: shared ReSkate 2.1.4-5 HID handler did not verify. Existing stick filters remain available.");
     if(!prepare_native_hid(pending)) {
         log("WARNING: optional input filters stopped at native HID preparation ("+elapsed()+").");return false;
     }

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.36.11 - ReSkate 2.1.4-5
+
+- Updated the exact runtime hash used by the mod and updater for ReSkate 2.1.4-5.
+- Verified all mutex contracts, native addresses and layout offsets against the official DLL and tagged source. Every value matches 2.1.4-4.
+
 ## 1.36.10 - ReSkate 2.1.4-4
 
 - Re-derived and guarded all 33 native function entries and runtime globals for the exact official DLL.

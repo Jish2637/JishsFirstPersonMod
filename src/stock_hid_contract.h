@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <cstdint>
 namespace jishsfirstpersonmod {
-// ReSkate 2.1.4-4 input_capture.cpp::InputCaptureHooks::HidRead. POD only.
+// ReSkate 2.1.4-5 input_capture.cpp::InputCaptureHooks::HidRead. POD only.
 struct StockHidRead { void* file{};void* buffer{};std::uint32_t capacity{};dingosdk::PlayStationPad kind{}; };
 static_assert(sizeof(StockHidRead)==24 && offsetof(StockHidRead,buffer)==8 && offsetof(StockHidRead,capacity)==16 && offsetof(StockHidRead,kind)==20);
 inline constexpr std::uintptr_t stock_hid_rva=0xffde90;

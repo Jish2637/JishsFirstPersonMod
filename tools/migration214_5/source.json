@@ -1,0 +1,11 @@
+{
+  "baseline_mod_commit": "4324166191781a59ed79c318136464c021ffb1ce",
+  "mod_version": "1.36.11",
+  "official_tag": "v2.1.4-5",
+  "source_revision": "8320081",
+  "source_archive_sha256": "23f1321f985dd34601f813f6021ae12d1eb8d098ae3848d1e050f87a6eb737e4",
+  "runtime_sha256": "0820fa71c1cb716f4222eb9027130933aa9e3db4ce20b46ef555760be997dbde",
+  "installed_runtime_matches_official": true,
+  "gameplay_validation": "user confirmed working",
+  "publication_authorized": true
+}
