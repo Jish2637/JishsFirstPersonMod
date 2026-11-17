@@ -1,0 +1,33 @@
+{
+  "revision": "8e4aefc",
+  "dll_sha256": "bb3a36fef26c0c779159a76b6a75669aeb8797a3192a2ab11c68b7b099c87969",
+  "function_prefixes": 33,
+  "layout_fields": 68,
+  "changed_layout_fields": {
+    "O.menu": "29128",
+    "M.menu_scale": "24568",
+    "M.bindings": "24600",
+    "M.multiplayer": "24768",
+    "M.menu_layout": "24572",
+    "M.revisions": "26280",
+    "Model.size": "26312"
+  },
+  "changed_function_addresses": 33,
+  "changed_global_address_or_call_site_groups": 14,
+  "code_section_sha256": "5a81e8a7145308bbfd3d804a320a4cfddccdd55ed9d41bff0413e336ccad4611",
+  "source_sha256": {
+    "Engine/Game/Input/playstation_report.h": "86e4ea1b1c0b821a6fce8ec82f7408918ecff634cbb48648dd846a06e579060f",
+    "Engine/Game/Multiplayer/session_model.h": "261cbcf1a7292d8964384ac8046cb92c671bd054b651d451f1aad4aed4683a72",
+    "Extension/UI/Overlay/overlay_internal.h": "58a9f395a6fa9ecebd0b1835f652a233058001d73a19eeecf13ae9bd22f46c0e",
+    "Extension/UI/Overlay/overlay.h": "46899b63bdadcae597dce7e0ce20f59cd322efd91dbafcf2049b8d206693f4f8",
+    "Extension/UI/Overlay/input_capture.cpp": "7eab8084d80cc6af77266fb59458365dd4956a76e2eab8a968a694aab73b0537",
+    "Extension/UI/Overlay/overlay_input.cpp": "7a61e90ab4dcf355c409504d4709cff4438b46489d5e70c56c2718cf4ab49cc1",
+    "Extension/Multiplayer/Session/session_internal.h": "d1f8c12eae1aa6548ec3dc82f5dc9174ddfa392f48a505ae91840a29938f239b",
+    "Extension/Multiplayer/Hud/native_party_internal.h": "0194a61e2bc62067385d108750bfe3ed112ad43b4d3b76db35054005ab2daa04",
+    "Extension/Multiplayer/Remote/native_skater_internal.h": "26a5a9b8f7d04f9b4c0d17b56dcc5b3ad78312c7ab024ff8b82a7cdaa4c6ad0a",
+    "External/imgui/imgui.h": "2d0180859ff85e7fe66ed9999b0f05f2fc45176773046a8f86b3b6bd190b0765",
+    "External/imgui/imgui_internal.h": "1363c617a743957f367afe1c6c88345870b7aa25ee339809fb915466e4fb9575",
+    "External/imgui/imconfig.h": "0884061cc43e27e1d346fe18dcd1425792eb2532d3d16610a82eb5ac751f7594"
+  },
+  "relationships": "PASS"
+}

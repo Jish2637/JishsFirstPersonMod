@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.36.12 - ReSkate Build 20261116
+
+- Updated the exact DLL identity and all 33 native function addresses, plus the global pointers and call sites used by the mod.
+- Updated the overlay menu, bindings and model revision offsets. Verified the overlay, remote and session mutex layouts.
+- Synced the ReSkate PlayStation report parser and used its DualSense layout detection for mod input filtering.
+
 ## 1.36.11 - ReSkate 2.1.4-5
 
 - Updated the exact runtime hash used by the mod and updater for ReSkate 2.1.4-5.

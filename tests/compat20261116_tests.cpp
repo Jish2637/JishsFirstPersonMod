@@ -4,11 +4,11 @@
 #include "native_211.h"
 int main(int argc,char** argv) {
     try {
-        check(argc==3,"official 2.1.4-5 and previous 2.1.4-4 fixture paths required");
+        check(argc==3,"official 20261116 and previous 2.1.4-5 fixture paths required");
         auto image=load(argv[1]);const auto& profile=stock_contract::contracts[14];
         const auto digest=hash_of(profile.sha256);
         const auto good=resolve(image,digest);
-        check(bool(good),good.error.c_str());check(good.known,"2.1.4-5 not recognized");
+        check(bool(good),good.error.c_str());check(good.known,"20261116 not recognized");
         check(good.read_callback==native211::read.rva && good.queue_callback==native211::queue.rva,"callback mappings changed");
         for(const auto& entry:native211::entries) {
             auto damaged=image;damaged.bytes[entry.rva]^=1;
@@ -20,28 +20,28 @@ int main(int argc,char** argv) {
             check(!resolve(damaged,digest,true),"changed mutex/camera reference accepted");
         }
         auto wrong=digest;wrong[0]^=1;
-        check(!resolve(image,wrong,true),"force detection accepted an unreviewed 2.1.4-5 image");
+        check(!resolve(image,wrong,true),"force detection accepted an unreviewed 20261116 image");
         auto bad=image;bad.status++;
         check(!resolve(bad,digest,true),"wrong status export accepted");
         auto previous=load(argv[2]);
-        const auto previous_hash=hash_of("1bcd400b6c487f497ab0110263444864c0269a6309f7143d22b5bc04863d544e");
-        check(!stock_contract::find_contract(previous_hash,previous.status),"2.1.4-4 identity accepted by dedicated 2.1.4-5 profile");
-        check(!resolve(previous,previous_hash,true),"forced resolution accepted previous 2.1.4-4 DLL");
+        const auto previous_hash=hash_of("0820fa71c1cb716f4222eb9027130933aa9e3db4ce20b46ef555760be997dbde");
+        check(!stock_contract::find_contract(previous_hash,previous.status),"2.1.4-5 identity accepted by dedicated 20261116 profile");
+        check(!resolve(previous,previous_hash,true),"forced resolution accepted previous 2.1.4-5 DLL");
         // Native partial reads preserve debug when the revision is unchanged.
         // Ensure our displayed master/offset values cannot feed back into it.
-        std::vector<std::byte> model(26248,std::byte{0x5a});
+        std::vector<std::byte> model(26312,std::byte{0x5a});
         const auto before=model;
         native211::refresh_debug(model.data());
         for(std::size_t i=0;i<model.size();++i)
-            check(model[i]==(i>=26224 && i<26232 ? std::byte{}:before[i]),"refresh damaged another model section/revision");
-        std::uint64_t revision{};std::memcpy(&revision,model.data()+26224,8);
+            check(model[i]==(i>=26288 && i<26296 ? std::byte{}:before[i]),"refresh damaged another model section/revision");
+        std::uint64_t revision{};std::memcpy(&revision,model.data()+26288,8);
         bool shown_master=true,native_active=false;
         unsigned copies{};
         for(unsigned i=0;i<5;++i) {
-            native211::refresh_debug(model.data());std::memcpy(&revision,model.data()+26224,8);
+            native211::refresh_debug(model.data());std::memcpy(&revision,model.data()+26288,8);
             if(revision!=7) {shown_master=native_active;++copies;}
             check(!shown_master,"partial update reused display-only checkbox as native activation");
-            revision=7;std::memcpy(model.data()+26224,&revision,8);shown_master=true;
+            revision=7;std::memcpy(model.data()+26288,&revision,8);shown_master=true;
         }
         check(copies==5,"unchanged native revision skipped refresh");
         check(!native211::panel_controller_navigation,"companion controller navigation enabled");
@@ -54,6 +54,6 @@ int main(int argc,char** argv) {
         check(capture.consume(false,false,true),"cancelled chord leaked into stock menu before release");
         check(!capture.consume(false,false,false),"neutral release did not restore stock navigation");
         check(!capture.consume(false,false,true),"next stock press was suppressed");
-        std::cout<<"2.1.4-5 identity, all native entry tamper guards, partial-model refresh and controller ownership passed.\n";
+        std::cout<<"20261116 identity, all native entry tamper guards, partial-model refresh and controller ownership passed.\n";
     } catch(const std::exception& e) {std::cerr<<e.what()<<'\n';return 1;}
 }

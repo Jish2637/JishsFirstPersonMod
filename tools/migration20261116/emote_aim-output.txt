@@ -1,0 +1,2 @@
+PASS: exact EXE, 10 reviewed prefixes, gesture type/getters, native parameter records and camera wrapper
+Investigation only: local gesture lifecycle and emote-to-camera consumer link remain unverified.

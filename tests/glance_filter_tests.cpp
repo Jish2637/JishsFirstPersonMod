@@ -80,6 +80,19 @@ int main(int argc,char** argv) try {
   clear_glance_filter();private_controller_handle(read.file,true);submit(0,6);check((report[button]&15)==0,"private Sony reader filtered");private_controller_handle(read.file,false);
   if(bluetooth){auto expected=report;sony_report_crc(expected);check(expected==report,"Bluetooth checksum stale");}
  }
+ // Windows may return a padded DualSense USB report. Its hat is at byte 8.
+ {
+  constexpr auto kind=dingosdk::PlayStationPad::dualsense;
+  std::array<std::uint8_t,78> padded_usb{};
+  padded_usb[0]=1;
+  padded_usb[5]=42; // Analog left trigger, not the hat.
+  padded_usb[8]=0x20; // Cross + up.
+  padded_usb[11]=7; // USB sensor/status data distinguishes it from simple Bluetooth.
+  check(filter_sony_dpad(kind,padded_usb,1),"padded USB report rejected");
+  check(padded_usb[8]==0x28 && padded_usb[5]==42,"padded USB glance edited the wrong byte");
+  check(neutral_sony_pad(kind,padded_usb),"padded USB capture rejected");
+  check(padded_usb[8]==8 && padded_usb[5]==0 && padded_usb[11]==7,"padded USB capture misread the layout");
+ }
  auto changed=bindings;clear_glance_filter();qa_now+=10;poll(0x101);qa_now+=10;poll(0x100);changed[0].combo=0;
  publish_glance_filter(changed,true,{1,2,3,4},1);auto bypass=classify(1,0,0x101);check(!bypass.consume&&!bypass.emote,"changed binding still blocked");
  // Raw Input uses the same selective edit, including when existing stick filtering also edits the report.

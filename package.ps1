@@ -1,4 +1,4 @@
-param([string]$ModVersion = "1.36.11", [string]$ReSkateVersion = "2.1.4-5", [switch]$UniversalLoader)
+param([string]$ModVersion = "1.36.12", [string]$ReSkateVersion = "20261116", [switch]$UniversalLoader)
 
 $ErrorActionPreference = 'Stop'
 

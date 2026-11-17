@@ -1,0 +1,12 @@
+PASS: sphere wrapper: radius at request+0x20, mode at +0x28
+PASS: sphere wrapper: filter at request+0x24
+PASS: sphere wrapper: ignored body list at request+0x48
+PASS: sphere wrapper: allocator at request+0x40
+PASS: sphere wrapper: tolerance at +0x2c and flags at +0x30
+PASS: sphere wrapper: flags read
+PASS: shared implementation consumes 16-byte ignore handles' indices at +8
+PASS: sphere calls shared query
+PASS: ray calls shared query
+9 static checks passed; SHA-256 fbce74d5e28ef525dbba2cb4adbebc13405bdbd88f31bc940bca45e4ae88b8f9
+OUT OF EXPERIMENT SCOPE: complete local-skater/board exclusions and initial penetration.
+GAMEPLAY TEST NEEDED: engine-thread/TLS guard confirmation and native sweep behavior.
