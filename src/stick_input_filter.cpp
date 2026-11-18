@@ -1,5 +1,6 @@
 #include "diagnostic_log.h"
 #include "stick_runtime.h"
+#include "native_recording.h"
 #include "stick_input_filter.h"
 #include "stock_bridge.h"
 #include "owned_hooks.h"
@@ -130,10 +131,14 @@ struct FilteredPacket { bool ready{};DWORD physical{},packet{};XINPUT_GAMEPAD pa
 std::mutex packet_mutex;
 std::array<std::array<FilteredPacket,4>,10> filtered_packets;
 template<unsigned Index> DWORD WINAPI filtered_state(DWORD slot,XINPUT_STATE* output) {
-    const auto result=originals[Index](slot,output);const auto error=GetLastError();
-    HMODULE caller{};
-    if(GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-        reinterpret_cast<LPCWSTR>(_ReturnAddress()),&caller) && caller==GetModuleHandleW(L"reskate.dll")) {SetLastError(error);return result;}
+    DWORD result{};
+    {
+        // ReSkate and XInput can forward through another hooked reader. Let the
+        // outermost call filter the physical result once.
+        RecordingInputAccess access;
+        result=originals[Index](slot,output);
+    }
+    const auto error=GetLastError();
     if(result==ERROR_SUCCESS && output && !raw_controller_read) {
         std::uint32_t buttons=output->Gamepad.wButtons;
         if(output->Gamepad.bLeftTrigger>30) buttons|=0x10000;
@@ -274,7 +279,7 @@ bool install_stick_input_filter() {
             originals[index]=reinterpret_cast<GetState>(forwarding);pending.push_back(target);++count;
         }
     }
-    if(!count) { log("WARNING: optional input filters found no loaded XInput readers ("+elapsed()+").");return false; }
+    if(!count) log("Optional input filters: no loaded XInput readers; preparing Raw Input and HID adapters ("+elapsed()+").");
     log("Optional input filters: XInput hook discovery finished ("+std::to_string(count)+" readers, "+elapsed()+").");
     const auto user32=GetModuleHandleW(L"user32.dll");
     const auto add=[&](const char* name,void* detour,void** original) {

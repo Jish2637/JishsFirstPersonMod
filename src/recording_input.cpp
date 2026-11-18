@@ -18,14 +18,21 @@ using ReadGamepad=StockGamepad*(*)(StockGamepad*);
 ReadGamepad original_gamepad{};
 native211::RecordingCapture reader_capture,gamepad_capture;
 void captured_reader(NativeRecordingInput* output,bool allow_menu) {
-    original_reader(output,allow_menu);
+    {
+        RecordingInputAccess access;
+        original_reader(output,allow_menu);
+    }
     if(output) {
         const bool held=output->buttons || std::any_of(output->keys.begin(),output->keys.end(),[](auto key){return key!=0;});
         if(reader_capture.consume(raw_controller_read,panel_recording_active(),held)) *output={};
     }
 }
 StockGamepad* captured_gamepad(StockGamepad* output) {
-    auto* result=original_gamepad(output);
+    StockGamepad* result{};
+    {
+        RecordingInputAccess access;
+        result=original_gamepad(output);
+    }
     if(output) filter_recording_gamepad(*output,gamepad_capture,raw_controller_read,panel_recording_active());
     return result;
 }

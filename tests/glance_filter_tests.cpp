@@ -42,6 +42,10 @@ void hid(const StockHidRead& read,DWORD n){++hid_calls;if(qa_menu&&read.buffer&&
 #include "direct_input_adapter_tests.inl"
 #include "native_hid_adapter_tests.inl"
 #include "board_input_adapter_tests.inl"
+DWORD WINAPI forwarded_input(DWORD slot,XINPUT_STATE* output) {
+ check(raw_controller_read,"forwarded XInput poll was not scoped as physical");
+ return filtered_state<1>(slot,output);
+}
 int main(int argc,char** argv) try {
  std::cout<<std::unitbuf;
  emote_ready=true;originals[0]=input;original_hid=hid;
@@ -92,6 +96,25 @@ int main(int argc,char** argv) try {
   check(padded_usb[8]==0x28 && padded_usb[5]==42,"padded USB glance edited the wrong byte");
   check(neutral_sony_pad(kind,padded_usb),"padded USB capture rejected");
   check(padded_usb[8]==8 && padded_usb[5]==0 && padded_usb[11]==7,"padded USB capture misread the layout");
+ }
+ // ReSkate's input wrapper can forward through another XInput export.
+ // The inner call must keep physical input while the outer call blocks once.
+ {
+  clear_glance_filter();originals[0]=forwarded_input;originals[1]=input;
+  qa_capture=true;qa_native_axes={};qa_panel=false;
+  sample.Gamepad.sThumbRX=20000;sample.Gamepad.sThumbRY=12000;
+  qa_now+=10;
+  check(poll(0x101)==0x100,"forwarded game poll leaked its glance button");
+  XINPUT_STATE out{};
+  filtered_state<0>(0,&out);
+  check(out.Gamepad.sThumbRX==0 && out.Gamepad.sThumbRY==0,"forwarded game poll leaked stick input");
+  raw_controller_read=true;
+  filtered_state<0>(0,&out);
+  check(out.Gamepad.wButtons==0x101 && out.Gamepad.sThumbRX==20000,"private reader lost physical input");
+  raw_controller_read=false;qa_capture=false;
+  qa_panel=true;filtered_state<0>(0,&out);
+  check(out.Gamepad.wButtons==0 && out.Gamepad.sThumbRX==0,"forwarded poll leaked menu input");
+  qa_panel=false;originals[0]=input;originals[1]=nullptr;sample.Gamepad={};
  }
  auto changed=bindings;clear_glance_filter();qa_now+=10;poll(0x101);qa_now+=10;poll(0x100);changed[0].combo=0;
  publish_glance_filter(changed,true,{1,2,3,4},1);auto bypass=classify(1,0,0x101);check(!bypass.consume&&!bypass.emote,"changed binding still blocked");

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.36.13 - Input blocking on ReSkate Build 20261116
+
+- Fixed game XInput polls forwarded through ReSkate bypassing input blocking.
+- Applied input filtering once per outer poll and scoped physical reads for native controller sampling, binding recording and menu navigation.
+- Continued Raw Input and HID setup when no XInput readers are loaded.
+- Added regression coverage for forwarding, private reads, stick capture and menu capture.
+
 ## 1.36.12 - ReSkate Build 20261116
 
 - Updated the exact DLL identity and all 33 native function addresses, plus the global pointers and call sites used by the mod.
