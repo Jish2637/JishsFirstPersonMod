@@ -37,10 +37,10 @@ Bytes fetch(std::wstring url,std::size_t limit,bool asset) {
   Http session{WinHttpOpen(L"JishsFirstPersonMod-Updater/1.36.0",WINHTTP_ACCESS_TYPE_AUTOMATIC_PROXY,WINHTTP_NO_PROXY_NAME,WINHTTP_NO_PROXY_BYPASS,0)};
   if(!session.h)throw std::runtime_error("Could not open HTTPS session");WinHttpSetTimeouts(session,8000,8000,8000,8000);
   Http connection{WinHttpConnect(session,host.c_str(),443,0)};
-  Http request{connection.h?WinHttpOpenRequest(connection,L"GET",path.c_str(),nullptr,WINHTTP_NO_REFERER,WINHTTP_DEFAULT_ACCEPT_TYPES,WINHTTP_FLAG_SECURE):nullptr};
+  Http request{connection.h?WinHttpOpenRequest(connection,L"GET",path.c_str(),nullptr,WINHTTP_NO_REFERER,WINHTTP_DEFAULT_ACCEPT_TYPES,WINHTTP_FLAG_SECURE|WINHTTP_FLAG_REFRESH):nullptr};
   if(!request.h)throw std::runtime_error("Could not open update request");
   DWORD redirects_off=WINHTTP_OPTION_REDIRECT_POLICY_NEVER;WinHttpSetOption(request,WINHTTP_OPTION_REDIRECT_POLICY,&redirects_off,sizeof(redirects_off));
-  const wchar_t* headers=asset?L"Accept: application/octet-stream\r\n":L"Accept: application/vnd.github+json\r\nX-GitHub-Api-Version: 2022-11-28\r\n";
+  const wchar_t* headers=asset?L"Accept: application/octet-stream\r\n":L"Accept: application/vnd.github+json\r\nX-GitHub-Api-Version: 2022-11-28\r\nCache-Control: no-cache\r\n";
   if(!WinHttpSendRequest(request,headers,static_cast<DWORD>(-1),nullptr,0,0,0) || !WinHttpReceiveResponse(request,nullptr))throw std::runtime_error("GitHub connection failed (offline, timeout or TLS)");
   DWORD code{},size=sizeof(code);
   if(!WinHttpQueryHeaders(request,WINHTTP_QUERY_STATUS_CODE|WINHTTP_QUERY_FLAG_NUMBER,nullptr,&code,&size,nullptr))throw std::runtime_error("Could not read HTTP response");
@@ -74,9 +74,9 @@ void verify_runtime() {
 void save_preferences() {write_text(data_path/L"preferences.ini",snapshot().automatic?"automatic_check=1\n":"automatic_check=0\n");}
 void check_worker() {
  auto installed=installed_version(root);{std::lock_guard lock(mutex);state.installed=installed;state.available=false;state.latest.clear();}
- auto bytes=fetch(L"https://api.github.com/repos/Jish2637/JishsFirstPersonMod/releases/latest",1024*1024,false);
+ auto bytes=fetch(L"https://api.github.com/repos/Jish2637/JishsFirstPersonMod/releases?per_page=100",1024*1024,false);
  if(stop)throw std::runtime_error("Update check cancelled");
- std::string json(bytes.begin(),bytes.end());const auto release=parse_release(json);
+ std::string json;const auto release=compatible_release(std::string(bytes.begin(),bytes.end()),&json);
  {std::lock_guard lock(mutex);remote=release;metadata=std::move(json);state.latest=release.version;state.available=newer(release,installed);state.status=state.available ? "Version "+release.version+" is available":"Up to date ("+installed+")";}
 }
 void download_worker() {
@@ -123,11 +123,11 @@ void launch(void(*function)()) {
 }
 }
 Snapshot snapshot(){std::lock_guard lock(mutex);return state;}
-void start(const fs::path& companion,const fs::path& data) {
+void start(const fs::path& companion,const fs::path& data,const fs::path& installation_root) {
  try {
   {std::lock_guard lock(mutex);if(started)return;started=true;}
   wchar_t exe[32768]{};if(!GetModuleFileNameW(nullptr,exe,32768))throw std::runtime_error("Game folder unavailable");
-  root=fs::path(exe).parent_path();data_path=fs::absolute(data/L"updates").lexically_normal();safe_path(data_path);
+  root=installation_root.empty()?fs::path(exe).parent_path():fs::absolute(installation_root).lexically_normal();safe_path(root);data_path=fs::absolute(data/L"updates").lexically_normal();safe_path(data_path);
   if(fs::weakly_canonical(companion)!=fs::weakly_canonical(root/L"scripts/Custom"))throw std::runtime_error("Automatic updates require the standard scripts/Custom installation layout");
   fs::create_directories(data_path);state.installed=installed_version(root);
   if(fs::exists(data_path/L"preferences.ini")) {const auto b=read_file(data_path/L"preferences.ini",1024);state.automatic=std::string(b.begin(),b.end()).find("automatic_check=0")==std::string::npos;}

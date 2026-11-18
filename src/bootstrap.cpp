@@ -93,6 +93,9 @@ DWORD WINAPI worker(void*) noexcept {
         if (!dingosdk::supported_build::running_image_matches(base)) {
             jishsfirstpersonmod::log("ERROR: Skate.exe differs from supported build 25414733 (20260929); no hooks installed"); status = 3; return 0;
         }
+        // Start the network worker before waiting for ReSkate or camera hooks.
+        try { jishsfirstpersonmod::release_updates::start(directory,jishsfirstpersonmod::data_directory()); }
+        catch(...) { jishsfirstpersonmod::log("WARNING: update check could not start."); }
         // Universal loaders may load us before ReSkate. Wait outside DllMain,
         // just as the bundled proxy does, instead of permanently failing early.
         auto reskate = GetModuleHandleW(L"reskate.dll");
@@ -160,8 +163,7 @@ DWORD WINAPI worker(void*) noexcept {
         catch(...) { jishsfirstpersonmod::log("WARNING: optional emote aim setup failed; camera and Insert page remain active."); }
         try { jishsfirstpersonmod::start_msc_presence(reskate); }
         catch(...) { jishsfirstpersonmod::log("WARNING: optional MSC presence setup failed; camera and Insert page remain active."); }
-        try { jishsfirstpersonmod::release_updates::start(jishsfirstpersonmod::module_directory(),jishsfirstpersonmod::data_directory()); }
-        catch(...) { jishsfirstpersonmod::log("WARNING: optional update setup failed; camera and Insert page remain active."); }
+
         const auto filters_since=GetTickCount64();
         jishsfirstpersonmod::log("Optional controller input filters: beginning setup after core initialization.");
         try {

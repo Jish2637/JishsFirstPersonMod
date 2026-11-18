@@ -43,6 +43,15 @@ int main(int argc,char** argv){try {
  for(const char* s:{"","1.35","1.35.0-test","01.35.0","v1.35.0","1.-1.0","1.9999999.0"})rejects([&]{version(s);},"invalid version accepted");
  auto change=[&](std::string a,std::string b){auto text=json;const auto at=text.find(a);require(at!=text.npos,"fixture replacement");text.replace(at,a.size(),b);return text;};
  for(const auto& text:{std::string("[]"),change("\"draft\":false","\"draft\":true"),change("\"prerelease\":false","\"prerelease\":true"),change("20261116","2.1.0"),change("20261116","2.1.1"),change("https://github.com/","https://evil.example/"),change("sha256:","sha512:"),change(".zip\"","-source.zip\"")})rejects([&]{parse_release(text);},"unsafe metadata accepted");
+ auto older=remote;older.version="1.34.9";older.tag=older.version+"-reskate-20261116";
+ older.url="https://github.com/Jish2637/JishsFirstPersonMod/releases/download/"+older.tag+"/JishsFirstPersonMod-"+older.tag+".zip";
+ const auto foreign=change("20261116","20261201");
+ const auto draft=change("\"draft\":false","\"draft\":true");
+ std::string chosen;
+ require(compatible_release("["+foreign+","+metadata(older)+","+json+","+draft+"]",&chosen).version=="1.35.0","newest compatible stable release not selected");
+ require(parse_release(chosen).tag==remote.tag,"staged metadata did not describe the selected release");
+ rejects([&]{compatible_release("["+foreign+","+draft+"]");},"incompatible/draft release selected");
+ rejects([&]{compatible_release("["+change("sha256:","sha512:")+"]");},"bad compatible digest accepted");
  const auto signed_url=https_request(L"https://release-assets.githubusercontent.com/asset.zip?sig=abc%2B123&expires=10");
  require(signed_url.target==L"/asset.zip?sig=abc%2B123&expires=10","signed redirect query lost");
  for(const wchar_t* url:{L"http://github.com/a",L"https://github.com.evil.example/a",L"https://user:password@github.com/a",L"https://github.com:444/a",L"https://evil.example/a",L"https://github.com/a#fragment"})rejects([&]{https_request(url);},"unsafe redirect accepted");

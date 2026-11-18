@@ -4,6 +4,8 @@
 #include <winhttp.h>
 #include <miniz.h>
 #include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
 #include <set>
 #include <algorithm>
 #include <fstream>
@@ -95,6 +97,35 @@ Release parse_release(const std::string& json) {
  if(r.url!="https://github.com/Jish2637/JishsFirstPersonMod/releases/download/"+r.tag+"/"+name)bad("Unexpected release asset URL");
  if(r.digest.size()!=71 || !r.digest.starts_with("sha256:") || !std::all_of(r.digest.begin()+7,r.digest.end(),[](char c){return (c>='0'&&c<='9')||(c>='a'&&c<='f');}))bad("Valid GitHub SHA-256 digest required");
  return r;
+}
+Release compatible_release(const std::string& json, std::string* selected_metadata) {
+ if(json.size()>1024*1024)bad("Release response is too large");
+ rapidjson::Document releases;
+ releases.Parse(json.data(),json.size());
+ if(releases.HasParseError() || !releases.IsArray())bad("Invalid GitHub release list");
+ bool found=false;
+ Release selected;
+ std::string metadata;
+ for(const auto& entry:releases.GetArray()) {
+  if(!entry.IsObject() || !entry.HasMember("tag_name") || !entry["tag_name"].IsString())continue;
+  const auto tag=field(entry,"tag_name");
+  if(!tag.ends_with("-reskate-20261116"))continue;
+  if(!entry.HasMember("draft") || !entry["draft"].IsBool() || entry["draft"].GetBool() ||
+     !entry.HasMember("prerelease") || !entry["prerelease"].IsBool() || entry["prerelease"].GetBool())continue;
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+  entry.Accept(writer);
+  const std::string candidate_metadata(buffer.GetString(),buffer.GetSize());
+  const auto candidate=parse_release(candidate_metadata);
+  if(!found || version(candidate.version)>version(selected.version)) {
+   selected=candidate;
+   metadata=candidate_metadata;
+   found=true;
+  }
+ }
+ if(!found)bad("No stable update for ReSkate 20261116 was found");
+ if(selected_metadata)*selected_metadata=std::move(metadata);
+ return selected;
 }
 bool newer(const Release& r,const std::string& installed){return version(r.version)>version(installed);}
 std::string sha256(const Bytes& bytes) {

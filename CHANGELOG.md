@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.36.14 - Updater improvements
+
+- Select the newest compatible stable release from the GitHub release list and request fresh metadata.
+- Start the background update check earlier in the DLL startup worker.
+- Add standalone checking and installation through FirstPersonUpdater.exe with Skate closed.
+- Recognize the loaders shipped in recent published releases.
+
 ## 1.36.13 - Input blocking on ReSkate Build 20261116
 
 - Fixed game XInput polls forwarded through ReSkate bypassing input blocking.

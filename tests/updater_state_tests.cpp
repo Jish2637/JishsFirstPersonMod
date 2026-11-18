@@ -10,7 +10,8 @@ Bytes test_fetch(const std::wstring&,std::size_t,bool asset) {
  ++calls;if(fail_fetch)throw std::runtime_error("Simulated offline/network error");
  while((asset?block_asset.load():block_metadata.load())) {if(stop)throw std::runtime_error("Update cancelled");Sleep(5);}
  if(stop)throw std::runtime_error("Update cancelled");
- return asset?zip_fixture:Bytes(json_fixture.begin(),json_fixture.end());
+ const auto releases="["+json_fixture+"]";
+ return asset?zip_fixture:Bytes(releases.begin(),releases.end());
 }
 }}
 void require(bool v,const char* message){if(!v)throw std::runtime_error(message);}
@@ -22,6 +23,7 @@ int main(int argc,char** argv){try {
  require(supported_update_loader(legacy_proxy_sha256) && !multi_mod_loader(legacy_proxy_sha256),"legacy migration policy changed");
  require(multi_mod_loader("438e671de5910e04e1af3ade92f3e72f14cbf12fb63df23676863794a43a0559"),"user's verified UniversalModLoader v2 rejected");
  require(!supported_update_loader(std::string(64,'0')),"unknown loader accepted");
+ require(multi_mod_loader("8208090dc1b8de8eac07845e686b1a1afc04938784a4488509a8c1c3fd5259bc"),"published 1.36.13 loader rejected");
  for(auto known:published_multi_loader_sha256) require(multi_mod_loader(known),"preserved multi-loader digest lost");
  wchar_t exe[32768]{};GetModuleFileNameW(nullptr,exe,32768);const auto install_root=std::filesystem::path(exe).parent_path();
  const auto isolated=install_root/(L"updater-state-"+std::to_wstring(GetTickCount64()));

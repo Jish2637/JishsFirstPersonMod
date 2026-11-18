@@ -15,6 +15,7 @@ struct Release {std::string version,tag,url,digest;std::uint64_t size{};};
 std::array<unsigned,3> version(const std::string&);
 std::string installed_version(const std::filesystem::path& root);
 Release parse_release(const std::string& json);
+Release compatible_release(const std::string& json, std::string* selected_metadata=nullptr);
 bool newer(const Release&,const std::string& installed);
 std::string sha256(const Bytes&);
 Bytes read_file(const std::filesystem::path&,std::size_t limit=archive_limit);
